@@ -4,6 +4,7 @@ import productsRoutes from './products.routes.js';
 import newsletterRoutes from './newsletter.routes.js';
 import contactRoutes from './contact.routes.js';
 import ordersRoutes from './orders.routes.js';
+import adminRoutes from './admin.routes.js';
 
 const router = Router();
 
@@ -13,5 +14,6 @@ router.use('/products', productsRoutes);
 router.use('/newsletter', newsletterRoutes);
 router.use('/contact', contactRoutes);
 router.use('/orders', ordersRoutes);
+router.use('/admin', adminRoutes);
 
 export default router;

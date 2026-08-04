@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Mail, MapPin, Phone } from 'lucide-react'
-import { supabase } from '../lib/supabaseClient'
+import { api } from '../lib/api'
 import { useLanguage } from '../context/LanguageContext'
 
 export default function Contact() {
@@ -15,26 +15,21 @@ export default function Contact() {
   const onSubmit = async (e) => {
     e.preventDefault()
 
-    if (!supabase) {
-      setSent(true)
-      return
-    }
-
     setSubmitting(true)
     setError(false)
-    const { error: insertError } = await supabase.from('contact_messages').insert({
-      first_name: form.firstName,
-      last_name: form.lastName,
-      email: form.email,
-      message: form.message,
-    })
-
-    setSubmitting(false)
-    if (insertError) {
+    try {
+      await api.post('/api/contact', {
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        message: form.message,
+      })
+      setSent(true)
+    } catch {
       setError(true)
-      return
+    } finally {
+      setSubmitting(false)
     }
-    setSent(true)
   }
 
   return (

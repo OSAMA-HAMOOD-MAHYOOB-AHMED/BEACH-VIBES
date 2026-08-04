@@ -218,8 +218,18 @@ create table if not exists users (
   password_hash text not null,
   first_name text,
   last_name text,
+  role text not null default 'customer' check (role in ('customer', 'admin')),
   created_at timestamptz default now()
 );
+
+-- Bootstrap the first admin manually after they've registered normally
+-- through the app (there is deliberately no public "become admin" endpoint):
+--   update users set role = 'admin' where email = 'you@example.com';
+
+-- Safe to re-run against a users table that predates the role column:
+alter table users add column if not exists role text not null default 'customer';
+alter table users drop constraint if exists users_role_check;
+alter table users add constraint users_role_check check (role in ('customer', 'admin'));
 
 alter table users enable row level security;
 -- No policies: only the backend (service_role key) may read/write.

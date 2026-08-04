@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Search, User, ShoppingBag, Menu, X, Droplet } from 'lucide-react'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 import { useLanguage } from '../context/LanguageContext'
 
 function LanguageSwitcher({ language, setLanguage, className = '' }) {
@@ -31,6 +32,7 @@ function LanguageSwitcher({ language, setLanguage, className = '' }) {
 
 export default function Header() {
   const { count } = useCart()
+  const { isAuthenticated, isAdmin } = useAuth()
   const { t, language, setLanguage } = useLanguage()
   const [open, setOpen] = useState(false)
 
@@ -39,6 +41,7 @@ export default function Header() {
     { to: '/collections', label: t('header.nav.collections') },
     { to: '/shop', label: t('header.nav.artisanal') },
     { to: '/about', label: t('header.nav.about') },
+    ...(isAdmin ? [{ to: '/admin', label: t('header.nav.admin') }] : []),
   ]
 
   return (
@@ -71,9 +74,13 @@ export default function Header() {
           <button aria-label={t('header.searchLabel')} className="text-navy-800 hover:text-navy-500 transition-colors">
             <Search className="w-[18px] h-[18px]" strokeWidth={1.5} />
           </button>
-          <button aria-label={t('header.accountLabel')} className="text-navy-800 hover:text-navy-500 transition-colors hidden sm:block">
+          <Link
+            to={isAuthenticated ? '/account' : '/login'}
+            aria-label={t('header.accountLabel')}
+            className="text-navy-800 hover:text-navy-500 transition-colors hidden sm:block"
+          >
             <User className="w-[18px] h-[18px]" strokeWidth={1.5} />
-          </button>
+          </Link>
           <Link to="/cart" aria-label={t('header.cartLabel')} className="relative text-navy-800 hover:text-navy-500 transition-colors">
             <ShoppingBag className="w-[18px] h-[18px]" strokeWidth={1.5} />
             {count > 0 && (

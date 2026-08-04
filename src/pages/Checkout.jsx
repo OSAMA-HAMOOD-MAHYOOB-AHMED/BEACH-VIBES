@@ -3,14 +3,17 @@ import { Link } from 'react-router-dom'
 import { CreditCard, Lock, PackageCheck, ChevronRight } from 'lucide-react'
 import { ProductMedia } from '../components/Media'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 import { useLanguage } from '../context/LanguageContext'
 import { localizeProduct } from '../utils/localize'
 import { formatPrice } from '../utils/format'
+import { api } from '../lib/api'
 
 const TAX_RATE = 0.08
 
 export default function Checkout() {
   const { t, language } = useLanguage()
+  const { user } = useAuth()
   const { lines: rawLines, subtotal, clearCart } = useCart()
 
   const lines = useMemo(
@@ -20,10 +23,12 @@ export default function Checkout() {
 
   const [shippingMethod, setShippingMethod] = useState('express')
   const [placed, setPlaced] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
+    firstName: user?.first_name || '',
+    lastName: user?.last_name || '',
+    email: user?.email || '',
     address: '',
     city: '',
     state: '',
@@ -39,10 +44,33 @@ export default function Checkout() {
 
   const onChange = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }))
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-    setPlaced(true)
-    clearCart()
+    setError('')
+    setSubmitting(true)
+    try {
+      await api.post(
+        '/api/orders',
+        {
+          items: rawLines.map((l) => ({ productId: l.id, quantity: l.qty })),
+          shippingAddress: {
+            firstName: form.firstName,
+            lastName: form.lastName,
+            address: form.address,
+            city: form.city,
+            state: form.state,
+            zip: form.zip,
+          },
+        },
+        { auth: true },
+      )
+      setPlaced(true)
+      clearCart()
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (lines.length === 0 && !placed) {
@@ -236,8 +264,14 @@ export default function Checkout() {
             </div>
           </Section>
 
-          <button type="submit" className="btn-primary w-full sm:w-auto inline-flex items-center gap-2">
-            {t('checkout.purchaseBtn')} <ChevronRight className="w-3.5 h-3.5 rtl:rotate-180" />
+          {error && <p className="text-xs text-red-600 mb-4">{error}</p>}
+          <button
+            type="submit"
+            disabled={submitting}
+            className="btn-primary w-full sm:w-auto inline-flex items-center gap-2 disabled:opacity-60"
+          >
+            {submitting ? t('checkout.placingOrder') : t('checkout.purchaseBtn')}{' '}
+            <ChevronRight className="w-3.5 h-3.5 rtl:rotate-180" />
           </button>
           <p className="flex items-center gap-4 text-[11px] text-navy-400 mt-4">
             <span className="inline-flex items-center gap-1.5">

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
 import { supabase } from '../lib/supabase.js';
 import { hashPassword, verifyPassword } from '../utils/password.js';
 import { signToken } from '../utils/jwt.js';
@@ -7,7 +8,17 @@ import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 
-router.post('/register', async (req, res, next) => {
+// Brute-force protection: register/login are the only unauthenticated
+// endpoints that touch a password, so they're the ones worth throttling.
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many attempts. Please try again later.' },
+});
+
+router.post('/register', authLimiter, async (req, res, next) => {
   try {
     const { email, password, firstName, lastName } = req.body;
 
@@ -41,19 +52,19 @@ router.post('/register', async (req, res, next) => {
         first_name: firstName || null,
         last_name: lastName || null,
       })
-      .select('id, email, first_name, last_name, created_at')
+      .select('id, email, first_name, last_name, role, created_at')
       .single();
 
     if (error) throw error;
 
-    const token = signToken({ sub: user.id, email: user.email });
+    const token = signToken({ sub: user.id, email: user.email, role: user.role });
     res.status(201).json({ token, user });
   } catch (err) {
     next(err);
   }
 });
 
-router.post('/login', async (req, res, next) => {
+router.post('/login', authLimiter, async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -63,7 +74,7 @@ router.post('/login', async (req, res, next) => {
 
     const { data: user, error } = await supabase
       .from('users')
-      .select('id, email, password_hash, first_name, last_name')
+      .select('id, email, password_hash, first_name, last_name, role')
       .eq('email', email.toLowerCase())
       .maybeSingle();
 
@@ -72,7 +83,7 @@ router.post('/login', async (req, res, next) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    const token = signToken({ sub: user.id, email: user.email });
+    const token = signToken({ sub: user.id, email: user.email, role: user.role });
     delete user.password_hash;
     res.json({ token, user });
   } catch (err) {
@@ -84,7 +95,7 @@ router.get('/me', requireAuth, async (req, res, next) => {
   try {
     const { data: user, error } = await supabase
       .from('users')
-      .select('id, email, first_name, last_name, created_at')
+      .select('id, email, first_name, last_name, role, created_at')
       .eq('id', req.user.id)
       .single();
 

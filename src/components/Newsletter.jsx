@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Mail } from 'lucide-react'
 import { SceneMedia } from './Media'
-import { supabase } from '../lib/supabaseClient'
+import { api } from '../lib/api'
 import { useLanguage } from '../context/LanguageContext'
 
 export default function Newsletter({ eyebrow, title, subtitle }) {
@@ -19,24 +19,16 @@ export default function Newsletter({ eyebrow, title, subtitle }) {
     e.preventDefault()
     if (!email) return
 
-    if (!supabase) {
-      setSubmitted(true)
-      return
-    }
-
     setSubmitting(true)
     setError(false)
-    const { error: insertError } = await supabase
-      .from('newsletter_subscribers')
-      .insert({ email })
-
-    setSubmitting(false)
-    // A duplicate email (already subscribed) should still read as success.
-    if (insertError && insertError.code !== '23505') {
+    try {
+      await api.post('/api/newsletter', { email })
+      setSubmitted(true)
+    } catch {
       setError(true)
-      return
+    } finally {
+      setSubmitting(false)
     }
-    setSubmitted(true)
   }
 
   return (

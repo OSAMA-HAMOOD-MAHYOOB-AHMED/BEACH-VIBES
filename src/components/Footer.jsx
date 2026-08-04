@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Instagram, Twitter, Facebook, Droplet, Mail, Check } from 'lucide-react'
-import { supabase } from '../lib/supabaseClient'
+import { api } from '../lib/api'
 import { useLanguage } from '../context/LanguageContext'
 
 export default function Footer() {
@@ -13,18 +13,13 @@ export default function Footer() {
     e.preventDefault()
     if (!email || state === 'submitting') return
 
-    if (!supabase) {
-      setState('done')
-      return
-    }
-
     setState('submitting')
-    const { error } = await supabase.from('newsletter_subscribers').insert({ email })
-    if (error && error.code !== '23505') {
+    try {
+      await api.post('/api/newsletter', { email })
+      setState('done')
+    } catch {
       setState('error')
-      return
     }
-    setState('done')
   }
 
   return (
