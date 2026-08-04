@@ -1,6 +1,12 @@
--- Aqua Atelier — Supabase schema
+-- Aqua Atelier — database schema (Supabase Postgres)
 -- Run this once in the Supabase SQL Editor (Dashboard > SQL Editor > New query > Run).
 -- Safe to re-run: uses "if not exists" / "or replace" where possible.
+--
+-- Access model: the backend/ Express API is the only client that talks to
+-- this database, using the Supabase service_role key (which bypasses RLS).
+-- Tables below that back auth/orders have RLS enabled with NO policies,
+-- so the anon/authenticated roles used by a browser client are locked out
+-- entirely — only the service_role key can read or write them.
 
 -- ============================================================
 -- products
@@ -158,3 +164,56 @@ on conflict (id) do update set
   is_signature = excluded.is_signature,
   description = excluded.description,
   notes = excluded.notes;
+
+-- ============================================================
+-- users
+-- ============================================================
+create table if not exists users (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  password_hash text not null,
+  first_name text,
+  last_name text,
+  created_at timestamptz default now()
+);
+
+alter table users enable row level security;
+-- No policies: only the backend (service_role key) may read/write.
+-- Passwords are hashed with bcrypt before ever reaching this table
+-- (see backend/src/utils/password.js) — this column never holds plaintext.
+
+-- ============================================================
+-- orders
+-- ============================================================
+create table if not exists orders (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references users(id) on delete set null,
+  email text not null,
+  status text not null default 'pending',
+  subtotal numeric not null,
+  total numeric not null,
+  shipping_address jsonb,
+  created_at timestamptz default now()
+);
+
+alter table orders enable row level security;
+-- No policies: only the backend may read/write. "A user can only see
+-- their own orders" is enforced in application code
+-- (backend/src/routes/orders.routes.js), not by RLS, since the backend
+-- always queries with the service_role key.
+
+-- ============================================================
+-- order_items
+-- ============================================================
+create table if not exists order_items (
+  id uuid primary key default gen_random_uuid(),
+  order_id uuid not null references orders(id) on delete cascade,
+  product_id text references products(id),
+  product_name text not null,
+  unit_price numeric not null,
+  quantity integer not null,
+  created_at timestamptz default now()
+);
+
+alter table order_items enable row level security;
+-- No policies: only the backend may read/write, joined through orders.
