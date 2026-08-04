@@ -16,38 +16,19 @@ import ProductCard from '../components/ProductCard'
 import StarRating from '../components/StarRating'
 import Newsletter from '../components/Newsletter'
 import { useProducts } from '../context/ProductsContext'
+import { useLanguage } from '../context/LanguageContext'
+import { localizeProduct } from '../utils/localize'
 import { formatPrice } from '../utils/format'
 import { useCart } from '../context/CartContext'
 
 const SIZES = ['50ml', '100ml', '200ml']
 
-const REVIEWS = [
-  {
-    name: 'Julianna R.',
-    date: 'October 14, 2023',
-    rating: 5,
-    title: 'The perfect summer scent',
-    body: "I've been looking for a fragrance that doesn't feel synthetic or heavy. This is incredibly fresh and lingers just long enough. The sea salt notes are very prominent in the best way possible. Truly exceptional craftsmanship.",
-  },
-  {
-    name: 'Marcus T.',
-    date: 'September 2, 2023',
-    rating: 5,
-    title: 'Compliments every time I wear it',
-    body: 'Subtle but unmistakably distinctive. The packaging alone feels like an heirloom, and the scent has real depth without being overwhelming.',
-  },
-]
-
-const ACCORDIONS = [
-  { id: 'details', title: 'Product Details & Origin' },
-  { id: 'sustainability', title: 'Sustainability' },
-  { id: 'shipping', title: 'Shipping & Returns' },
-]
-
 export default function ProductDetail() {
   const { id } = useParams()
+  const { t, language } = useLanguage()
   const { products, findProduct } = useProducts()
-  const product = findProduct(id)
+  const rawProduct = findProduct(id)
+  const product = localizeProduct(rawProduct, language)
   const { addItem } = useCart()
 
   const [size, setSize] = useState(SIZES[1])
@@ -57,31 +38,39 @@ export default function ProductDetail() {
   const [tab, setTab] = useState('journal')
 
   const related = useMemo(() => {
-    if (!product) return []
+    if (!rawProduct) return []
     const sameCategory = products.filter(
-      (p) => p.id !== product.id && p.category === product.category,
+      (p) => p.id !== rawProduct.id && p.category === rawProduct.category,
     )
     const others = products.filter(
-      (p) => p.id !== product.id && p.category !== product.category,
+      (p) => p.id !== rawProduct.id && p.category !== rawProduct.category,
     )
     return [...sameCategory, ...others].slice(0, 4)
-  }, [products, product])
+  }, [products, rawProduct])
 
   if (!product) {
     return (
       <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-24 text-center">
-        <h1 className="font-serif text-3xl text-navy-900 mb-4">Piece not found</h1>
-        <p className="text-sm text-navy-500 mb-8">
-          This artifact may have sold out or moved to a new collection.
-        </p>
+        <h1 className="font-serif text-3xl text-navy-900 mb-4">{t('productDetail.notFoundTitle')}</h1>
+        <p className="text-sm text-navy-500 mb-8">{t('productDetail.notFoundBody')}</p>
         <Link to="/shop" className="btn-primary">
-          Back to Shop
+          {t('productDetail.backToShop')}
         </Link>
       </div>
     )
   }
 
-  const hasSizes = product.category === 'Fragrance'
+  const hasSizes = rawProduct.category === 'Fragrance'
+  const materialLabel = (
+    rawProduct.material ? t(`materials.${rawProduct.material}`) : t('productDetail.defaultMaterial')
+  ).toLowerCase()
+
+  const accordions = t('productDetail.accordions')
+  const accordionBodies = {
+    details: accordions.details.body.replace('{{material}}', materialLabel),
+    sustainability: accordions.sustainability.body,
+    shipping: accordions.shipping.body,
+  }
 
   const handleAdd = () => {
     addItem(product.id, qty)
@@ -89,13 +78,20 @@ export default function ProductDetail() {
     setTimeout(() => setAdded(false), 1800)
   }
 
+  const reviews = t('productDetail.reviews')
+  const tabs = [
+    { id: 'journal', label: t('productDetail.tabs.journal', { count: product.reviews }) },
+    { id: 'delivery', label: t('productDetail.tabs.delivery') },
+    { id: 'ingredients', label: t('productDetail.tabs.ingredients') },
+  ]
+
   return (
     <div>
       <div className="max-w-[1400px] mx-auto px-5 sm:px-8 pt-6">
         <nav className="text-[11px] text-navy-400 uppercase tracking-widest flex items-center gap-2">
-          <Link to="/" className="hover:text-navy-700">Home</Link>
+          <Link to="/" className="hover:text-navy-700">{t('productDetail.breadcrumbHome')}</Link>
           <span>/</span>
-          <Link to="/collections" className="hover:text-navy-700">Collections</Link>
+          <Link to="/collections" className="hover:text-navy-700">{t('productDetail.breadcrumbCollections')}</Link>
           <span>/</span>
           <span className="text-navy-700">{product.name}</span>
         </nav>
@@ -113,14 +109,14 @@ export default function ProductDetail() {
               iconClassName="w-16 h-16"
             />
             <button
-              aria-label="Add to wishlist"
-              className="absolute top-4 right-4 bg-white/90 w-9 h-9 flex items-center justify-center hover:bg-white transition-colors"
+              aria-label={t('productDetail.addToWishlist')}
+              className="absolute top-4 right-4 rtl:right-auto rtl:left-4 bg-white/90 w-9 h-9 flex items-center justify-center hover:bg-white transition-colors"
             >
               <Heart className="w-4 h-4 text-navy-700" />
             </button>
             {product.isSignature && (
-              <span className="absolute bottom-4 left-4 bg-white text-navy-800 text-[9px] font-semibold uppercase tracking-widest px-3 py-1.5">
-                Signature Collection
+              <span className="absolute bottom-4 left-4 rtl:left-auto rtl:right-4 bg-white text-navy-800 text-[9px] font-semibold uppercase tracking-widest px-3 py-1.5">
+                {t('productDetail.signatureCollection')}
               </span>
             )}
           </div>
@@ -141,7 +137,7 @@ export default function ProductDetail() {
         {/* Info */}
         <div>
           <p className="text-[11px] font-medium uppercase tracking-widest2 text-navy-400 mb-2">
-            Artisanal {product.category}
+            {t('productDetail.artisanalCategory', { category: t(`categories.${rawProduct.category}`) })}
           </p>
           <div className="flex items-start justify-between gap-4 mb-3">
             <h1 className="font-serif text-3xl sm:text-4xl text-navy-900">{product.name}</h1>
@@ -151,17 +147,17 @@ export default function ProductDetail() {
             </div>
           </div>
           <p className="text-xl text-navy-700 mb-6">{formatPrice(product.price)}</p>
-          <p className="text-sm text-navy-500 leading-relaxed mb-8 max-w-md">
-            {product.description}
-          </p>
+          <p className="text-sm text-navy-500 leading-relaxed mb-8 max-w-md">{product.description}</p>
 
           {hasSizes && (
             <div className="mb-7">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[11px] font-medium uppercase tracking-widest text-navy-700">
-                  Select Size
+                  {t('productDetail.selectSize')}
                 </span>
-                <span className="text-[11px] text-navy-400 underline cursor-pointer">Size Guide</span>
+                <span className="text-[11px] text-navy-400 underline cursor-pointer">
+                  {t('productDetail.sizeGuide')}
+                </span>
               </div>
               <div className="flex gap-3">
                 {SIZES.map((s) => (
@@ -186,7 +182,7 @@ export default function ProductDetail() {
               <button
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
                 className="w-10 h-11 flex items-center justify-center text-navy-600 hover:bg-navy-50"
-                aria-label="Decrease quantity"
+                aria-label={t('productDetail.decreaseQty')}
               >
                 <Minus className="w-3.5 h-3.5" />
               </button>
@@ -194,75 +190,68 @@ export default function ProductDetail() {
               <button
                 onClick={() => setQty((q) => q + 1)}
                 className="w-10 h-11 flex items-center justify-center text-navy-600 hover:bg-navy-50"
-                aria-label="Increase quantity"
+                aria-label={t('productDetail.increaseQty')}
               >
                 <Plus className="w-3.5 h-3.5" />
               </button>
             </div>
             <button onClick={handleAdd} className="btn-primary flex-1">
-              {added ? 'Added to Bag' : 'Add to Atelier Bag'}
+              {added ? t('productDetail.addedToBag') : t('productDetail.addToBag')}
             </button>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-8 text-xs text-navy-500">
             <div className="flex items-center gap-2">
               <Truck className="w-4 h-4 text-navy-500" strokeWidth={1.5} />
-              Complimentary Shipping
+              {t('productDetail.complimentaryShipping')}
             </div>
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-navy-500" strokeWidth={1.5} />
-              Certified Authentic
+              {t('productDetail.certifiedAuthentic')}
             </div>
             <div className="flex items-center gap-2">
               <Gift className="w-4 h-4 text-navy-500" strokeWidth={1.5} />
-              Gift Wrapping Available
+              {t('productDetail.giftWrapping')}
             </div>
           </div>
 
           <div className="border-t border-navy-100">
             {product.notes && (
               <Accordion
-                title="Scent Profile"
+                title={t('productDetail.scentProfile')}
                 open={openAccordion === 'scent'}
                 onToggle={() => setOpenAccordion(openAccordion === 'scent' ? null : 'scent')}
               >
                 <div className="grid grid-cols-3 gap-4 text-xs text-navy-500">
                   <div>
-                    <p className="font-medium text-navy-700 uppercase tracking-wide mb-1">Top Notes</p>
+                    <p className="font-medium text-navy-700 uppercase tracking-wide mb-1">{t('productDetail.topNotes')}</p>
                     <p>{product.notes.top}</p>
                   </div>
                   <div>
-                    <p className="font-medium text-navy-700 uppercase tracking-wide mb-1">Heart Notes</p>
+                    <p className="font-medium text-navy-700 uppercase tracking-wide mb-1">{t('productDetail.heartNotes')}</p>
                     <p>{product.notes.heart}</p>
                   </div>
                   <div>
-                    <p className="font-medium text-navy-700 uppercase tracking-wide mb-1">Base Notes</p>
+                    <p className="font-medium text-navy-700 uppercase tracking-wide mb-1">{t('productDetail.baseNotes')}</p>
                     <p>{product.notes.base}</p>
                   </div>
                 </div>
               </Accordion>
             )}
-            {ACCORDIONS.map((a) => (
+            {['details', 'sustainability', 'shipping'].map((id) => (
               <Accordion
-                key={a.id}
-                title={a.title}
-                open={openAccordion === a.id}
-                onToggle={() => setOpenAccordion(openAccordion === a.id ? null : a.id)}
+                key={id}
+                title={accordions[id].title}
+                open={openAccordion === id}
+                onToggle={() => setOpenAccordion(openAccordion === id ? null : id)}
               >
-                <p className="text-xs text-navy-500 leading-relaxed">
-                  {a.id === 'details' &&
-                    `Crafted by independent artisans using techniques passed through generations. Made from ${product.material?.toLowerCase() || 'artisanal materials'} sourced from certified sustainable suppliers.`}
-                  {a.id === 'sustainability' &&
-                    'Limited-batch production, recyclable packaging, and forest-certified materials throughout.'}
-                  {a.id === 'shipping' &&
-                    'Complimentary standard shipping on all orders over $500. 30-day returns accepted on unused goods in original packaging.'}
-                </p>
+                <p className="text-xs text-navy-500 leading-relaxed">{accordionBodies[id]}</p>
               </Accordion>
             ))}
           </div>
 
           <button className="inline-flex items-center gap-2 text-xs text-navy-400 hover:text-navy-700 mt-6 transition-colors">
-            <Share2 className="w-3.5 h-3.5" /> Share This Discovery
+            <Share2 className="w-3.5 h-3.5" /> {t('productDetail.shareDiscovery')}
           </button>
         </div>
       </div>
@@ -272,35 +261,29 @@ export default function ProductDetail() {
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <SceneMedia tone="beach" className="w-full aspect-[4/5] sm:aspect-[5/4]" />
           <div>
-            <p className="section-eyebrow">The Inspiration</p>
+            <p className="section-eyebrow">{t('productDetail.inspirationEyebrow')}</p>
             <h2 className="font-serif text-3xl sm:text-4xl text-navy-900 mb-5 leading-tight">
-              Where Water Meets The Shore
+              {t('productDetail.inspirationTitle')}
             </h2>
             <p className="text-sm text-navy-500 leading-relaxed mb-8 max-w-md">
-              Our founder spent three summers on the Amalfi Coast, documenting the changing scent
-              of the sea from sunrise to dusk. {product.name} is the culmination of those
-              journals — a liquid memory of crisp mornings and sun-warmed stone.
+              {t('productDetail.inspirationBody', { productName: product.name })}
             </p>
             <div className="grid grid-cols-2 gap-6 mb-8 max-w-sm">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-1.5">
-                  Small Batch
+                  {t('productDetail.smallBatchTitle')}
                 </p>
-                <p className="text-xs text-navy-500 leading-relaxed">
-                  Limited to 500 bottles per season to ensure quality.
-                </p>
+                <p className="text-xs text-navy-500 leading-relaxed">{t('productDetail.smallBatchBody')}</p>
               </div>
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-1.5">
-                  Sustainability
+                  {t('productDetail.sustainabilityTitle2')}
                 </p>
-                <p className="text-xs text-navy-500 leading-relaxed">
-                  100% recyclable glass and forest-certified packaging.
-                </p>
+                <p className="text-xs text-navy-500 leading-relaxed">{t('productDetail.sustainabilityBody2')}</p>
               </div>
             </div>
             <Link to="/about" className="btn-secondary">
-              The Aqua Atelier Story
+              {t('productDetail.theStoryBtn')}
             </Link>
           </div>
         </div>
@@ -309,41 +292,37 @@ export default function ProductDetail() {
       {/* Reviews */}
       <section className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20">
         <div className="flex items-center gap-8 border-b border-navy-100 mb-10">
-          {[
-            { id: 'journal', label: `Customer Journal (${product.reviews})` },
-            { id: 'delivery', label: 'Delivery & Returns' },
-            { id: 'ingredients', label: 'Ingredients' },
-          ].map((t) => (
+          {tabs.map((tb) => (
             <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
+              key={tb.id}
+              onClick={() => setTab(tb.id)}
               className={`pb-4 text-xs font-medium uppercase tracking-widest border-b-2 -mb-px transition-colors ${
-                tab === t.id ? 'text-navy-900 border-navy-900' : 'text-navy-400 border-transparent'
+                tab === tb.id ? 'text-navy-900 border-navy-900' : 'text-navy-400 border-transparent'
               }`}
             >
-              {t.label}
+              {tb.label}
             </button>
           ))}
         </div>
 
         {tab === 'journal' && (
           <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-12">
-            <div className="text-center lg:text-left">
+            <div className="text-center lg:text-left rtl:lg:text-right">
               <p className="font-serif text-5xl text-navy-900 mb-2">{product.rating}</p>
               <StarRating rating={product.rating} size={16} />
-              <p className="text-xs text-navy-400 mt-2 mb-6">Based on {product.reviews} reviews</p>
-              <button className="btn-secondary w-full lg:w-auto">Write A Review</button>
+              <p className="text-xs text-navy-400 mt-2 mb-6">
+                {t('productDetail.ratingBasedOn', { count: product.reviews })}
+              </p>
+              <button className="btn-secondary w-full lg:w-auto">{t('productDetail.writeReview')}</button>
             </div>
             <div className="divide-y divide-navy-100">
-              {REVIEWS.map((r) => (
+              {reviews.map((r) => (
                 <div key={r.name} className="py-6 first:pt-0">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-semibold uppercase tracking-widest text-navy-800">
-                      {r.name}
-                    </p>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-navy-800">{r.name}</p>
                     <p className="text-xs text-navy-400">{r.date}</p>
                   </div>
-                  <StarRating rating={r.rating} />
+                  <StarRating rating={5} />
                   <p className="text-sm italic text-navy-800 mt-3 mb-2">&ldquo;{r.title}&rdquo;</p>
                   <p className="text-sm text-navy-500 leading-relaxed max-w-2xl">{r.body}</p>
                 </div>
@@ -353,19 +332,11 @@ export default function ProductDetail() {
         )}
 
         {tab === 'delivery' && (
-          <p className="text-sm text-navy-500 leading-relaxed max-w-2xl">
-            Complimentary standard shipping on all orders over $500. Express Atelier Delivery
-            available at checkout. Unused items in original packaging may be returned within 30
-            days of delivery for a full refund.
-          </p>
+          <p className="text-sm text-navy-500 leading-relaxed max-w-2xl">{t('productDetail.deliveryContent')}</p>
         )}
 
         {tab === 'ingredients' && (
-          <p className="text-sm text-navy-500 leading-relaxed max-w-2xl">
-            Formulated with responsibly sourced botanical extracts and mineral musks. Free from
-            parabens, phthalates, and synthetic dyes. Full ingredient listing available upon
-            request from our concierge team.
-          </p>
+          <p className="text-sm text-navy-500 leading-relaxed max-w-2xl">{t('productDetail.ingredientsContent')}</p>
         )}
       </section>
 
@@ -374,11 +345,10 @@ export default function ProductDetail() {
         <div className="max-w-xl mx-auto px-5 sm:px-8 py-16 text-center">
           <Quote className="w-6 h-6 text-white/40 mx-auto mb-5" />
           <p className="font-serif italic text-lg sm:text-xl text-white leading-relaxed mb-5">
-            &ldquo;This scent is a revelation. It manages to capture the exact feeling of cool
-            ocean air and morning light. Simply timeless.&rdquo;
+            &ldquo;{t('productDetail.testimonialQuote')}&rdquo;
           </p>
           <p className="text-[11px] font-medium uppercase tracking-widest text-white/60">
-            Elena V. — Verified Collector
+            {t('productDetail.testimonialAttribution')}
           </p>
         </div>
       </section>
@@ -387,14 +357,14 @@ export default function ProductDetail() {
       <section className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="section-eyebrow">Curated</p>
-            <h2 className="font-serif text-3xl text-navy-900">Complete The Experience</h2>
+            <p className="section-eyebrow">{t('productDetail.curatedEyebrow')}</p>
+            <h2 className="font-serif text-3xl text-navy-900">{t('productDetail.completeExperience')}</h2>
           </div>
           <Link
             to="/shop"
             className="hidden sm:block text-xs font-medium uppercase tracking-widest text-navy-700 hover:text-navy-900"
           >
-            View All Artisanal Goods
+            {t('productDetail.viewAllGoods')}
           </Link>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
@@ -405,9 +375,9 @@ export default function ProductDetail() {
       </section>
 
       <Newsletter
-        eyebrow="Stay Informed"
-        title="Join Our Circle"
-        subtitle="Join our circle for exclusive access to artisanal releases and private collection viewings."
+        eyebrow={t('productDetail.newsletterEyebrow')}
+        title={t('productDetail.newsletterTitle')}
+        subtitle={t('productDetail.newsletterSubtitle')}
       />
     </div>
   )
@@ -418,11 +388,9 @@ function Accordion({ title, open, onToggle, children }) {
     <div className="border-b border-navy-100">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-4 text-left"
+        className="w-full flex items-center justify-between py-4 text-left rtl:text-right"
       >
-        <span className="text-[11px] font-medium uppercase tracking-widest text-navy-800">
-          {title}
-        </span>
+        <span className="text-[11px] font-medium uppercase tracking-widest text-navy-800">{title}</span>
         <ChevronDown
           className={`w-4 h-4 text-navy-500 transition-transform ${open ? 'rotate-180' : ''}`}
         />

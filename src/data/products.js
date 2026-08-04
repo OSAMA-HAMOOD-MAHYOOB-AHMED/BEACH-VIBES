@@ -28,6 +28,14 @@ export const PRODUCTS = [
       heart: 'Jasmine Sambac, Neroli, Seaweed',
       base: 'Ambergris, White Musk, Driftwood',
     },
+    name_ar: 'جوهر الزُرقة',
+    description_ar:
+      'عطر مُشرق يفتتح بنفحات الحمضيات المنعشة، ليستقر في قاعدة عنبرية دافئة تلامسها لمسة من ملح البحر.',
+    notes_ar: {
+      top: 'برغموت، ملح البحر، قشر الليمون',
+      heart: 'ياسمين سامباك، زهر النارنج، أعشاب بحرية',
+      base: 'عنبر، مسك أبيض، خشب الطفو',
+    },
   },
   {
     id: 'lessence-de-la-mer',
@@ -45,6 +53,14 @@ export const PRODUCTS = [
       top: 'Bergamot, Sea Salt, Lemon Zest',
       heart: 'Jasmine Sambac, Neroli, Seaweed',
       base: 'Ambergris, White Musk, Driftwood',
+    },
+    name_ar: 'جوهر البحر',
+    description_ar:
+      'رحلة شمّية عميقة إلى قلب البحر المتوسط. يلتقط هذا العطر الحرفي لحظة الفجر العابرة فوق ساحل هادئ، ممزوجاً نقاء ملح البحر بدفء الحمضيات المشبعة بالشمس وعمق خشب الأرز الساحلي الراسخ.',
+    notes_ar: {
+      top: 'برغموت، ملح البحر، قشر الليمون',
+      heart: 'ياسمين سامباك، زهر النارنج، أعشاب بحرية',
+      base: 'عنبر، مسك أبيض، خشب الطفو',
     },
   },
   {
@@ -65,6 +81,14 @@ export const PRODUCTS = [
       heart: 'White Lotus',
       base: 'Driftwood, Ambergris, Mineral Musk',
     },
+    name_ar: 'محيط الحرير',
+    description_ar:
+      'تركيبة أثيرية مستوحاة من سطح بحرٍ صباحي هادئ يشبه الحرير في نعومته. يفتتح محيط الحرير بملح البحر المنعش ونفحات أوزونية من اللوتس الأبيض، لينتقل إلى قلب من اللوتس الأبيض وخشب الطفو المُبيَّض بأشعة الشمس.',
+    notes_ar: {
+      top: 'ملح البحر، برغموت',
+      heart: 'لوتس أبيض',
+      base: 'خشب الطفو، عنبر، مسك معدني',
+    },
   },
   {
     id: 'neroli-des-bermudes',
@@ -78,6 +102,8 @@ export const PRODUCTS = [
     reviews: 58,
     description:
       'A bright, effervescent neroli fragrance layered over warm island musk and soft petitgrain.',
+    name_ar: 'زهر نارنج برمودا',
+    description_ar: 'عطر نارنجي منعش وحيوي، يتوشح بمسك جزري دافئ ونفحات ناعمة من البتيغرين.',
   },
   {
     id: 'monolith-ceramic-vase',
@@ -91,6 +117,9 @@ export const PRODUCTS = [
     reviews: 41,
     description:
       'A sculptural stoneware vessel, hand-thrown and finished with a matte organic glaze inspired by coastal cliffs.',
+    name_ar: 'مزهرية مونوليث الخزفية',
+    description_ar:
+      'إناء خزفي نحتي، مصنوع يدوياً بالعجلة ومطلي بطلاء عضوي غير لامع مستوحى من المنحدرات الساحلية.',
   },
   {
     id: 'artisanal-ceramic-vase',
@@ -105,6 +134,9 @@ export const PRODUCTS = [
     isNew: true,
     description:
       'Wheel-thrown ceramic in a soft terracotta glaze, equally at home with a single stem or a full arrangement.',
+    name_ar: 'مزهرية خزفية حرفية',
+    description_ar:
+      'خزف مصنوع بعجلة الخزاف بطلاء تراكوتا ناعم، يليق بغصنٍ واحد كما يليق بتنسيقٍ زهري كامل.',
   },
   {
     id: 'artisanal-linen-set',
@@ -119,6 +151,9 @@ export const PRODUCTS = [
     isNew: true,
     description:
       'Stone-washed European linen dining set, woven for softness that only improves with age.',
+    name_ar: 'طقم كتان حرفي',
+    description_ar:
+      'طقم مائدة من الكتان الأوروبي المغسول بالحجر، منسوج بنعومة تزداد جمالاً مع مرور الوقت.',
   },
   {
     id: 'cerulean-silk-wrap',
@@ -132,6 +167,8 @@ export const PRODUCTS = [
     reviews: 22,
     description:
       'Hand-painted mulberry silk wrap in a wave-inspired print, finished with hand-rolled edges.',
+    name_ar: 'وشاح الحرير السماوي',
+    description_ar: 'وشاح من حرير التوت مرسوم يدوياً بنقشٍ مستوحى من الأمواج، بحواف ملفوفة يدوياً.',
   },
   {
     id: 'midnight-silk-scarf',
@@ -145,6 +182,9 @@ export const PRODUCTS = [
     reviews: 18,
     description:
       'A jewel-toned silk twill scarf, versatile enough for the neck, hair, or handbag handle.',
+    name_ar: 'وشاح الحرير الليلي',
+    description_ar:
+      'وشاح حريري بألوان جوهرية زاهية، متعدد الاستخدامات يناسب الرقبة أو الشعر أو مقبض الحقيبة.',
   },
   {
     id: 'veau-grained-tote',
@@ -158,6 +198,9 @@ export const PRODUCTS = [
     reviews: 47,
     description:
       'Structured tote in full-grain vitello leather with brushed brass hardware, made by hand in a single atelier.',
+    name_ar: 'حقيبة جلد العجل المحبب',
+    description_ar:
+      'حقيبة توتس مُهيكلة من جلد العجل الإيطالي الكامل الحبيبات، بتفاصيل نحاسية مصقولة، مصنوعة يدوياً في محترف واحد.',
   },
   {
     id: 'heritage-leather-tote',
@@ -171,6 +214,9 @@ export const PRODUCTS = [
     reviews: 63,
     description:
       'A timeless top-handle tote in vegetable-tanned leather that patinas beautifully over years of wear.',
+    name_ar: 'حقيبة التراث الجلدية',
+    description_ar:
+      'حقيبة توتس خالدة بمقبض علوي، من جلد مدبوغ نباتياً يكتسب بريقاً جميلاً مع سنوات الاستخدام.',
   },
   {
     id: 'riviera-leather-sandal',
@@ -184,6 +230,9 @@ export const PRODUCTS = [
     reviews: 39,
     description:
       'Slim gladiator-style sandals in butter-soft leather straps, hand-cut and stitched in Southern Europe.',
+    name_ar: 'صندل ريفييرا الجلدي',
+    description_ar:
+      'صنادل نحيلة بطراز الغلادييتور، بأحزمة جلدية ناعمة كالزبدة، مقصوصة ومخيطة يدوياً في جنوب أوروبا.',
   },
 ]
 

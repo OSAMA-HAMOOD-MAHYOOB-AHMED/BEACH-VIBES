@@ -19,6 +19,9 @@ function mapRow(row) {
     isSignature: row.is_signature ?? false,
     description: row.description,
     notes: row.notes ?? undefined,
+    name_ar: row.name_ar ?? undefined,
+    description_ar: row.description_ar ?? undefined,
+    notes_ar: row.notes_ar ?? undefined,
   }
 }
 

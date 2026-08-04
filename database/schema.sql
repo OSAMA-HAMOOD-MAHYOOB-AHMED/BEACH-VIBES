@@ -25,6 +25,11 @@ create table if not exists products (
   is_signature boolean default false,
   description text,
   notes jsonb,
+  -- Arabic translations, used by the frontend when the visitor switches
+  -- language. Fall back to the English columns above when null.
+  name_ar text,
+  description_ar text,
+  notes_ar jsonb,
   created_at timestamptz default now()
 );
 
@@ -77,78 +82,114 @@ create policy "Public insert" on contact_messages
 -- ============================================================
 -- seed: product catalog (matches src/data/products.js)
 -- ============================================================
-insert into products (id, name, category, price, tone, image, material, rating, reviews, is_new, is_signature, description, notes)
+insert into products (id, name, category, price, tone, image, material, rating, reviews, is_new, is_signature, description, notes, name_ar, description_ar, notes_ar)
 values
   (
     'essence-of-azure', 'Essence of Azure', 'Fragrance', 185, 'fragrance',
     '/images/products/essence-of-azure.jpg', 'Glass', 4.8, 96, true, false,
     'A luminous eau de parfum opening with citrus zest and settling into a warm, salt-kissed amber base.',
-    '{"top":"Bergamot, Sea Salt, Lemon Zest","heart":"Jasmine Sambac, Neroli, Seaweed","base":"Ambergris, White Musk, Driftwood"}'
+    '{"top":"Bergamot, Sea Salt, Lemon Zest","heart":"Jasmine Sambac, Neroli, Seaweed","base":"Ambergris, White Musk, Driftwood"}',
+    'جوهر الزُرقة',
+    'عطر مُشرق يفتتح بنفحات الحمضيات المنعشة، ليستقر في قاعدة عنبرية دافئة تلامسها لمسة من ملح البحر.',
+    '{"top":"برغموت، ملح البحر، قشر الليمون","heart":"ياسمين سامباك، زهر النارنج، أعشاب بحرية","base":"عنبر، مسك أبيض، خشب الطفو"}'
   ),
   (
     'lessence-de-la-mer', 'L''Essence de la Mer', 'Fragrance', 245, 'fragrance',
     '/images/products/lessence-de-la-mer.jpg', 'Glass', 4.9, 124, false, false,
     'A profound olfactory journey into the heart of the Mediterranean. This artisanal fragrance captures the fleeting moment of dawn over a serene coastline, blending crisp sea salt with the warmth of sun-drenched citrus and the grounding depth of coastal cedarwood.',
-    '{"top":"Bergamot, Sea Salt, Lemon Zest","heart":"Jasmine Sambac, Neroli, Seaweed","base":"Ambergris, White Musk, Driftwood"}'
+    '{"top":"Bergamot, Sea Salt, Lemon Zest","heart":"Jasmine Sambac, Neroli, Seaweed","base":"Ambergris, White Musk, Driftwood"}',
+    'جوهر البحر',
+    'رحلة شمّية عميقة إلى قلب البحر المتوسط. يلتقط هذا العطر الحرفي لحظة الفجر العابرة فوق ساحل هادئ، ممزوجاً نقاء ملح البحر بدفء الحمضيات المشبعة بالشمس وعمق خشب الأرز الساحلي الراسخ.',
+    '{"top":"برغموت، ملح البحر، قشر الليمون","heart":"ياسمين سامباك، زهر النارنج، أعشاب بحرية","base":"عنبر، مسك أبيض، خشب الطفو"}'
   ),
   (
     'locean-de-soie', 'L''Océan de Soie', 'Fragrance', 285, 'fragrance-gold',
     '/images/products/locean-de-soie.jpg', 'Glass', 4.9, 154, false, true,
     'An ethereal composition inspired by the silk-like surface of a calm morning sea. L''Océan de Soie opens with crisp sea salt and ozonic notes of white lotus, transitioning into a heart of white lotus and sun-bleached driftwood.',
-    '{"top":"Sea Salt, Bergamot","heart":"White Lotus","base":"Driftwood, Ambergris, Mineral Musk"}'
+    '{"top":"Sea Salt, Bergamot","heart":"White Lotus","base":"Driftwood, Ambergris, Mineral Musk"}',
+    'محيط الحرير',
+    'تركيبة أثيرية مستوحاة من سطح بحرٍ صباحي هادئ يشبه الحرير في نعومته. يفتتح محيط الحرير بملح البحر المنعش ونفحات أوزونية من اللوتس الأبيض، لينتقل إلى قلب من اللوتس الأبيض وخشب الطفو المُبيَّض بأشعة الشمس.',
+    '{"top":"ملح البحر، برغموت","heart":"لوتس أبيض","base":"خشب الطفو، عنبر، مسك معدني"}'
   ),
   (
     'neroli-des-bermudes', 'Néroli des Bermudes', 'Fragrance', 245, 'fragrance',
     '/images/products/neroli-des-bermudes.jpg', 'Glass', 4.7, 58, false, false,
     'A bright, effervescent neroli fragrance layered over warm island musk and soft petitgrain.',
+    null,
+    'زهر نارنج برمودا',
+    'عطر نارنجي منعش وحيوي، يتوشح بمسك جزري دافئ ونفحات ناعمة من البتيغرين.',
     null
   ),
   (
     'monolith-ceramic-vase', 'Monolith Ceramic Vase', 'Home Decor', 320, 'ceramic',
     '/images/products/monolith-ceramic-vase.jpg', 'Ceramic', 4.8, 41, false, false,
     'A sculptural stoneware vessel, hand-thrown and finished with a matte organic glaze inspired by coastal cliffs.',
+    null,
+    'مزهرية مونوليث الخزفية',
+    'إناء خزفي نحتي، مصنوع يدوياً بالعجلة ومطلي بطلاء عضوي غير لامع مستوحى من المنحدرات الساحلية.',
     null
   ),
   (
     'artisanal-ceramic-vase', 'Artisanal Ceramic Vase', 'Home Decor', 240, 'ceramic',
     '/images/products/artisanal-ceramic-vase.jpg', 'Ceramic', 4.6, 33, true, false,
     'Wheel-thrown ceramic in a soft terracotta glaze, equally at home with a single stem or a full arrangement.',
+    null,
+    'مزهرية خزفية حرفية',
+    'خزف مصنوع بعجلة الخزاف بطلاء تراكوتا ناعم، يليق بغصنٍ واحد كما يليق بتنسيقٍ زهري كامل.',
     null
   ),
   (
     'artisanal-linen-set', 'Artisanal Linen Set', 'Home Goods', 145, 'linen',
     '/images/products/artisanal-linen-set.jpg', 'Linen', 4.7, 29, true, false,
     'Stone-washed European linen dining set, woven for softness that only improves with age.',
+    null,
+    'طقم كتان حرفي',
+    'طقم مائدة من الكتان الأوروبي المغسول بالحجر، منسوج بنعومة تزداد جمالاً مع مرور الوقت.',
     null
   ),
   (
     'cerulean-silk-wrap', 'Cerulean Silk Wrap', 'Accessories', 450, 'silk',
     '/images/products/cerulean-silk-wrap.jpg', 'Silk', 4.6, 22, false, false,
     'Hand-painted mulberry silk wrap in a wave-inspired print, finished with hand-rolled edges.',
+    null,
+    'وشاح الحرير السماوي',
+    'وشاح من حرير التوت مرسوم يدوياً بنقشٍ مستوحى من الأمواج، بحواف ملفوفة يدوياً.',
     null
   ),
   (
     'midnight-silk-scarf', 'Midnight Silk Scarf', 'Accessories', 320, 'silk',
     '/images/products/midnight-silk-scarf.jpg', 'Silk', 4.5, 18, false, false,
     'A jewel-toned silk twill scarf, versatile enough for the neck, hair, or handbag handle.',
+    null,
+    'وشاح الحرير الليلي',
+    'وشاح حريري بألوان جوهرية زاهية، متعدد الاستخدامات يناسب الرقبة أو الشعر أو مقبض الحقيبة.',
     null
   ),
   (
     'veau-grained-tote', 'Veau Grained Tote', 'Leather Goods', 2400, 'leather',
     '/images/products/veau-grained-tote.jpg', 'Leather', 4.9, 47, false, false,
     'Structured tote in full-grain vitello leather with brushed brass hardware, made by hand in a single atelier.',
+    null,
+    'حقيبة جلد العجل المحبب',
+    'حقيبة توتس مُهيكلة من جلد العجل الإيطالي الكامل الحبيبات، بتفاصيل نحاسية مصقولة، مصنوعة يدوياً في محترف واحد.',
     null
   ),
   (
     'heritage-leather-tote', 'Heritage Leather Tote', 'Leather Goods', 850, 'leather',
     '/images/products/heritage-leather-tote.jpg', 'Leather', 4.7, 63, false, false,
     'A timeless top-handle tote in vegetable-tanned leather that patinas beautifully over years of wear.',
+    null,
+    'حقيبة التراث الجلدية',
+    'حقيبة توتس خالدة بمقبض علوي، من جلد مدبوغ نباتياً يكتسب بريقاً جميلاً مع سنوات الاستخدام.',
     null
   ),
   (
     'riviera-leather-sandal', 'Riviera Leather Sandal', 'Footwear', 680, 'footwear',
     '/images/products/riviera-leather-sandal.jpg', 'Leather', 4.6, 39, false, false,
     'Slim gladiator-style sandals in butter-soft leather straps, hand-cut and stitched in Southern Europe.',
+    null,
+    'صندل ريفييرا الجلدي',
+    'صنادل نحيلة بطراز الغلادييتور، بأحزمة جلدية ناعمة كالزبدة، مقصوصة ومخيطة يدوياً في جنوب أوروبا.',
     null
   )
 on conflict (id) do update set
@@ -163,7 +204,10 @@ on conflict (id) do update set
   is_new = excluded.is_new,
   is_signature = excluded.is_signature,
   description = excluded.description,
-  notes = excluded.notes;
+  notes = excluded.notes,
+  name_ar = excluded.name_ar,
+  description_ar = excluded.description_ar,
+  notes_ar = excluded.notes_ar;
 
 -- ============================================================
 -- users
