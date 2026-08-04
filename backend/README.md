@@ -1,4 +1,4 @@
-# Aqua Atelier — Backend
+# Beach Vibes — Backend
 
 Express API sitting between the frontend and the Supabase Postgres database
 (see `../database/schema.sql`). The frontend never talks to Supabase

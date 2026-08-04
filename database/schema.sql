@@ -1,4 +1,4 @@
--- Aqua Atelier — database schema (Supabase Postgres)
+-- Beach Vibes — database schema (Supabase Postgres)
 -- Run this once in the Supabase SQL Editor (Dashboard > SQL Editor > New query > Run).
 -- Safe to re-run: uses "if not exists" / "or replace" where possible.
 --

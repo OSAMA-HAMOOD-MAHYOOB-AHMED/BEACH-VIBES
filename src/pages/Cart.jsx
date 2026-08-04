@@ -91,7 +91,7 @@ export default function Cart() {
                         {line.product.name}
                       </Link>
                       <p className="text-[11px] text-navy-400 mt-1">
-                        {t('cart.skuLabel')}: AA-{line.id.slice(0, 3).toUpperCase()}-{String(idx + 1).padStart(3, '0')}
+                        {t('cart.skuLabel')}: BV-{line.id.slice(0, 3).toUpperCase()}-{String(idx + 1).padStart(3, '0')}
                       </p>
                       <button
                         onClick={() => removeItem(line.id)}

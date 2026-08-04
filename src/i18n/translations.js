@@ -6,7 +6,7 @@ const en = {
     checkout: 'Checkout',
   },
   header: {
-    brand: 'Aqua Atelier',
+    brand: 'Beach Vibes',
     nav: {
       newArrivals: 'New Arrivals',
       collections: 'Collections',
@@ -19,7 +19,7 @@ const en = {
     menuLabel: 'Menu',
   },
   footer: {
-    brand: 'Aqua Atelier',
+    brand: 'Beach Vibes',
     tagline:
       'Curated collections of artisanal goods for the discerning individual. Elegance and quality in every detail.',
     exploreHeading: 'Explore',
@@ -31,7 +31,7 @@ const en = {
     subscribing: '...',
     subscribedMessage: "You're subscribed.",
     errorMessage: 'Something went wrong — please retry.',
-    copyright: '© 2026 Aqua Atelier. All rights reserved.',
+    copyright: '© 2026 Beach Vibes. All rights reserved.',
     social: { instagram: 'Instagram', twitter: 'Twitter', facebook: 'Facebook' },
   },
   newsletter: {
@@ -78,7 +78,7 @@ const en = {
     craftsmanshipEyebrow: 'Craftsmanship',
     craftsmanshipTitle: 'Artisanal Roots, Global Elegance.',
     craftsmanshipBody:
-      'At Aqua Atelier, we believe in the luxury of patience. Every piece in our collection is sourced from artisans who preserve centuries-old techniques, blending them with a modern coastal sensibility.',
+      'At Beach Vibes, we believe in the luxury of patience. Every piece in our collection is sourced from artisans who preserve centuries-old techniques, blending them with a modern coastal sensibility.',
     sustainableLabel: 'Sustainable',
     uniqueLabel: 'Unique',
     discoverProcessBtn: 'Discover Our Process',
@@ -105,11 +105,11 @@ const en = {
     ],
     quote:
       'Luxury is not defined by excess, but by the quiet confidence of objects that possess a soul and a story.',
-    quoteAttribution: 'Aqua Atelier — Est. 2024 · Coastal Living',
+    quoteAttribution: 'Beach Vibes — Est. 2024 · Coastal Living',
   },
   shop: {
     eyebrow: 'Curated Artisanal Collections',
-    title: 'Aqua Atelier Shop',
+    title: 'Beach Vibes Shop',
     searchPlaceholder: 'Search...',
     filterBtn: 'Filter',
     sortBtn: 'Sort',
@@ -125,7 +125,7 @@ const en = {
     newsletterEyebrow: 'Join The Circle',
     newsletterTitle: 'Join Our Exclusive Circle',
     newsletterSubtitle:
-      'Be the first to receive updates on new artisanal arrivals, private sales, and the Aqua Atelier journal.',
+      'Be the first to receive updates on new artisanal arrivals, private sales, and the Beach Vibes journal.',
   },
   collections: {
     title: 'Curated Collections',
@@ -160,7 +160,7 @@ const en = {
     newsletterEyebrow: 'Join Our Exclusive Circle',
     newsletterTitle: 'Join Our Exclusive Circle',
     newsletterSubtitle:
-      'Be the first to receive updates on new artisanal arrivals, private sales, and the Aqua Atelier journal.',
+      'Be the first to receive updates on new artisanal arrivals, private sales, and the Beach Vibes journal.',
   },
   productDetail: {
     breadcrumbHome: 'Home',
@@ -175,7 +175,7 @@ const en = {
     sizeGuide: 'Size Guide',
     decreaseQty: 'Decrease quantity',
     increaseQty: 'Increase quantity',
-    addToBag: 'Add to Atelier Bag',
+    addToBag: 'Add to Beach Bag',
     addedToBag: 'Added to Bag',
     complimentaryShipping: 'Complimentary Shipping',
     certifiedAuthentic: 'Certified Authentic',
@@ -208,14 +208,14 @@ const en = {
     smallBatchBody: 'Limited to 500 bottles per season to ensure quality.',
     sustainabilityTitle2: 'Sustainability',
     sustainabilityBody2: '100% recyclable glass and forest-certified packaging.',
-    theStoryBtn: 'The Aqua Atelier Story',
+    theStoryBtn: 'The Beach Vibes Story',
     tabs: {
       journal: 'Customer Journal ({{count}})',
       delivery: 'Delivery & Returns',
       ingredients: 'Ingredients',
     },
     deliveryContent:
-      'Complimentary standard shipping on all orders over $500. Express Atelier Delivery available at checkout. Unused items in original packaging may be returned within 30 days of delivery for a full refund.',
+      'Complimentary standard shipping on all orders over $500. Express Beach Delivery available at checkout. Unused items in original packaging may be returned within 30 days of delivery for a full refund.',
     ingredientsContent:
       'Formulated with responsibly sourced botanical extracts and mineral musks. Free from parabens, phthalates, and synthetic dyes. Full ingredient listing available upon request from our concierge team.',
     ratingBasedOn: 'Based on {{count}} reviews',
@@ -252,7 +252,7 @@ const en = {
     title: 'Your Selection',
     itemCountOne: '1 Item',
     itemCountOther: '{{count}} Items',
-    emptyMessage: 'Your atelier bag is currently empty.',
+    emptyMessage: 'Your beach bag is currently empty.',
     continueExploringBtn: 'Continue Exploring',
     headerProduct: 'Product Details',
     headerQuantity: 'Quantity',
@@ -279,7 +279,7 @@ const en = {
     assuranceTitle: 'Artisanal Assurance',
     assuranceBody: '30-day returns for all unused artisanal goods in original packaging.',
     conciergeTitle: 'Concierge Service',
-    conciergeBody: 'Dedicated support for the discerning Aqua Atelier collector.',
+    conciergeBody: 'Dedicated support for the discerning Beach Vibes collector.',
     complementsHeading: 'Complements Your Selection',
   },
   checkout: {
@@ -295,7 +295,7 @@ const en = {
     breadcrumbCart: 'Cart',
     breadcrumbCheckout: 'Checkout',
     title: 'Checkout',
-    subtitle: 'Securely complete your luxury order with Aqua Atelier.',
+    subtitle: 'Securely complete your luxury order with Beach Vibes.',
     section1Title: 'Customer Information',
     firstName: 'First Name',
     lastName: 'Last Name',
@@ -308,7 +308,7 @@ const en = {
     shippingMethodLabel: 'Shipping Method',
     standardShipping: 'Standard Shipping',
     standardDetail: '5-7 Business Days',
-    expressShipping: 'Express Atelier Delivery',
+    expressShipping: 'Express Beach Delivery',
     expressDetail: 'Next Day Delivery',
     section3Title: 'Payment Method',
     creditCard: 'Credit Card',
@@ -327,7 +327,7 @@ const en = {
     taxes: 'Taxes',
     total: 'Total',
     memberPerk: 'Member Perk',
-    memberPerkBody: "You're earning {{points}} Atelier Points on this purchase.",
+    memberPerkBody: "You're earning {{points}} Beach Vibes Points on this purchase.",
     dutyFreeNote:
       'Duty-free worldwide shipping is included for your region. Returns accepted within 14 days of delivery.',
   },
@@ -337,7 +337,7 @@ const en = {
     foundedEyebrow: 'Founded 2024',
     storyTitle: 'Objects with a soul and a story.',
     paragraph1:
-      'Aqua Atelier began with a single question: what would a home look like if every object in it was chosen with the same care as a piece of art? The answer became a collective of artisans across the Mediterranean coast, each preserving a craft that modern manufacturing left behind.',
+      'Beach Vibes began with a single question: what would a home look like if every object in it was chosen with the same care as a piece of art? The answer became a collective of artisans across the Mediterranean coast, each preserving a craft that modern manufacturing left behind.',
     paragraph2:
       'Today we work with a small, rotating roster of makers — glassblowers, tanners, weavers, and ceramicists — to bring their work to a wider audience without compromising the patience their craft demands.',
     values: [
@@ -407,7 +407,7 @@ const ar = {
     checkout: 'إتمام الشراء',
   },
   header: {
-    brand: 'أكوا أتيليه',
+    brand: 'بيتش فايبس',
     nav: {
       newArrivals: 'وصل حديثاً',
       collections: 'المجموعات',
@@ -420,7 +420,7 @@ const ar = {
     menuLabel: 'القائمة',
   },
   footer: {
-    brand: 'أكوا أتيليه',
+    brand: 'بيتش فايبس',
     tagline: 'مجموعات مختارة من القطع الحرفية للفرد المميز. أناقة وجودة في كل التفاصيل.',
     exploreHeading: 'استكشف',
     links: { collections: 'المجموعات', about: 'من نحن', journal: 'المجلة', contact: 'تواصل معنا' },
@@ -431,7 +431,7 @@ const ar = {
     subscribing: '...',
     subscribedMessage: 'تم اشتراكك بنجاح.',
     errorMessage: 'حدث خطأ ما — يرجى المحاولة مرة أخرى.',
-    copyright: '© 2026 أكوا أتيليه. جميع الحقوق محفوظة.',
+    copyright: '© 2026 بيتش فايبس. جميع الحقوق محفوظة.',
     social: { instagram: 'إنستغرام', twitter: 'تويتر', facebook: 'فيسبوك' },
   },
   newsletter: {
@@ -477,7 +477,7 @@ const ar = {
     craftsmanshipEyebrow: 'الحرفية',
     craftsmanshipTitle: 'جذور حرفية، أناقة عالمية.',
     craftsmanshipBody:
-      'في أكوا أتيليه، نؤمن بفخامة الصبر. كل قطعة في مجموعتنا مصدرها حرفيون يحافظون على تقنيات عمرها قرون، ممزوجة بحس ساحلي عصري.',
+      'في بيتش فايبس، نؤمن بفخامة الصبر. كل قطعة في مجموعتنا مصدرها حرفيون يحافظون على تقنيات عمرها قرون، ممزوجة بحس ساحلي عصري.',
     sustainableLabel: 'مستدام',
     uniqueLabel: 'فريد',
     discoverProcessBtn: 'اكتشف عمليتنا',
@@ -503,11 +503,11 @@ const ar = {
       },
     ],
     quote: 'الفخامة لا تُعرَّف بالإفراط، بل بالثقة الهادئة للقطع التي تمتلك روحاً وقصة.',
-    quoteAttribution: 'أكوا أتيليه — تأسست 2024 · حياة ساحلية',
+    quoteAttribution: 'بيتش فايبس — تأسست 2024 · حياة ساحلية',
   },
   shop: {
     eyebrow: 'مجموعات حرفية منتقاة',
-    title: 'متجر أكوا أتيليه',
+    title: 'متجر بيتش فايبس',
     searchPlaceholder: 'بحث...',
     filterBtn: 'تصفية',
     sortBtn: 'ترتيب',
@@ -523,7 +523,7 @@ const ar = {
     newsletterEyebrow: 'انضم إلى الدائرة',
     newsletterTitle: 'انضم إلى دائرتنا الحصرية',
     newsletterSubtitle:
-      'كن أول من يتلقى تحديثات عن القطع الحرفية الجديدة، والعروض الخاصة، ومجلة أكوا أتيليه.',
+      'كن أول من يتلقى تحديثات عن القطع الحرفية الجديدة، والعروض الخاصة، ومجلة بيتش فايبس.',
   },
   collections: {
     title: 'مجموعات منتقاة',
@@ -558,7 +558,7 @@ const ar = {
     newsletterEyebrow: 'انضم إلى دائرتنا الحصرية',
     newsletterTitle: 'انضم إلى دائرتنا الحصرية',
     newsletterSubtitle:
-      'كن أول من يتلقى تحديثات عن القطع الحرفية الجديدة، والعروض الخاصة، ومجلة أكوا أتيليه.',
+      'كن أول من يتلقى تحديثات عن القطع الحرفية الجديدة، والعروض الخاصة، ومجلة بيتش فايبس.',
   },
   productDetail: {
     breadcrumbHome: 'الرئيسية',
@@ -573,7 +573,7 @@ const ar = {
     sizeGuide: 'دليل المقاسات',
     decreaseQty: 'إنقاص الكمية',
     increaseQty: 'زيادة الكمية',
-    addToBag: 'أضف إلى حقيبة الأتيليه',
+    addToBag: 'أضف إلى حقيبة الشاطئ',
     addedToBag: 'أُضيفت إلى الحقيبة',
     complimentaryShipping: 'شحن مجاني',
     certifiedAuthentic: 'أصالة موثقة',
@@ -606,14 +606,14 @@ const ar = {
     smallBatchBody: 'محدودة بـ 500 قارورة في الموسم لضمان الجودة.',
     sustainabilityTitle2: 'الاستدامة',
     sustainabilityBody2: 'زجاج قابل لإعادة التدوير بالكامل وتغليف معتمد بيئياً.',
-    theStoryBtn: 'قصة أكوا أتيليه',
+    theStoryBtn: 'قصة بيتش فايبس',
     tabs: {
       journal: 'مذكرات العملاء ({{count}})',
       delivery: 'التوصيل والإرجاع',
       ingredients: 'المكونات',
     },
     deliveryContent:
-      'شحن قياسي مجاني على جميع الطلبات التي تتجاوز 500$. يتوفر توصيل الأتيليه السريع عند إتمام الشراء. يمكن إرجاع القطع غير المستخدمة بتغليفها الأصلي خلال 30 يوماً من التسليم لاسترداد كامل المبلغ.',
+      'شحن قياسي مجاني على جميع الطلبات التي تتجاوز 500$. يتوفر توصيل الشاطئ السريع عند إتمام الشراء. يمكن إرجاع القطع غير المستخدمة بتغليفها الأصلي خلال 30 يوماً من التسليم لاسترداد كامل المبلغ.',
     ingredientsContent:
       'مُركّبة من مستخلصات نباتية ومسك معدني من مصادر مسؤولة. خالية من البارابين والفثالات والأصباغ الاصطناعية. القائمة الكاملة للمكونات متاحة عند الطلب من فريق خدمة العملاء.',
     ratingBasedOn: 'بناءً على {{count}} تقييم',
@@ -650,7 +650,7 @@ const ar = {
     title: 'اختياراتك',
     itemCountOne: 'قطعة واحدة',
     itemCountOther: '{{count}} قطع',
-    emptyMessage: 'حقيبة الأتيليه الخاصة بك فارغة حالياً.',
+    emptyMessage: 'حقيبة الشاطئ الخاصة بك فارغة حالياً.',
     continueExploringBtn: 'متابعة الاستكشاف',
     headerProduct: 'تفاصيل المنتج',
     headerQuantity: 'الكمية',
@@ -677,7 +677,7 @@ const ar = {
     assuranceTitle: 'ضمان حرفي',
     assuranceBody: 'إرجاع خلال 30 يوماً لكل القطع الحرفية غير المستخدمة بتغليفها الأصلي.',
     conciergeTitle: 'خدمة العملاء المتخصصة',
-    conciergeBody: 'دعم مخصص لهواة اقتناء أكوا أتيليه المميزين.',
+    conciergeBody: 'دعم مخصص لهواة اقتناء بيتش فايبس المميزين.',
     complementsHeading: 'يكمل اختياراتك',
   },
   checkout: {
@@ -693,7 +693,7 @@ const ar = {
     breadcrumbCart: 'السلة',
     breadcrumbCheckout: 'إتمام الشراء',
     title: 'إتمام الشراء',
-    subtitle: 'أكمل طلبك الفاخر بأمان مع أكوا أتيليه.',
+    subtitle: 'أكمل طلبك الفاخر بأمان مع بيتش فايبس.',
     section1Title: 'معلومات العميل',
     firstName: 'الاسم الأول',
     lastName: 'اسم العائلة',
@@ -706,7 +706,7 @@ const ar = {
     shippingMethodLabel: 'طريقة الشحن',
     standardShipping: 'شحن قياسي',
     standardDetail: '5-7 أيام عمل',
-    expressShipping: 'توصيل الأتيليه السريع',
+    expressShipping: 'توصيل الشاطئ السريع',
     expressDetail: 'توصيل في اليوم التالي',
     section3Title: 'طريقة الدفع',
     creditCard: 'بطاقة ائتمان',
@@ -725,7 +725,7 @@ const ar = {
     taxes: 'الضرائب',
     total: 'الإجمالي',
     memberPerk: 'مزايا العضوية',
-    memberPerkBody: 'ستكسب {{points}} نقطة أتيليه من هذا الشراء.',
+    memberPerkBody: 'ستكسب {{points}} نقطة بيتش فايبس من هذا الشراء.',
     dutyFreeNote: 'يشمل الشحن العالمي المعفى من الرسوم لمنطقتك. يُقبل الإرجاع خلال 14 يوماً من التسليم.',
   },
   about: {
@@ -734,7 +734,7 @@ const ar = {
     foundedEyebrow: 'تأسست 2024',
     storyTitle: 'قطع تحمل روحاً وقصة.',
     paragraph1:
-      'بدأت أكوا أتيليه بسؤال واحد: كيف سيبدو المنزل لو اختير كل قطعة فيه بنفس العناية التي تُختار بها الأعمال الفنية؟ كانت الإجابة تجمعاً من الحرفيين على امتداد ساحل البحر المتوسط، يحافظ كل منهم على حرفة تجاوزها التصنيع الحديث.',
+      'بدأت بيتش فايبس بسؤال واحد: كيف سيبدو المنزل لو اختير كل قطعة فيه بنفس العناية التي تُختار بها الأعمال الفنية؟ كانت الإجابة تجمعاً من الحرفيين على امتداد ساحل البحر المتوسط، يحافظ كل منهم على حرفة تجاوزها التصنيع الحديث.',
     paragraph2:
       'اليوم نعمل مع مجموعة صغيرة ومتجددة من الصنّاع — نافخي الزجاج، والدباغين، والنساجين، وصانعي السيراميك — لنقدّم أعمالهم لجمهور أوسع دون المساس بالصبر الذي تتطلبه حرفتهم.',
     values: [

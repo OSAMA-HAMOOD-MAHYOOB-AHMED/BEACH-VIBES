@@ -1,4 +1,4 @@
-# BEACH-VIBES (Aqua Atelier)
+# Beach Vibes
 
 A storefront being split into three layers:
 

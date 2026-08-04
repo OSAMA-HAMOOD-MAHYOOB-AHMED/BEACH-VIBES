@@ -3,7 +3,7 @@ import { translations } from '../i18n/translations'
 
 const LanguageContext = createContext(null)
 
-const STORAGE_KEY = 'aqua-atelier-lang'
+const STORAGE_KEY = 'beach-vibes-lang'
 const RTL_LANGUAGES = new Set(['ar'])
 
 function getInitialLanguage() {
