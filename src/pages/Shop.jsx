@@ -16,7 +16,7 @@ export default function Shop() {
   const [params, setParams] = useSearchParams()
   const category = params.get('category')
   const isNewOnly = params.get('filter') === 'new'
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(() => params.get('q') || '')
   const [visible, setVisible] = useState(PAGE_SIZE)
 
   const clearFilter = (key) => {

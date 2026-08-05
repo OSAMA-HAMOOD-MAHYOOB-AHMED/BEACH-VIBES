@@ -4,6 +4,14 @@ const en = {
     shop: 'Shop',
     cart: 'Cart',
     checkout: 'Checkout',
+    close: 'Close',
+  },
+  search: {
+    placeholder: 'Search products, journal…',
+    noResults: 'No results for "{{query}}".',
+    productsHeading: 'Products',
+    journalHeading: 'Journal',
+    viewAllResults: 'View All Results',
   },
   header: {
     brand: 'Beach Vibes',
@@ -500,6 +508,14 @@ const ar = {
     shop: 'المتجر',
     cart: 'السلة',
     checkout: 'إتمام الشراء',
+    close: 'إغلاق',
+  },
+  search: {
+    placeholder: 'ابحث عن منتجات أو مقالات المجلة…',
+    noResults: 'لا توجد نتائج لـ "{{query}}".',
+    productsHeading: 'المنتجات',
+    journalHeading: 'المجلة',
+    viewAllResults: 'عرض كل النتائج',
   },
   header: {
     brand: 'بيتش فايبس',

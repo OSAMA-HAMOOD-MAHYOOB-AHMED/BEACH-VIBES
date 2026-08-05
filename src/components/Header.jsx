@@ -4,6 +4,7 @@ import { Search, User, ShoppingBag, Menu, X, Droplet } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLanguage } from '../context/LanguageContext'
+import SearchOverlay from './SearchOverlay'
 
 function LanguageSwitcher({ language, setLanguage, className = '' }) {
   return (
@@ -35,6 +36,7 @@ export default function Header() {
   const { isAuthenticated, isAdmin } = useAuth()
   const { t, language, setLanguage } = useLanguage()
   const [open, setOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   const navLinks = [
     { to: '/shop?filter=new', label: t('header.nav.newArrivals') },
@@ -71,7 +73,14 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4 sm:gap-5">
-          <button aria-label={t('header.searchLabel')} className="text-navy-800 hover:text-navy-500 transition-colors">
+          <button
+            aria-label={t('header.searchLabel')}
+            onClick={() => {
+              setOpen(false)
+              setSearchOpen((o) => !o)
+            }}
+            className="text-navy-800 hover:text-navy-500 transition-colors"
+          >
             <Search className="w-[18px] h-[18px]" strokeWidth={1.5} />
           </button>
           <Link
@@ -93,7 +102,10 @@ export default function Header() {
           <button
             aria-label={t('header.menuLabel')}
             className="md:hidden text-navy-800"
-            onClick={() => setOpen((o) => !o)}
+            onClick={() => {
+              setSearchOpen(false)
+              setOpen((o) => !o)
+            }}
           >
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -115,6 +127,8 @@ export default function Header() {
           <LanguageSwitcher language={language} setLanguage={setLanguage} className="w-fit" />
         </div>
       )}
+
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   )
 }
