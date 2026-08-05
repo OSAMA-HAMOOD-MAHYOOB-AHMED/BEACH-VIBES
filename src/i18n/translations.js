@@ -879,7 +879,7 @@ const ar = {
     decreaseQty: 'إنقاص الكمية',
     increaseQty: 'زيادة الكمية',
     addToBag: 'أضف إلى السلة',
-    addedToBag: 'أُضيفت إلى الحقيبة',
+    addedToBag: 'تمت الإضافة إلى السلة',
     complimentaryShipping: 'شحن مجاني',
     certifiedAuthentic: 'أصالة موثقة',
     giftWrapping: 'تغليف هدايا متاح',
