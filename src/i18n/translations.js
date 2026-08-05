@@ -232,7 +232,7 @@ const en = {
     sizeGuide: 'Size Guide',
     decreaseQty: 'Decrease quantity',
     increaseQty: 'Increase quantity',
-    addToBag: 'Add to Beach Bag',
+    addToBag: 'Add to Bag',
     addedToBag: 'Added to Bag',
     complimentaryShipping: 'Complimentary Shipping',
     certifiedAuthentic: 'Certified Authentic',
