@@ -748,9 +748,9 @@ const ar = {
   },
   home: {
     heroEyebrow: 'وجهتك الشاملة للشاطئ',
-    heroTitlePrefix: 'كل ما تحتاجه لهروبك',
-    heroTitleEmphasis: 'الشاطئي',
-    heroTitleSuffix: ' المثالي',
+    heroTitlePrefix: 'كل احتياجاتك',
+    heroTitleEmphasis: 'للبحر',
+    heroTitleSuffix: ' في مكان واحد',
     heroSubtitle:
       'من ملابس السباحة الفاخرة إلى معدات الرياضات المائية — أساسيات منتقاة للشاطئ والمسبح وكل ما بينهما.',
     shopSwimwearBtn: 'تسوق ملابس السباحة',
