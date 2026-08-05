@@ -117,7 +117,7 @@ insert into products (id, name, category, price, compare_at_price, tone, image, 
 values
   (
     'riviera-one-piece', 'Riviera One-Piece Swimsuit', 'Swimwear', 128, null, 'swimwear',
-    null, 'Nylon', 'Beach Vibes', '["#0f2a40","#2e7d95","#1c1c1c"]', 4.8, 112, false, true,
+    'https://images.unsplash.com/photo-1542427361-4388a46a654a?auto=format&fit=crop&w=800&q=80', 'Nylon', 'Beach Vibes', '["#0f2a40","#2e7d95","#1c1c1c"]', 4.8, 112, false, true,
     'A sculpted one-piece in UPF 50+ recycled nylon, cut for confident lines from poolside to shoreline.',
     null,
     'بدلة سباحة قطعة واحدة – ريفييرا',
@@ -126,7 +126,7 @@ values
   ),
   (
     'cerulean-bikini-set', 'Cerulean Bikini Set', 'Swimwear', 96, 120, 'swimwear',
-    null, 'Nylon', 'Beach Vibes', '["#2e7d95","#0f2a40"]', 4.6, 54, true, false,
+    'https://images.unsplash.com/photo-1656457981333-a9e055bd783f?auto=format&fit=crop&w=800&q=80', 'Nylon', 'Beach Vibes', '["#2e7d95","#0f2a40"]', 4.6, 54, true, false,
     'A two-piece in a rich cerulean hue with adjustable ties and moderate coverage, built for long days in the water.',
     null,
     'طقم بيكيني بلون سماوي',
@@ -135,7 +135,7 @@ values
   ),
   (
     'amalfi-swim-trunks', 'Amalfi Swim Trunks', 'Swimwear', 68, null, 'swimwear',
-    null, 'Nylon', 'Beach Vibes', '["#1c1c1c","#2e7d95","#c96b4a"]', 4.7, 41, false, false,
+    'https://images.unsplash.com/photo-1617951907145-53f6eb87a3a3?auto=format&fit=crop&w=800&q=80', 'Nylon', 'Beach Vibes', '["#1c1c1c","#2e7d95","#c96b4a"]', 4.7, 41, false, false,
     'Quick-dry swim trunks in a mid-length cut with a mesh liner and secure zip pocket, built for the water and the walk back.',
     null,
     'شورت سباحة أمالفي',
@@ -144,7 +144,7 @@ values
   ),
   (
     'sun-washed-kaftan', 'Sun-Washed Kaftan', 'Beachwear', 118, null, 'beachwear',
-    null, 'Cotton', 'Beach Vibes', '["#f2a488","#f4ecd8"]', 4.7, 36, false, true,
+    'https://images.unsplash.com/photo-1753192103616-53e7e0ef83e6?auto=format&fit=crop&w=800&q=80', 'Cotton', 'Beach Vibes', '["#f2a488","#f4ecd8"]', 4.7, 36, false, true,
     'A breezy cotton kaftan in a sun-bleached wash, cut loose enough to throw over a swimsuit or wear on its own at golden hour.',
     null,
     'قفطان مغسول بالشمس',
@@ -153,7 +153,7 @@ values
   ),
   (
     'printed-sarong-wrap', 'Printed Sarong Wrap', 'Beachwear', 52, null, 'beachwear',
-    null, 'Cotton', 'Beach Vibes', '["#2e7d95","#c96b4a"]', 4.5, 22, true, false,
+    'https://plus.unsplash.com/premium_photo-1780358592028-811e9b139c0c?auto=format&fit=crop&w=800&q=80', 'Cotton', 'Beach Vibes', '["#2e7d95","#c96b4a"]', 4.5, 22, true, false,
     'A lightweight cotton sarong in a hand-drawn wave print, tied a dozen ways from beach cover-up to sundress.',
     null,
     'لفة ساحلية بنقشة مطبوعة',
@@ -162,7 +162,7 @@ values
   ),
   (
     'quick-dry-water-shoes', 'Quick-Dry Water Shoes', 'Footwear', 54, null, 'footwear',
-    null, 'Neoprene', 'Beach Vibes', null, 4.5, 39, false, false,
+    'https://plus.unsplash.com/premium_photo-1770507229353-febfcc8f98fc?auto=format&fit=crop&w=800&q=80', 'Neoprene', 'Beach Vibes', null, 4.5, 39, false, false,
     'Barefoot-feel neoprene shoes with a grippy sole, made for rocky shores and slippery decks alike.',
     null,
     'أحذية مائية سريعة الجفاف',
@@ -171,7 +171,7 @@ values
   ),
   (
     'woven-raffia-sandals', 'Woven Raffia Sandals', 'Footwear', 72, null, 'footwear',
-    null, 'Straw', 'Beach Vibes', null, 4.6, 28, true, false,
+    'https://plus.unsplash.com/premium_photo-1777047775890-6d3f391230ab?auto=format&fit=crop&w=800&q=80', 'Straw', 'Beach Vibes', null, 4.6, 28, true, false,
     'Hand-woven raffia straps on a cushioned footbed, easy enough for sand and polished enough for a beachside lunch.',
     null,
     'صنادل من الرافيا المنسوجة',
@@ -180,7 +180,7 @@ values
   ),
   (
     'classic-flip-flops', 'Classic Rubber Flip-Flops', 'Footwear', 28, null, 'footwear',
-    null, 'Rubber', 'Beach Vibes', null, 4.4, 67, false, false,
+    'https://images.unsplash.com/photo-1659963970293-b12cfeb286c5?auto=format&fit=crop&w=800&q=80', 'Rubber', 'Beach Vibes', null, 4.4, 67, false, false,
     'Soft rubber flip-flops with a contoured footbed and a sole that grips wet tile as well as dry sand.',
     null,
     'شبشب مطاطي كلاسيكي',
@@ -189,7 +189,7 @@ values
   ),
   (
     'anti-fog-swim-goggles', 'Anti-Fog Swim Goggles', 'Swimming Equipment', 32, null, 'swimequipment',
-    null, 'Rubber', 'Beach Vibes', null, 4.7, 84, false, false,
+    'https://images.unsplash.com/photo-1533060629428-48484ce98a74?auto=format&fit=crop&w=800&q=80', 'Rubber', 'Beach Vibes', null, 4.7, 84, false, false,
     'A wide-vision anti-fog lens with a soft silicone gasket for a leak-free, mark-free fit.',
     null,
     'نظارات سباحة مضادة للضباب',
@@ -198,7 +198,7 @@ values
   ),
   (
     'full-face-snorkel-mask', 'Full-Face Snorkel Mask', 'Swimming Equipment', 68, 82, 'swimequipment',
-    null, 'Rubber', 'Beach Vibes', null, 4.8, 76, false, true,
+    'https://images.unsplash.com/photo-1569397726135-cf39bc57e5e3?auto=format&fit=crop&w=800&q=80', 'Rubber', 'Beach Vibes', null, 4.8, 76, false, true,
     'A 180-degree panoramic mask with a dry-top snorkel and anti-fog ventilation, built for effortless breathing at the surface.',
     null,
     'قناع غطس كامل للوجه',
@@ -207,7 +207,7 @@ values
   ),
   (
     'silicone-swim-cap', 'Silicone Swim Cap', 'Swimming Equipment', 22, null, 'swimequipment',
-    null, 'Rubber', 'Beach Vibes', null, 4.5, 31, false, false,
+    'https://images.unsplash.com/photo-1528803030572-cf341cadda3e?auto=format&fit=crop&w=800&q=80', 'Rubber', 'Beach Vibes', null, 4.5, 31, false, false,
     'A durable silicone cap that grips without pulling, cutting drag for laps and keeping hair dry-ish at the beach.',
     null,
     'قبعة سباحة سيليكون',
@@ -216,7 +216,7 @@ values
   ),
   (
     'inflatable-sup-board', 'Inflatable Stand-Up Paddleboard', 'Water Sports', 449, null, 'watersports',
-    null, 'PVC', 'Beach Vibes', null, 4.8, 44, false, true,
+    'https://plus.unsplash.com/premium_photo-1681256187429-a68de5e61800?auto=format&fit=crop&w=800&q=80', 'PVC', 'Beach Vibes', null, 4.8, 44, false, true,
     'A rigid-when-inflated touring board with a carbon-hybrid paddle, hand pump, and backpack — the whole kit rolls up small enough for a car trunk.',
     null,
     'لوح تجديف واقفاً قابل للنفخ',
@@ -225,7 +225,7 @@ values
   ),
   (
     'coastal-life-jacket', 'Coastal Life Jacket', 'Water Sports', 74, null, 'watersports',
-    null, 'Nylon', 'Beach Vibes', null, 4.6, 19, true, false,
+    'https://images.unsplash.com/photo-1559063208-31aabee9142f?auto=format&fit=crop&w=800&q=80', 'Nylon', 'Beach Vibes', null, 4.6, 19, true, false,
     'A US Coast Guard-approved life vest in a low-profile cut, sized for a real range of paddling and boating days.',
     null,
     'سترة نجاة ساحلية',
@@ -234,7 +234,7 @@ values
   ),
   (
     'mineral-sunscreen-spf50', 'Mineral Sunscreen SPF 50', 'Beach Essentials', 34, null, 'suncare',
-    null, 'Mineral', 'Beach Vibes', null, 4.9, 203, false, true,
+    'https://images.unsplash.com/photo-1738721796993-5f42d9315689?auto=format&fit=crop&w=800&q=80', 'Mineral', 'Beach Vibes', null, 4.9, 203, false, true,
     'A reef-safe, broad-spectrum mineral sunscreen that blends in clear and never feels greasy — the one bottle worth reapplying.',
     null,
     'واقي شمس معدني SPF 50',
@@ -243,7 +243,7 @@ values
   ),
   (
     'after-sun-aloe-balm', 'After-Sun Aloe Balm', 'Beach Essentials', 26, null, 'suncare',
-    null, 'Mineral', 'Beach Vibes', null, 4.7, 68, true, false,
+    'https://plus.unsplash.com/premium_photo-1661434889227-617f791dd381?auto=format&fit=crop&w=800&q=80', 'Mineral', 'Beach Vibes', null, 4.7, 68, true, false,
     'A cooling aloe and chamomile balm that calms sun-warmed skin and locks in moisture after a long day at the beach.',
     null,
     'بلسم الصبار لما بعد الشمس',
@@ -252,7 +252,7 @@ values
   ),
   (
     'turkish-beach-towel', 'Oversized Turkish Beach Towel', 'Beach Essentials', 58, null, 'beachgear',
-    null, 'Cotton', 'Beach Vibes', null, 4.8, 91, true, false,
+    'https://images.unsplash.com/photo-1760783320488-9af5d3217f50?auto=format&fit=crop&w=800&q=80', 'Cotton', 'Beach Vibes', null, 4.8, 91, true, false,
     'Densely woven Turkish cotton that''s sand-resistant, quick-drying, and generous enough to share.',
     null,
     'منشفة شاطئ تركية كبيرة الحجم',
@@ -261,7 +261,7 @@ values
   ),
   (
     'portable-beach-umbrella', 'Portable Beach Umbrella', 'Beach Essentials', 89, null, 'beachgear',
-    null, 'Aluminum', 'Beach Vibes', null, 4.6, 47, false, false,
+    'https://images.unsplash.com/photo-1521170813716-0b3f42fcfb65?auto=format&fit=crop&w=800&q=80', 'Aluminum', 'Beach Vibes', null, 4.6, 47, false, false,
     'A UPF 50+ canopy on a corrosion-resistant aluminum pole, with a sand anchor for wind-steady shade.',
     null,
     'مظلة شاطئ محمولة',
@@ -270,7 +270,7 @@ values
   ),
   (
     'woven-straw-beach-bag', 'Woven Straw Beach Bag', 'Accessories', 86, null, 'accessories',
-    null, 'Straw', 'Beach Vibes', '["#c9a876","#8f8266"]', 4.7, 52, false, true,
+    'https://plus.unsplash.com/premium_photo-1764343569512-566ced2f5762?auto=format&fit=crop&w=800&q=80', 'Straw', 'Beach Vibes', '["#c9a876","#8f8266"]', 4.7, 52, false, true,
     'A roomy hand-woven tote with a water-resistant lining, sized for towels, sunscreen, and everything else the day needs.',
     null,
     'حقيبة شاطئ من القش المنسوج',
@@ -279,7 +279,7 @@ values
   ),
   (
     'packable-sun-hat', 'Packable Sun Hat', 'Accessories', 48, null, 'accessories',
-    null, 'Straw', 'Beach Vibes', null, 4.5, 33, false, false,
+    'https://plus.unsplash.com/premium_photo-1675993000728-cdc7727e779f?auto=format&fit=crop&w=800&q=80', 'Straw', 'Beach Vibes', null, 4.5, 33, false, false,
     'A wide-brim straw hat that folds flat for travel and springs back into shape, with UPF 50+ coverage for face and neck.',
     null,
     'قبعة شمس قابلة للطي',
@@ -288,7 +288,7 @@ values
   ),
   (
     'polarized-beach-sunglasses', 'Polarized Beach Sunglasses', 'Accessories', 118, 145, 'accessories',
-    null, 'Aluminum', 'Beach Vibes', '["#1c1c1c","#a8783f"]', 4.6, 29, true, false,
+    'https://images.unsplash.com/photo-1566421966482-ad8076104d8e?auto=format&fit=crop&w=800&q=80', 'Aluminum', 'Beach Vibes', '["#1c1c1c","#a8783f"]', 4.6, 29, true, false,
     'Polarized lenses in a lightweight aluminum frame, cutting glare off the water without distorting the color of the day.',
     null,
     'نظارة شمسية مستقطبة للشاطئ',
