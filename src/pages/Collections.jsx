@@ -265,7 +265,7 @@ export default function Collections() {
 
       {/* Seasonal Spotlight */}
       <section className="max-w-[1400px] mx-auto px-5 sm:px-8 pb-20">
-        <Link to="/shop?category=Home Goods" className="relative block overflow-hidden group">
+        <Link to="/shop?category=Water Sports" className="relative block overflow-hidden group">
           <SceneMedia tone="interior" overlay="dark-full" className="w-full min-h-[380px] flex items-center justify-center">
             <div className="relative text-center px-6">
               <p className="text-[11px] font-medium uppercase tracking-widest2 text-white/80 mb-3">

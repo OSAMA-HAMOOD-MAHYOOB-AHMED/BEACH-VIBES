@@ -4,7 +4,7 @@ import { api } from '../../lib/api'
 import { CATEGORIES, MATERIALS } from '../../data/products'
 import { formatPrice } from '../../utils/format'
 
-const TONES = ['fragrance', 'fragrance-gold', 'ceramic', 'linen', 'silk', 'leather', 'footwear']
+const TONES = ['swimwear', 'suncare', 'beachgear', 'watersports', 'footwear', 'accessories']
 
 const EMPTY_FORM = {
   id: '',

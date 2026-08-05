@@ -58,19 +58,21 @@ const en = {
     newBadge: 'New',
   },
   categories: {
-    Fragrance: 'Fragrance',
-    'Home Decor': 'Home Decor',
-    Accessories: 'Accessories',
-    'Leather Goods': 'Leather Goods',
+    Swimwear: 'Swimwear',
+    'Sun Care': 'Sun Care',
+    'Beach Gear': 'Beach Gear',
+    'Water Sports': 'Water Sports',
     Footwear: 'Footwear',
-    'Home Goods': 'Home Goods',
+    Accessories: 'Accessories',
   },
   materials: {
-    Glass: 'Glass',
-    Ceramic: 'Ceramic',
-    Silk: 'Silk',
-    Leather: 'Leather',
-    Linen: 'Linen',
+    Nylon: 'Nylon',
+    Cotton: 'Cotton',
+    Neoprene: 'Neoprene',
+    Rubber: 'Rubber',
+    Straw: 'Straw',
+    Mineral: 'Mineral',
+    Aluminum: 'Aluminum',
   },
   home: {
     heroEyebrow: 'Season Preview',
@@ -94,8 +96,8 @@ const en = {
     exploreCollectionsEyebrow: 'Explore Collections',
     curatedWayTitle: 'A Curated Way of Life',
     curatedWaySubtitle: 'Each category is a chapter in our story of quiet luxury and refined taste.',
-    fragranceBarTitle: 'The Fragrance Bar',
-    exploreScents: 'Explore Scents',
+    swimEditTitle: 'The Swim Edit',
+    exploreSwim: 'Shop Swimwear',
     summerFootwearTitle: 'Summer Footwear',
     coastalComfortTitle: 'Coastal Comfort',
     qualityPillars: [
@@ -139,7 +141,7 @@ const en = {
   collections: {
     title: 'Curated Collections',
     subtitle:
-      'Explore our selection of artisanal goods, crafted with a dedication to timeless elegance and superior materiality. From sensory fragrances to architectural home accents.',
+      'Explore our selection of beach and swim essentials, chosen with the same care for timeless elegance and quality materials. From performance swimwear to reef-safe sun care.',
     sidebarHeading: 'Collections',
     allCollections: 'All Collections',
     newArrivals: 'New Arrivals',
@@ -212,39 +214,39 @@ const en = {
     inspirationEyebrow: 'The Inspiration',
     inspirationTitle: 'Where Water Meets The Shore',
     inspirationBody:
-      'Our founder spent three summers on the Amalfi Coast, documenting the changing scent of the sea from sunrise to dusk. {{productName}} is the culmination of those journals — a liquid memory of crisp mornings and sun-warmed stone.',
+      "Our founder spent three seasons testing gear on real coastlines, from Amalfi's pebble beaches to reef breaks further south, refining what actually holds up in salt water and sun. {{productName}} carries that same standard — built for the beach, not just styled for it.",
     smallBatchTitle: 'Small Batch',
-    smallBatchBody: 'Limited to 500 bottles per season to ensure quality.',
+    smallBatchBody: 'Produced in limited runs each season to keep quality consistent.',
     sustainabilityTitle2: 'Sustainability',
-    sustainabilityBody2: '100% recyclable glass and forest-certified packaging.',
+    sustainabilityBody2: 'Recyclable packaging, sourced from certified sustainable suppliers.',
     theStoryBtn: 'The Beach Vibes Story',
     tabs: {
       journal: 'Customer Journal ({{count}})',
       delivery: 'Delivery & Returns',
-      ingredients: 'Ingredients',
+      ingredients: 'Materials & Care',
     },
     deliveryContent:
       'Complimentary standard shipping on all orders over $500. Express Beach Delivery available at checkout. Unused items in original packaging may be returned within 30 days of delivery for a full refund.',
     ingredientsContent:
-      'Formulated with responsibly sourced botanical extracts and mineral musks. Free from parabens, phthalates, and synthetic dyes. Full ingredient listing available upon request from our concierge team.',
+      'Made from responsibly sourced materials, detailed on each product page. Rinse with fresh water after ocean or pool use, and air dry away from direct heat to extend the life of the piece. Full care instructions available upon request from our concierge team.',
     ratingBasedOn: 'Based on {{count}} reviews',
     writeReview: 'Write A Review',
     reviews: [
       {
         name: 'Julianna R.',
         date: 'October 14, 2023',
-        title: 'The perfect summer scent',
-        body: "I've been looking for a fragrance that doesn't feel synthetic or heavy. This is incredibly fresh and lingers just long enough. The sea salt notes are very prominent in the best way possible. Truly exceptional craftsmanship.",
+        title: 'The perfect summer essential',
+        body: "Exactly as described and then some — the quality is obvious the moment you use it, and it's held up through an entire summer of beach days without a single complaint.",
       },
       {
         name: 'Marcus T.',
         date: 'September 2, 2023',
-        title: 'Compliments every time I wear it',
-        body: 'Subtle but unmistakably distinctive. The packaging alone feels like an heirloom, and the scent has real depth without being overwhelming.',
+        title: 'Compliments every time I use it',
+        body: 'Subtle but unmistakably well-made. Even the packaging feels considered, and the quality holds up to daily use without any signs of wear.',
       },
     ],
     testimonialQuote:
-      'This scent is a revelation. It manages to capture the exact feeling of cool ocean air and morning light. Simply timeless.',
+      'This has earned a permanent spot in my beach bag. Simple, well-made, and exactly as described — nothing more, nothing less.',
     testimonialAttribution: 'Elena V. — Verified Collector',
     curatedEyebrow: 'Curated',
     completeExperience: 'Complete The Experience',
@@ -349,7 +351,7 @@ const en = {
     paragraph1:
       'Beach Vibes began with a single question: what would a home look like if every object in it was chosen with the same care as a piece of art? The answer became a collective of artisans across the Mediterranean coast, each preserving a craft that modern manufacturing left behind.',
     paragraph2:
-      'Today we work with a small, rotating roster of makers — glassblowers, tanners, weavers, and ceramicists — to bring their work to a wider audience without compromising the patience their craft demands.',
+      'Today we work with a small, rotating roster of makers — swimwear ateliers, sun-care formulators, and weavers of raffia and straw — to bring their work to a wider audience without compromising the patience their craft demands.',
     values: [
       {
         title: 'Sustainable Sourcing',
@@ -401,9 +403,10 @@ const en = {
         excerpt: 'Our founder spent three summers on the Amalfi Coast documenting the changing scent of the sea.',
       },
       {
-        tag: 'Materials',
-        title: 'The Case for Slow Leather',
-        excerpt: 'Why vegetable tanning takes six weeks longer — and why that patience shows in the patina.',
+        tag: 'Sun Care',
+        title: 'The Case for Mineral Sunscreen',
+        excerpt:
+          "Why zinc oxide outperforms chemical filters for all-day wear — and why it matters for the reefs you're swimming over.",
       },
     ],
   },
@@ -561,19 +564,21 @@ const ar = {
     newBadge: 'جديد',
   },
   categories: {
-    Fragrance: 'العطور',
-    'Home Decor': 'ديكور منزلي',
-    Accessories: 'إكسسوارات',
-    'Leather Goods': 'مصنوعات جلدية',
+    Swimwear: 'ملابس السباحة',
+    'Sun Care': 'العناية الشمسية',
+    'Beach Gear': 'مستلزمات الشاطئ',
+    'Water Sports': 'الرياضات المائية',
     Footwear: 'أحذية',
-    'Home Goods': 'مستلزمات منزلية',
+    Accessories: 'إكسسوارات',
   },
   materials: {
-    Glass: 'زجاج',
-    Ceramic: 'سيراميك',
-    Silk: 'حرير',
-    Leather: 'جلد',
-    Linen: 'كتان',
+    Nylon: 'نايلون',
+    Cotton: 'قطن',
+    Neoprene: 'نيوبرين',
+    Rubber: 'مطاط',
+    Straw: 'قش',
+    Mineral: 'معدني',
+    Aluminum: 'ألومنيوم',
   },
   home: {
     heroEyebrow: 'استعراض الموسم',
@@ -596,8 +601,8 @@ const ar = {
     exploreCollectionsEyebrow: 'استكشف المجموعات',
     curatedWayTitle: 'أسلوب حياة منتقى بعناية',
     curatedWaySubtitle: 'كل فئة هي فصل في قصتنا عن الفخامة الهادئة والذوق الرفيع.',
-    fragranceBarTitle: 'بار العطور',
-    exploreScents: 'استكشف العطور',
+    swimEditTitle: 'تشكيلة السباحة',
+    exploreSwim: 'تسوق ملابس السباحة',
     summerFootwearTitle: 'أحذية الصيف',
     coastalComfortTitle: 'راحة ساحلية',
     qualityPillars: [
@@ -640,7 +645,7 @@ const ar = {
   collections: {
     title: 'مجموعات منتقاة',
     subtitle:
-      'استكشف تشكيلتنا من القطع الحرفية، المصنوعة بتفانٍ نحو الأناقة الخالدة وجودة الخامات الفائقة. من العطور الحسية إلى لمسات الديكور المنزلي المعمارية.',
+      'استكشف تشكيلتنا من مستلزمات الشاطئ والسباحة، المُختارة بعناية نحو الأناقة الخالدة وجودة الخامات. من ملابس السباحة عالية الأداء إلى العناية الشمسية الآمنة للشعاب المرجانية.',
     sidebarHeading: 'المجموعات',
     allCollections: 'كل المجموعات',
     newArrivals: 'وصل حديثاً',
@@ -713,39 +718,39 @@ const ar = {
     inspirationEyebrow: 'مصدر الإلهام',
     inspirationTitle: 'حيث يلتقي الماء بالشاطئ',
     inspirationBody:
-      'أمضى مؤسسنا ثلاثة صيفيات على ساحل أمالفي، موثقاً تغير رائحة البحر من الفجر حتى الغسق. {{productName}} هو خلاصة تلك المذكرات — ذكرى سائلة لصباحات منعشة وحجارة دافئتها الشمس.',
+      'أمضى مؤسسنا ثلاثة مواسم يختبر التجهيزات على سواحل حقيقية، من شواطئ أمالفي الحصوية إلى نقاط الغطس الجنوبية، ليصقل ما يصمد فعلاً أمام الملح والشمس. {{productName}} يحمل المعيار نفسه — مُصمم للشاطئ، لا لمجرد الظهور به.',
     smallBatchTitle: 'دفعة محدودة',
-    smallBatchBody: 'محدودة بـ 500 قارورة في الموسم لضمان الجودة.',
+    smallBatchBody: 'إنتاج بكميات محدودة كل موسم للحفاظ على جودة ثابتة.',
     sustainabilityTitle2: 'الاستدامة',
-    sustainabilityBody2: 'زجاج قابل لإعادة التدوير بالكامل وتغليف معتمد بيئياً.',
+    sustainabilityBody2: 'تغليف قابل لإعادة التدوير، من موردين معتمدين ومستدامين.',
     theStoryBtn: 'قصة بيتش فايبس',
     tabs: {
       journal: 'مذكرات العملاء ({{count}})',
       delivery: 'التوصيل والإرجاع',
-      ingredients: 'المكونات',
+      ingredients: 'الخامات والعناية',
     },
     deliveryContent:
       'شحن قياسي مجاني على جميع الطلبات التي تتجاوز 500$. يتوفر توصيل الشاطئ السريع عند إتمام الشراء. يمكن إرجاع القطع غير المستخدمة بتغليفها الأصلي خلال 30 يوماً من التسليم لاسترداد كامل المبلغ.',
     ingredientsContent:
-      'مُركّبة من مستخلصات نباتية ومسك معدني من مصادر مسؤولة. خالية من البارابين والفثالات والأصباغ الاصطناعية. القائمة الكاملة للمكونات متاحة عند الطلب من فريق خدمة العملاء.',
+      'مصنوعة من خامات مصدرها مسؤول، مذكورة بالتفصيل في صفحة كل منتج. اشطفها بماء عذب بعد الاستخدام في البحر أو المسبح، وجففها بعيداً عن الحرارة المباشرة لإطالة عمر القطعة. تعليمات العناية الكاملة متاحة عند الطلب من فريق خدمة العملاء.',
     ratingBasedOn: 'بناءً على {{count}} تقييم',
     writeReview: 'اكتب تقييماً',
     reviews: [
       {
         name: 'جوليانا ر.',
         date: '14 أكتوبر 2023',
-        title: 'رائحة الصيف المثالية',
-        body: 'كنت أبحث عن عطر لا يبدو صناعياً أو ثقيلاً. هذا العطر منعش بشكل مذهل ويدوم بالقدر المناسب تماماً. نفحات ملح البحر بارزة بأفضل طريقة ممكنة. حرفية استثنائية حقاً.',
+        title: 'أساسي الصيف المثالي',
+        body: 'مطابق تماماً للوصف بل ويفوقه — الجودة واضحة من أول استخدام، وصمد طوال صيف كامل من أيام الشاطئ دون أي شكوى.',
       },
       {
         name: 'ماركوس ت.',
         date: '2 سبتمبر 2023',
-        title: 'يلفت الأنظار في كل مرة أرتديه',
-        body: 'خفي لكنه مميز بلا شك. حتى التغليف يبدو وكأنه قطعة تُورَّث، والرائحة تحمل عمقاً حقيقياً دون أن تكون طاغية.',
+        title: 'يلفت الأنظار في كل مرة أستخدمه',
+        body: 'أنيق لكنه مميز بلا شك. حتى التغليف يبدو مدروساً بعناية، والجودة تصمد أمام الاستخدام اليومي دون أي أثر للتآكل.',
       },
     ],
     testimonialQuote:
-      'هذا العطر بمثابة اكتشاف. إنه يجسد بدقة شعور هواء المحيط البارد وضوء الصباح. ببساطة، خالد.',
+      'أصبح جزءاً ثابتاً من حقيبة الشاطئ الخاصة بي. بسيط، متقن الصنع، ومطابق تماماً للوصف — لا أكثر ولا أقل.',
     testimonialAttribution: 'إيلينا ف. — جامعة موثقة',
     curatedEyebrow: 'منتقى',
     completeExperience: 'أكمل التجربة',
@@ -849,7 +854,7 @@ const ar = {
     paragraph1:
       'بدأت بيتش فايبس بسؤال واحد: كيف سيبدو المنزل لو اختير كل قطعة فيه بنفس العناية التي تُختار بها الأعمال الفنية؟ كانت الإجابة تجمعاً من الحرفيين على امتداد ساحل البحر المتوسط، يحافظ كل منهم على حرفة تجاوزها التصنيع الحديث.',
     paragraph2:
-      'اليوم نعمل مع مجموعة صغيرة ومتجددة من الصنّاع — نافخي الزجاج، والدباغين، والنساجين، وصانعي السيراميك — لنقدّم أعمالهم لجمهور أوسع دون المساس بالصبر الذي تتطلبه حرفتهم.',
+      'اليوم نعمل مع مجموعة صغيرة ومتجددة من الصنّاع — محترفات ملابس السباحة، ومختصي تركيبات العناية الشمسية، ونساجي الرافيا والقش — لنقدّم أعمالهم لجمهور أوسع دون المساس بالصبر الذي تتطلبه حرفتهم.',
     values: [
       {
         title: 'مصادر مستدامة',
@@ -900,9 +905,9 @@ const ar = {
         excerpt: 'أمضى مؤسسنا ثلاثة صيفيات على ساحل أمالفي موثقاً تغير رائحة البحر.',
       },
       {
-        tag: 'الخامات',
-        title: 'حجة الجلد بطيء الدباغة',
-        excerpt: 'لماذا يستغرق الدباغ النباتي ستة أسابيع إضافية — ولماذا يظهر هذا الصبر في بريق الجلد.',
+        tag: 'العناية الشمسية',
+        title: 'حجة واقي الشمس المعدني',
+        excerpt: 'لماذا يتفوق أكسيد الزنك على المرشحات الكيميائية للثبات طوال اليوم — ولماذا يهم ذلك للشعاب المرجانية التي تسبح فوقها.',
       },
     ],
   },

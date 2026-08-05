@@ -7,10 +7,10 @@ import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
 
 const CURATION_IDS = [
-  'essence-of-azure',
-  'artisanal-ceramic-vase',
-  'midnight-silk-scarf',
-  'heritage-leather-tote',
+  'riviera-one-piece',
+  'mineral-sunscreen-spf50',
+  'full-face-snorkel-mask',
+  'woven-straw-beach-bag',
 ]
 
 const PILLAR_ICONS = [ShieldCheck, Globe2, Headset]
@@ -118,12 +118,12 @@ export default function Home() {
           {t('home.curatedWaySubtitle')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left rtl:text-right">
-          <Link to="/shop?category=Fragrance" className="group relative block overflow-hidden">
+          <Link to="/shop?category=Swimwear" className="group relative block overflow-hidden">
             <SceneMedia tone="dark" overlay="dark-bottom" className="w-full h-full min-h-[420px]">
               <div className="relative h-full flex flex-col justify-end p-8">
-                <h3 className="font-serif text-2xl text-white mb-4">{t('home.fragranceBarTitle')}</h3>
+                <h3 className="font-serif text-2xl text-white mb-4">{t('home.swimEditTitle')}</h3>
                 <span className="text-[11px] font-medium uppercase tracking-widest text-white border-b border-white/60 pb-1 w-fit group-hover:border-white transition-colors">
-                  {t('home.exploreScents')}
+                  {t('home.exploreSwim')}
                 </span>
               </div>
             </SceneMedia>
@@ -136,7 +136,7 @@ export default function Home() {
                 </div>
               </SceneMedia>
             </Link>
-            <Link to="/shop?category=Home Goods" className="group relative block overflow-hidden">
+            <Link to="/shop?category=Beach Gear" className="group relative block overflow-hidden">
               <SceneMedia tone="interior" overlay="dark-bottom" className="w-full h-full min-h-[192px]">
                 <div className="relative h-full flex flex-col justify-end p-6">
                   <h3 className="font-serif text-xl text-white">{t('home.coastalComfortTitle')}</h3>

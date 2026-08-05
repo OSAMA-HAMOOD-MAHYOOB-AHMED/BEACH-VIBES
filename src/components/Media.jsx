@@ -1,24 +1,23 @@
 import { useState } from 'react'
-import { Droplet, Flower2, Layers, Waves, ShoppingBag, Footprints } from 'lucide-react'
+import { Waves, Sun, Umbrella, Fish, Footprints, ShoppingBag } from 'lucide-react'
 
 const PRODUCT_TONES = {
-  fragrance: { from: '#f4e3c1', via: '#e0ac6f', to: '#a9713c', Icon: Droplet },
-  'fragrance-gold': { from: '#f6e2ad', via: '#d6a54f', to: '#7c4f22', Icon: Droplet },
-  ceramic: { from: '#ece6d8', via: '#c9beA6', to: '#8f8266', Icon: Flower2 },
-  linen: { from: '#f4f0e6', via: '#ddd3ba', to: '#a99d80', Icon: Layers },
-  silk: { from: '#dfe9f0', via: '#a9c1cf', to: '#5f7d8f', Icon: Waves },
-  leather: { from: '#e9c9a3', via: '#c08a52', to: '#6b4322', Icon: ShoppingBag },
+  swimwear: { from: '#bfe3ea', via: '#6fb8c9', to: '#2e7d95', Icon: Waves },
+  suncare: { from: '#ffe7b3', via: '#ffbf69', to: '#e8873f', Icon: Sun },
+  beachgear: { from: '#f4ecd8', via: '#e0d2ab', to: '#c9a876', Icon: Umbrella },
+  watersports: { from: '#b8d4e3', via: '#4f83a3', to: '#1f4e68', Icon: Fish },
   footwear: { from: '#ecdec0', via: '#c99f6c', to: '#83592f', Icon: Footprints },
+  accessories: { from: '#f0e2c0', via: '#d4b483', to: '#a8783f', Icon: ShoppingBag },
 }
 
 export function ProductMedia({
-  tone = 'fragrance',
+  tone = 'swimwear',
   image,
   alt = '',
   className = '',
   iconClassName = 'w-8 h-8',
 }) {
-  const t = PRODUCT_TONES[tone] || PRODUCT_TONES.fragrance
+  const t = PRODUCT_TONES[tone] || PRODUCT_TONES.swimwear
   const { Icon } = t
   const [failed, setFailed] = useState(false)
 

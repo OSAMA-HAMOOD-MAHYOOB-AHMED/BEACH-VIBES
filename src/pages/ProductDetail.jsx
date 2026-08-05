@@ -21,7 +21,7 @@ import { localizeProduct } from '../utils/localize'
 import { formatPrice } from '../utils/format'
 import { useCart } from '../context/CartContext'
 
-const SIZES = ['50ml', '100ml', '200ml']
+const SIZES = ['S', 'M', 'L', 'XL']
 
 export default function ProductDetail() {
   const { id } = useParams()
@@ -60,7 +60,7 @@ export default function ProductDetail() {
     )
   }
 
-  const hasSizes = rawProduct.category === 'Fragrance'
+  const hasSizes = rawProduct.category === 'Swimwear'
   const materialLabel = (
     rawProduct.material ? t(`materials.${rawProduct.material}`) : t('productDetail.defaultMaterial')
   ).toLowerCase()

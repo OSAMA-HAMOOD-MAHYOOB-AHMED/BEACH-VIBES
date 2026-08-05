@@ -4,9 +4,9 @@ import { useProducts } from './ProductsContext'
 const CartContext = createContext(null)
 
 const INITIAL_ITEMS = [
-  { id: 'neroli-des-bermudes', qty: 1 },
-  { id: 'midnight-silk-scarf', qty: 1 },
-  { id: 'heritage-leather-tote', qty: 1 },
+  { id: 'riviera-one-piece', qty: 1 },
+  { id: 'mineral-sunscreen-spf50', qty: 1 },
+  { id: 'woven-straw-beach-bag', qty: 1 },
 ]
 
 export function CartProvider({ children }) {

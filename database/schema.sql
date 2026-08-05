@@ -80,116 +80,132 @@ create policy "Public insert" on contact_messages
   for insert with check (true);
 
 -- ============================================================
+-- one-time cleanup: retire the old artisanal/luxury catalog
+-- ============================================================
+-- The catalog was rebuilt from fragrance/home-decor/leather goods to
+-- beach & swim gear under new ids, so "on conflict" below won't touch
+-- these old rows — delete them by id first. Safe to re-run (deletes
+-- zero rows once already gone). If this errors with a foreign key
+-- violation, it means a real order still references one of these ids;
+-- decide manually whether to keep or reassign that order before deleting.
+delete from products where id in (
+  'essence-of-azure', 'lessence-de-la-mer', 'locean-de-soie', 'neroli-des-bermudes',
+  'monolith-ceramic-vase', 'artisanal-ceramic-vase', 'artisanal-linen-set',
+  'cerulean-silk-wrap', 'midnight-silk-scarf', 'veau-grained-tote',
+  'heritage-leather-tote', 'riviera-leather-sandal'
+);
+
+-- ============================================================
 -- seed: product catalog (matches src/data/products.js)
 -- ============================================================
 insert into products (id, name, category, price, tone, image, material, rating, reviews, is_new, is_signature, description, notes, name_ar, description_ar, notes_ar)
 values
   (
-    'essence-of-azure', 'Essence of Azure', 'Fragrance', 185, 'fragrance',
-    '/images/products/essence-of-azure.jpg', 'Glass', 4.8, 96, true, false,
-    'A luminous eau de parfum opening with citrus zest and settling into a warm, salt-kissed amber base.',
-    '{"top":"Bergamot, Sea Salt, Lemon Zest","heart":"Jasmine Sambac, Neroli, Seaweed","base":"Ambergris, White Musk, Driftwood"}',
-    'جوهر الزُرقة',
-    'عطر مُشرق يفتتح بنفحات الحمضيات المنعشة، ليستقر في قاعدة عنبرية دافئة تلامسها لمسة من ملح البحر.',
-    '{"top":"برغموت، ملح البحر، قشر الليمون","heart":"ياسمين سامباك، زهر النارنج، أعشاب بحرية","base":"عنبر، مسك أبيض، خشب الطفو"}'
-  ),
-  (
-    'lessence-de-la-mer', 'L''Essence de la Mer', 'Fragrance', 245, 'fragrance',
-    '/images/products/lessence-de-la-mer.jpg', 'Glass', 4.9, 124, false, false,
-    'A profound olfactory journey into the heart of the Mediterranean. This artisanal fragrance captures the fleeting moment of dawn over a serene coastline, blending crisp sea salt with the warmth of sun-drenched citrus and the grounding depth of coastal cedarwood.',
-    '{"top":"Bergamot, Sea Salt, Lemon Zest","heart":"Jasmine Sambac, Neroli, Seaweed","base":"Ambergris, White Musk, Driftwood"}',
-    'جوهر البحر',
-    'رحلة شمّية عميقة إلى قلب البحر المتوسط. يلتقط هذا العطر الحرفي لحظة الفجر العابرة فوق ساحل هادئ، ممزوجاً نقاء ملح البحر بدفء الحمضيات المشبعة بالشمس وعمق خشب الأرز الساحلي الراسخ.',
-    '{"top":"برغموت، ملح البحر، قشر الليمون","heart":"ياسمين سامباك، زهر النارنج، أعشاب بحرية","base":"عنبر، مسك أبيض، خشب الطفو"}'
-  ),
-  (
-    'locean-de-soie', 'L''Océan de Soie', 'Fragrance', 285, 'fragrance-gold',
-    '/images/products/locean-de-soie.jpg', 'Glass', 4.9, 154, false, true,
-    'An ethereal composition inspired by the silk-like surface of a calm morning sea. L''Océan de Soie opens with crisp sea salt and ozonic notes of white lotus, transitioning into a heart of white lotus and sun-bleached driftwood.',
-    '{"top":"Sea Salt, Bergamot","heart":"White Lotus","base":"Driftwood, Ambergris, Mineral Musk"}',
-    'محيط الحرير',
-    'تركيبة أثيرية مستوحاة من سطح بحرٍ صباحي هادئ يشبه الحرير في نعومته. يفتتح محيط الحرير بملح البحر المنعش ونفحات أوزونية من اللوتس الأبيض، لينتقل إلى قلب من اللوتس الأبيض وخشب الطفو المُبيَّض بأشعة الشمس.',
-    '{"top":"ملح البحر، برغموت","heart":"لوتس أبيض","base":"خشب الطفو، عنبر، مسك معدني"}'
-  ),
-  (
-    'neroli-des-bermudes', 'Néroli des Bermudes', 'Fragrance', 245, 'fragrance',
-    '/images/products/neroli-des-bermudes.jpg', 'Glass', 4.7, 58, false, false,
-    'A bright, effervescent neroli fragrance layered over warm island musk and soft petitgrain.',
+    'riviera-one-piece', 'Riviera One-Piece Swimsuit', 'Swimwear', 128, 'swimwear',
+    null, 'Nylon', 4.8, 112, false, true,
+    'A sculpted one-piece in UPF 50+ recycled nylon, cut for confident lines from poolside to shoreline.',
     null,
-    'زهر نارنج برمودا',
-    'عطر نارنجي منعش وحيوي، يتوشح بمسك جزري دافئ ونفحات ناعمة من البتيغرين.',
+    'بدلة سباحة قطعة واحدة – ريفييرا',
+    'بدلة سباحة من قطعة واحدة، مصنوعة من نايلون معاد تدويره بحماية UPF 50+، بقصة نحيلة تمنحك حضوراً واثقاً من حمام السباحة إلى الشاطئ.',
     null
   ),
   (
-    'monolith-ceramic-vase', 'Monolith Ceramic Vase', 'Home Decor', 320, 'ceramic',
-    '/images/products/monolith-ceramic-vase.jpg', 'Ceramic', 4.8, 41, false, false,
-    'A sculptural stoneware vessel, hand-thrown and finished with a matte organic glaze inspired by coastal cliffs.',
+    'cerulean-bikini-set', 'Cerulean Bikini Set', 'Swimwear', 96, 'swimwear',
+    null, 'Nylon', 4.6, 54, true, false,
+    'A two-piece in a rich cerulean hue with adjustable ties and moderate coverage, built for long days in the water.',
     null,
-    'مزهرية مونوليث الخزفية',
-    'إناء خزفي نحتي، مصنوع يدوياً بالعجلة ومطلي بطلاء عضوي غير لامع مستوحى من المنحدرات الساحلية.',
+    'طقم بيكيني بلون سماوي',
+    'طقم بيكيني بلونٍ سماوي غني، بأربطة قابلة للتعديل وتغطية متوسطة، مصمم لأيامٍ طويلة في الماء.',
     null
   ),
   (
-    'artisanal-ceramic-vase', 'Artisanal Ceramic Vase', 'Home Decor', 240, 'ceramic',
-    '/images/products/artisanal-ceramic-vase.jpg', 'Ceramic', 4.6, 33, true, false,
-    'Wheel-thrown ceramic in a soft terracotta glaze, equally at home with a single stem or a full arrangement.',
+    'mineral-sunscreen-spf50', 'Mineral Sunscreen SPF 50', 'Sun Care', 34, 'suncare',
+    null, 'Mineral', 4.9, 203, false, true,
+    'A reef-safe, broad-spectrum mineral sunscreen that blends in clear and never feels greasy — the one bottle worth reapplying.',
     null,
-    'مزهرية خزفية حرفية',
-    'خزف مصنوع بعجلة الخزاف بطلاء تراكوتا ناعم، يليق بغصنٍ واحد كما يليق بتنسيقٍ زهري كامل.',
+    'واقي شمس معدني SPF 50',
+    'واقٍ شمسي معدني آمن للشعاب المرجانية وواسع الطيف، يمتزج بالبشرة دون أثر أبيض أو لمعان دهني — الزجاجة الوحيدة التي تستحق إعادة الاستخدام.',
     null
   ),
   (
-    'artisanal-linen-set', 'Artisanal Linen Set', 'Home Goods', 145, 'linen',
-    '/images/products/artisanal-linen-set.jpg', 'Linen', 4.7, 29, true, false,
-    'Stone-washed European linen dining set, woven for softness that only improves with age.',
+    'after-sun-aloe-balm', 'After-Sun Aloe Balm', 'Sun Care', 26, 'suncare',
+    null, 'Mineral', 4.7, 68, true, false,
+    'A cooling aloe and chamomile balm that calms sun-warmed skin and locks in moisture after a long day at the beach.',
     null,
-    'طقم كتان حرفي',
-    'طقم مائدة من الكتان الأوروبي المغسول بالحجر، منسوج بنعومة تزداد جمالاً مع مرور الوقت.',
+    'بلسم الصبار لما بعد الشمس',
+    'بلسم مهدئ من الصبار والبابونج يخفف احمرار البشرة المتعبة من الشمس ويحافظ على ترطيبها بعد يومٍ طويل على الشاطئ.',
     null
   ),
   (
-    'cerulean-silk-wrap', 'Cerulean Silk Wrap', 'Accessories', 450, 'silk',
-    '/images/products/cerulean-silk-wrap.jpg', 'Silk', 4.6, 22, false, false,
-    'Hand-painted mulberry silk wrap in a wave-inspired print, finished with hand-rolled edges.',
+    'turkish-beach-towel', 'Oversized Turkish Beach Towel', 'Beach Gear', 58, 'beachgear',
+    null, 'Cotton', 4.8, 91, true, false,
+    'Densely woven Turkish cotton that''s sand-resistant, quick-drying, and generous enough to share.',
     null,
-    'وشاح الحرير السماوي',
-    'وشاح من حرير التوت مرسوم يدوياً بنقشٍ مستوحى من الأمواج، بحواف ملفوفة يدوياً.',
+    'منشفة شاطئ تركية كبيرة الحجم',
+    'منشفة من القطن التركي المنسوج بإحكام، تقاوم الرمل وتجف بسرعة، وبحجمٍ كبير يكفي للمشاركة.',
     null
   ),
   (
-    'midnight-silk-scarf', 'Midnight Silk Scarf', 'Accessories', 320, 'silk',
-    '/images/products/midnight-silk-scarf.jpg', 'Silk', 4.5, 18, false, false,
-    'A jewel-toned silk twill scarf, versatile enough for the neck, hair, or handbag handle.',
+    'portable-beach-umbrella', 'Portable Beach Umbrella', 'Beach Gear', 89, 'beachgear',
+    null, 'Aluminum', 4.6, 47, false, false,
+    'A UPF 50+ canopy on a corrosion-resistant aluminum pole, with a sand anchor for wind-steady shade.',
     null,
-    'وشاح الحرير الليلي',
-    'وشاح حريري بألوان جوهرية زاهية، متعدد الاستخدامات يناسب الرقبة أو الشعر أو مقبض الحقيبة.',
+    'مظلة شاطئ محمولة',
+    'مظلة بحماية UPF 50+ على عمودٍ من الألومنيوم المقاوم للتآكل، مزودة بمثبت رملي لظلٍ ثابت مهما اشتدت الرياح.',
     null
   ),
   (
-    'veau-grained-tote', 'Veau Grained Tote', 'Leather Goods', 2400, 'leather',
-    '/images/products/veau-grained-tote.jpg', 'Leather', 4.9, 47, false, false,
-    'Structured tote in full-grain vitello leather with brushed brass hardware, made by hand in a single atelier.',
+    'anti-fog-swim-goggles', 'Anti-Fog Swim Goggles', 'Water Sports', 32, 'watersports',
+    null, 'Rubber', 4.7, 84, false, false,
+    'A wide-vision anti-fog lens with a soft silicone gasket for a leak-free, mark-free fit.',
     null,
-    'حقيبة جلد العجل المحبب',
-    'حقيبة توتس مُهيكلة من جلد العجل الإيطالي الكامل الحبيبات، بتفاصيل نحاسية مصقولة، مصنوعة يدوياً في محترف واحد.',
+    'نظارات سباحة مضادة للضباب',
+    'عدسة بمجال رؤية واسع ومقاومة للضباب، بحشية سيليكون ناعمة لملاءمة محكمة دون تسرب أو أثر على الوجه.',
     null
   ),
   (
-    'heritage-leather-tote', 'Heritage Leather Tote', 'Leather Goods', 850, 'leather',
-    '/images/products/heritage-leather-tote.jpg', 'Leather', 4.7, 63, false, false,
-    'A timeless top-handle tote in vegetable-tanned leather that patinas beautifully over years of wear.',
+    'full-face-snorkel-mask', 'Full-Face Snorkel Mask', 'Water Sports', 68, 'watersports',
+    null, 'Rubber', 4.8, 76, false, true,
+    'A 180-degree panoramic mask with a dry-top snorkel and anti-fog ventilation, built for effortless breathing at the surface.',
     null,
-    'حقيبة التراث الجلدية',
-    'حقيبة توتس خالدة بمقبض علوي، من جلد مدبوغ نباتياً يكتسب بريقاً جميلاً مع سنوات الاستخدام.',
+    'قناع غطس كامل للوجه',
+    'قناع بانورامي بزاوية رؤية 180 درجة مع أنبوب تنفس علوي جاف وتهوية مضادة للضباب، مصمم لتنفسٍ سلس عند سطح الماء.',
     null
   ),
   (
-    'riviera-leather-sandal', 'Riviera Leather Sandal', 'Footwear', 680, 'footwear',
-    '/images/products/riviera-leather-sandal.jpg', 'Leather', 4.6, 39, false, false,
-    'Slim gladiator-style sandals in butter-soft leather straps, hand-cut and stitched in Southern Europe.',
+    'quick-dry-water-shoes', 'Quick-Dry Water Shoes', 'Footwear', 54, 'footwear',
+    null, 'Neoprene', 4.5, 39, false, false,
+    'Barefoot-feel neoprene shoes with a grippy sole, made for rocky shores and slippery decks alike.',
     null,
-    'صندل ريفييرا الجلدي',
-    'صنادل نحيلة بطراز الغلادييتور، بأحزمة جلدية ناعمة كالزبدة، مقصوصة ومخيطة يدوياً في جنوب أوروبا.',
+    'أحذية مائية سريعة الجفاف',
+    'أحذية من النيوبرين بشعور قريب من الحفاء ونعل يمنع الانزلاق، مناسبة للشواطئ الصخرية وأسطح القوارب على حدٍ سواء.',
+    null
+  ),
+  (
+    'woven-raffia-sandals', 'Woven Raffia Sandals', 'Footwear', 72, 'footwear',
+    null, 'Straw', 4.6, 28, true, false,
+    'Hand-woven raffia straps on a cushioned footbed, easy enough for sand and polished enough for a beachside lunch.',
+    null,
+    'صنادل من الرافيا المنسوجة',
+    'أحزمة من الرافيا المنسوجة يدوياً على نعلٍ مبطن، عملية على الرمال وأنيقة بما يكفي لغداءٍ قرب الشاطئ.',
+    null
+  ),
+  (
+    'woven-straw-beach-bag', 'Woven Straw Beach Bag', 'Accessories', 86, 'accessories',
+    null, 'Straw', 4.7, 52, false, true,
+    'A roomy hand-woven tote with a water-resistant lining, sized for towels, sunscreen, and everything else the day needs.',
+    null,
+    'حقيبة شاطئ من القش المنسوج',
+    'حقيبة توتس واسعة منسوجة يدوياً ببطانة مقاومة للماء، تتسع للمناشف وواقي الشمس وكل ما يحتاجه يومك.',
+    null
+  ),
+  (
+    'packable-sun-hat', 'Packable Sun Hat', 'Accessories', 48, 'accessories',
+    null, 'Straw', 4.5, 33, false, false,
+    'A wide-brim straw hat that folds flat for travel and springs back into shape, with UPF 50+ coverage for face and neck.',
+    null,
+    'قبعة شمس قابلة للطي',
+    'قبعة قش عريضة الحواف تُطوى بسهولة للسفر وتستعيد شكلها فوراً، بحماية UPF 50+ للوجه والرقبة.',
     null
   )
 on conflict (id) do update set
