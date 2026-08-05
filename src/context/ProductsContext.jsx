@@ -15,6 +15,7 @@ function mapRow(row) {
     image: row.image,
     material: row.material,
     brand: row.brand ?? 'Beach Vibes',
+    colors: row.colors ?? undefined,
     rating: row.rating != null ? Number(row.rating) : undefined,
     reviews: row.reviews ?? 0,
     isNew: row.is_new ?? false,

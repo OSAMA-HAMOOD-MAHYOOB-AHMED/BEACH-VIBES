@@ -13,9 +13,11 @@ import {
   Fish,
   Umbrella,
   ShoppingBag,
+  Instagram,
 } from 'lucide-react'
-import { SceneMedia } from '../components/Media'
+import { SceneMedia, ProductMedia } from '../components/Media'
 import ProductCard from '../components/ProductCard'
+import StarRating from '../components/StarRating'
 import Newsletter from '../components/Newsletter'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
@@ -40,6 +42,16 @@ const CATEGORY_ICONS = {
   Accessories: ShoppingBag,
 }
 
+const CATEGORY_TONES = {
+  Swimwear: 'swimwear',
+  Beachwear: 'beachwear',
+  Footwear: 'footwear',
+  'Swimming Equipment': 'swimequipment',
+  'Water Sports': 'watersports',
+  'Beach Essentials': 'beachgear',
+  Accessories: 'accessories',
+}
+
 const ACTIVITIES = [
   { key: 'swimming', tone: 'hero', query: 'category=Swimming Equipment' },
   { key: 'surfing', tone: 'coastal', query: 'category=Water Sports' },
@@ -51,12 +63,37 @@ const ACTIVITIES = [
   { key: 'luxuryResort', tone: 'hero', query: 'category=Accessories' },
 ]
 
+const BUNDLES = [
+  { key: 'maldivesEscape', categories: ['Beachwear', 'Accessories'], tone: 'beach' },
+  { key: 'familyBeachDay', categories: ['Beach Essentials', 'Beachwear', 'Footwear'], tone: 'interior' },
+  { key: 'surfStarterKit', categories: ['Water Sports', 'Swimming Equipment', 'Footwear'], tone: 'coastal' },
+  { key: 'poolPartyBundle', categories: ['Swimwear', 'Accessories', 'Beach Essentials'], tone: 'invite' },
+  { key: 'luxuryResortCollection', categories: ['Beachwear', 'Accessories', 'Footwear'], tone: 'spotlight' },
+]
+
+const INSTAGRAM_TILES = [
+  'Swimwear',
+  'Beachwear',
+  'Water Sports',
+  'Accessories',
+  'Beach Essentials',
+  'Swimming Equipment',
+  'Footwear',
+  'Swimwear',
+]
+
 export default function Home() {
   const { t } = useLanguage()
   const { products } = useProducts()
   const curated = CURATION_IDS.map((id) => products.find((p) => p.id === id)).filter(Boolean)
+  const bestSellers = products
+    .filter((p) => p.isSignature)
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+    .slice(0, 4)
   const qualityPillars = t('home.qualityPillars')
   const activityLabels = t('home.activities')
+  const journalPosts = t('journal.posts').slice(0, 3)
+  const testimonials = t('testimonials.items')
 
   return (
     <div>
@@ -148,26 +185,72 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Summer Curations */}
+      {/* Vacation Bundles */}
       <section className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20 sm:py-24">
-        <div className="flex items-end justify-between mb-10">
-          <div>
-            <p className="section-eyebrow">{t('home.editEyebrow')}</p>
-            <h2 className="font-serif text-3xl sm:text-4xl text-navy-900">{t('home.summerCurationsTitle')}</h2>
-          </div>
-          <Link
-            to="/collections"
-            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-navy-700 hover:text-navy-900 transition-colors"
-          >
-            {t('home.viewAllObjects')} <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
-          </Link>
+        <div className="text-center mb-10">
+          <p className="section-eyebrow justify-center flex">{t('bundles.eyebrow')}</p>
+          <h2 className="font-serif text-3xl sm:text-4xl text-navy-900">{t('bundles.sectionTitle')}</h2>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
-          {curated.map((p) => (
-            <ProductCard key={p.id} product={p} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {BUNDLES.map((bundle) => (
+            <Link
+              key={bundle.key}
+              to={`/shop?categories=${encodeURIComponent(bundle.categories.join(','))}&bundle=${bundle.key}`}
+              className="group relative block overflow-hidden aspect-[4/5]"
+            >
+              <SceneMedia tone={bundle.tone} overlay="dark-bottom" className="w-full h-full">
+                <div className="relative h-full flex flex-col justify-end p-6">
+                  <h3 className="font-serif text-xl text-white mb-2">{t(`bundles.${bundle.key}.title`)}</h3>
+                  <p className="text-xs text-white/80 leading-relaxed mb-3">
+                    {t(`bundles.${bundle.key}.description`)}
+                  </p>
+                  <span className="text-[10px] font-medium uppercase tracking-widest text-white border-b border-white/60 pb-1 w-fit group-hover:border-white transition-colors">
+                    {t('bundles.shopBundle')}
+                  </span>
+                </div>
+              </SceneMedia>
+            </Link>
           ))}
         </div>
       </section>
+
+      {/* Summer Curations */}
+      <section className="bg-sand-100 border-y border-navy-100">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20 sm:py-24">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <p className="section-eyebrow">{t('home.editEyebrow')}</p>
+              <h2 className="font-serif text-3xl sm:text-4xl text-navy-900">{t('home.summerCurationsTitle')}</h2>
+            </div>
+            <Link
+              to="/collections"
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-navy-700 hover:text-navy-900 transition-colors"
+            >
+              {t('home.viewAllObjects')} <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+            {curated.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Best Sellers */}
+      {bestSellers.length > 0 && (
+        <section className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20 sm:py-24">
+          <div className="text-center mb-10">
+            <p className="section-eyebrow justify-center flex">{t('home.bestSellersEyebrow')}</p>
+            <h2 className="font-serif text-3xl sm:text-4xl text-navy-900">{t('home.bestSellersTitle')}</h2>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+            {bestSellers.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Craftsmanship */}
       <section className="bg-sand-100 border-y border-navy-100">
@@ -239,6 +322,41 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Travel Inspiration */}
+      <section className="bg-sand-100 border-y border-navy-100 py-20 sm:py-24">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <p className="section-eyebrow">{t('home.travelInspirationEyebrow')}</p>
+              <h2 className="font-serif text-3xl sm:text-4xl text-navy-900">{t('home.travelInspirationTitle')}</h2>
+            </div>
+            <Link
+              to="/journal"
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-navy-700 hover:text-navy-900 transition-colors"
+            >
+              {t('home.viewAllStories')} <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {journalPosts.map((post, i) => (
+              <Link key={post.title} to="/journal" className="group block">
+                <div className="aspect-[4/5] mb-5 overflow-hidden">
+                  <SceneMedia
+                    tone={['beach', 'interior', 'coastal'][i]}
+                    className="w-full h-full transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <p className="text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">{post.tag}</p>
+                <h3 className="font-serif text-xl text-navy-900 mb-2 group-hover:text-navy-600 transition-colors">
+                  {post.title}
+                </h3>
+                <p className="text-sm text-navy-500 leading-relaxed">{post.excerpt}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Quality pillars */}
       <section className="bg-navy-900">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-16 sm:py-20 grid grid-cols-1 sm:grid-cols-3 gap-10 text-center">
@@ -265,6 +383,48 @@ export default function Home() {
         <p className="text-[11px] font-medium uppercase tracking-widest text-navy-400">
           {t('home.quoteAttribution')}
         </p>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-sand-100 border-y border-navy-100 py-20 sm:py-24">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
+          <div className="text-center mb-12">
+            <p className="section-eyebrow justify-center flex">{t('testimonials.eyebrow')}</p>
+            <h2 className="font-serif text-3xl sm:text-4xl text-navy-900">{t('testimonials.title')}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((item) => (
+              <div key={item.name} className="bg-sand border border-navy-100 p-7">
+                <StarRating rating={5} size={13} />
+                <p className="text-sm text-navy-700 leading-relaxed my-4">&ldquo;{item.quote}&rdquo;</p>
+                <p className="text-xs font-semibold uppercase tracking-widest text-navy-800">{item.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Instagram Gallery */}
+      <section className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20 sm:py-24">
+        <div className="text-center mb-10">
+          <p className="section-eyebrow justify-center flex">{t('instagram.eyebrow')}</p>
+          <h2 className="font-serif text-3xl sm:text-4xl text-navy-900 mb-3">{t('instagram.title')}</h2>
+          <p className="text-sm text-navy-500">{t('instagram.subtitle')}</p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {INSTAGRAM_TILES.map((category, i) => (
+            <Link
+              key={i}
+              to={`/shop?category=${encodeURIComponent(category)}`}
+              className="group relative block aspect-square overflow-hidden"
+            >
+              <ProductMedia tone={CATEGORY_TONES[category]} className="w-full h-full transition-transform duration-500 group-hover:scale-105" iconClassName="w-6 h-6" />
+              <div className="absolute inset-0 bg-navy-900/0 group-hover:bg-navy-900/30 transition-colors flex items-center justify-center">
+                <Instagram className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" strokeWidth={1.5} />
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <Newsletter />

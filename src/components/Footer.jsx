@@ -4,6 +4,9 @@ import { Instagram, Twitter, Facebook, Droplet, Mail, Check } from 'lucide-react
 import { api } from '../lib/api'
 import { useLanguage } from '../context/LanguageContext'
 
+const SHOP_CATEGORIES = ['Swimwear', 'Beachwear', 'Swimming Equipment', 'Water Sports', 'Accessories']
+const CUSTOMER_SERVICE_KEYS = ['shipping', 'returns', 'giftCards', 'loyaltyProgram']
+
 export default function Footer() {
   const { t } = useLanguage()
   const [email, setEmail] = useState('')
@@ -24,8 +27,8 @@ export default function Footer() {
 
   return (
     <footer className="bg-sand-100 border-t border-navy-100">
-      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-14 grid grid-cols-1 sm:grid-cols-3 gap-10">
-        <div>
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
+        <div className="lg:col-span-1">
           <Link to="/" className="flex items-center gap-2 mb-4">
             <Droplet className="w-4 h-4 text-navy-800" strokeWidth={1.5} />
             <span className="font-serif text-sm tracking-widest2 uppercase text-navy-900">
@@ -37,13 +40,44 @@ export default function Footer() {
 
         <div>
           <h4 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-4">
+            {t('footer.shopHeading')}
+          </h4>
+          <ul className="space-y-2.5 text-sm text-navy-500">
+            {SHOP_CATEGORIES.map((category) => (
+              <li key={category}>
+                <Link to={`/shop?category=${encodeURIComponent(category)}`} className="hover:text-navy-800 transition-colors">
+                  {t(`categories.${category}`)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-4">
             {t('footer.exploreHeading')}
           </h4>
           <ul className="space-y-2.5 text-sm text-navy-500">
             <li><Link to="/collections" className="hover:text-navy-800 transition-colors">{t('footer.links.collections')}</Link></li>
-            <li><Link to="/about" className="hover:text-navy-800 transition-colors">{t('footer.links.about')}</Link></li>
+            <li><Link to="/brands" className="hover:text-navy-800 transition-colors">{t('footer.links.brands')}</Link></li>
             <li><Link to="/journal" className="hover:text-navy-800 transition-colors">{t('footer.links.journal')}</Link></li>
+            <li><Link to="/about" className="hover:text-navy-800 transition-colors">{t('footer.links.about')}</Link></li>
             <li><Link to="/contact" className="hover:text-navy-800 transition-colors">{t('footer.links.contact')}</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-4">
+            {t('footer.customerServiceHeading')}
+          </h4>
+          <ul className="space-y-2.5 text-sm text-navy-500">
+            {CUSTOMER_SERVICE_KEYS.map((key) => (
+              <li key={key}>
+                <Link to="/contact" className="hover:text-navy-800 transition-colors">
+                  {t(`footer.customerService.${key}`)}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 

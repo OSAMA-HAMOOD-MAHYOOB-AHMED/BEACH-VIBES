@@ -18,6 +18,7 @@ const PRODUCT_FIELDS = [
   'image',
   'material',
   'brand',
+  'colors',
   'rating',
   'reviews',
   'is_new',

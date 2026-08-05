@@ -15,14 +15,18 @@ export default function Shop() {
   const { products } = useProducts()
   const [params, setParams] = useSearchParams()
   const category = params.get('category')
+  const categoriesParam = params.get('categories')
+  const categoryList = categoriesParam ? categoriesParam.split(',') : null
   const brand = params.get('brand')
   const activeFilter = params.get('filter') // 'new' | 'sale'
+  const bundle = params.get('bundle')
   const [query, setQuery] = useState(() => params.get('q') || '')
   const [visible, setVisible] = useState(PAGE_SIZE)
 
   const clearFilter = (key) => {
     const next = new URLSearchParams(params)
     next.delete(key)
+    if (key === 'categories') next.delete('bundle')
     setParams(next)
     setVisible(PAGE_SIZE)
   }
@@ -30,6 +34,7 @@ export default function Shop() {
   const filtered = useMemo(() => {
     let result = products.map((p) => localizeProduct(p, language))
     if (category) result = result.filter((p) => p.category === category)
+    if (categoryList) result = result.filter((p) => categoryList.includes(p.category))
     if (brand) result = result.filter((p) => p.brand === brand)
     if (activeFilter === 'new') result = result.filter((p) => p.isNew)
     if (activeFilter === 'sale') result = result.filter((p) => p.compareAtPrice > p.price)
@@ -38,13 +43,14 @@ export default function Shop() {
       result = result.filter((p) => p.name.toLowerCase().includes(q))
     }
     return result
-  }, [products, category, brand, activeFilter, query, language])
+  }, [products, category, categoryList, brand, activeFilter, query, language])
 
   const shown = filtered.slice(0, visible)
   const activeChips = [
     ...(activeFilter === 'new' ? [{ key: 'filter', label: t('shop.newArrivalsChip') }] : []),
     ...(activeFilter === 'sale' ? [{ key: 'filter', label: t('shop.saleChip') }] : []),
     ...(category ? [{ key: 'category', label: t(`categories.${category}`) }] : []),
+    ...(bundle ? [{ key: 'categories', label: t(`bundles.${bundle}.title`) }] : []),
     ...(brand ? [{ key: 'brand', label: brand }] : []),
   ]
 

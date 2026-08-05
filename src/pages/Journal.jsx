@@ -2,7 +2,7 @@ import { SceneMedia } from '../components/Media'
 import Newsletter from '../components/Newsletter'
 import { useLanguage } from '../context/LanguageContext'
 
-const POST_TONES = ['beach', 'interior', 'coastal']
+const POST_TONES = ['beach', 'interior', 'coastal', 'spotlight', 'hero', 'dark']
 
 export default function Journal() {
   const { t } = useLanguage()

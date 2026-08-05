@@ -41,8 +41,16 @@ const en = {
     brand: 'Beach Vibes',
     tagline:
       'Curated collections of artisanal goods for the discerning individual. Elegance and quality in every detail.',
+    shopHeading: 'Shop',
     exploreHeading: 'Explore',
-    links: { collections: 'Collections', about: 'About Us', journal: 'Journal', contact: 'Contact' },
+    links: { collections: 'Collections', brands: 'Brands', about: 'About Us', journal: 'Journal', contact: 'Contact' },
+    customerServiceHeading: 'Customer Service',
+    customerService: {
+      shipping: 'Shipping',
+      returns: 'Returns',
+      giftCards: 'Gift Cards',
+      loyaltyProgram: 'Loyalty Program',
+    },
     joinHeading: 'Join the Circle',
     joinSubtitle: 'Subscribe for early access to new releases.',
     emailPlaceholder: 'Enter your email',
@@ -68,6 +76,9 @@ const en = {
     newBadge: 'New',
     saleBadge: 'Sale',
     wishlist: 'Add to wishlist',
+    quickView: 'Quick View',
+    colors: 'Colors',
+    viewFullDetails: 'View Full Details',
   },
   categories: {
     Swimwear: 'Swimwear',
@@ -115,6 +126,11 @@ const en = {
     editEyebrow: 'The Edit',
     summerCurationsTitle: 'Summer Curations',
     viewAllObjects: 'View All Objects',
+    bestSellersEyebrow: 'Customer Favorites',
+    bestSellersTitle: 'Best Sellers',
+    travelInspirationEyebrow: 'The Coastal Journal',
+    travelInspirationTitle: 'Travel Inspiration',
+    viewAllStories: 'View All Stories',
     craftsmanshipEyebrow: 'Craftsmanship',
     craftsmanshipTitle: 'Artisanal Roots, Global Elegance.',
     craftsmanshipBody:
@@ -422,21 +438,39 @@ const en = {
     title: 'Stories from the Atelier',
     posts: [
       {
-        tag: 'Craftsmanship',
-        title: 'Elegance in Simplicity',
+        tag: 'Travel',
+        title: 'The Ultimate Vacation Packing Guide',
         excerpt:
-          'Discover the philosophy behind our Summer Collections, inspired by the raw textures of the Mediterranean coast.',
+          'Everything worth folding into a carry-on for a week by the water — and the few things you can leave behind.',
       },
       {
-        tag: 'The Atelier',
-        title: 'Where Water Meets The Shore',
-        excerpt: 'Our founder spent three summers on the Amalfi Coast documenting the changing scent of the sea.',
+        tag: 'Style',
+        title: 'Beach Fashion Tips for Every Body',
+        excerpt:
+          'How to layer swimwear, cover-ups, and accessories so the look works from the sand to sunset drinks.',
       },
       {
-        tag: 'Sun Care',
-        title: 'The Case for Mineral Sunscreen',
+        tag: 'Essentials',
+        title: 'Summer Essentials You Actually Need',
         excerpt:
-          "Why zinc oxide outperforms chemical filters for all-day wear — and why it matters for the reefs you're swimming over.",
+          'The short, honest list — sun care, hydration, and the handful of extras worth the suitcase space.',
+      },
+      {
+        tag: 'Care Guide',
+        title: 'How to Make Your Swimwear Last',
+        excerpt:
+          'Rinse, dry, store: the three-step habit that keeps elastic and color intact for seasons, not weeks.',
+      },
+      {
+        tag: 'Destinations',
+        title: 'Ten Best Beaches Worth the Trip',
+        excerpt: 'From quiet coves to reef-lined bays, the stretches of coastline our team keeps going back to.',
+      },
+      {
+        tag: 'Water Sports',
+        title: "A Beginner's Guide to Water Sports",
+        excerpt:
+          "Snorkeling, paddleboarding, or your first real swim lesson — what gear actually matters when you're starting out.",
       },
     ],
   },
@@ -544,6 +578,72 @@ const en = {
     shopBtn: 'Shop All',
     comingSoon: 'Coming Soon',
   },
+  bundles: {
+    eyebrow: 'Curated For You',
+    sectionTitle: 'Vacation Bundles',
+    shopBundle: 'Shop The Bundle',
+    maldivesEscape: {
+      title: 'Maldives Escape',
+      description: 'Resort-ready pieces for overwater bungalows and reef-blue afternoons.',
+    },
+    familyBeachDay: {
+      title: 'Family Beach Day',
+      description: 'Everything the whole crew needs for a full day in the sand.',
+    },
+    surfStarterKit: {
+      title: 'Surf Starter Kit',
+      description: 'The essentials for your first paddle out, from board to booties.',
+    },
+    poolPartyBundle: {
+      title: 'Pool Party Bundle',
+      description: 'Statement swimwear and finishing touches for a day by the water.',
+    },
+    luxuryResortCollection: {
+      title: 'Luxury Resort Collection',
+      description: 'Elevated resortwear for five-star arrivals and sunset dinners.',
+    },
+  },
+  testimonials: {
+    eyebrow: 'Real Trips, Real Gear',
+    title: 'What Our Customers Say',
+    items: [
+      {
+        name: 'Sofia M.',
+        quote:
+          'Ordered a full beach kit for our Maldives trip and everything arrived exactly as pictured — the swimsuit fit perfectly and the sunscreen didn\'t leave a single white mark.',
+      },
+      {
+        name: 'James K.',
+        quote:
+          "Finally a water sports shop that doesn't feel like a big-box store. The paddleboard kit was genuinely well thought out, right down to the backpack.",
+      },
+      {
+        name: 'Amara O.',
+        quote:
+          'The quick view feature alone saved me so much time comparing sun hats. Fast shipping, and the quality matches the price.',
+      },
+    ],
+  },
+  instagram: {
+    eyebrow: 'Share Your Vibes',
+    title: 'Shop The Feed',
+    subtitle: 'Tag @beachvibes for a chance to be featured.',
+  },
+  assistant: {
+    toggleLabel: 'Beach Vibes Assistant',
+    title: 'Beach Vibes Assistant',
+    question: 'Where are you going?',
+    destinations: {
+      beachResort: 'Beach Resort',
+      swimmingPool: 'Swimming Pool',
+      bali: 'Bali',
+      maldives: 'Maldives',
+      familyVacation: 'Family Vacation',
+    },
+    startOver: 'Start Over',
+    recommendationIntro: "Great choice. Here's what we'd pack for {{destination}}:",
+    shopEdit: 'Shop This Edit',
+  },
 }
 
 const ar = {
@@ -588,8 +688,16 @@ const ar = {
   footer: {
     brand: 'بيتش فايبس',
     tagline: 'مجموعات مختارة من القطع الحرفية للفرد المميز. أناقة وجودة في كل التفاصيل.',
+    shopHeading: 'التسوق',
     exploreHeading: 'استكشف',
-    links: { collections: 'المجموعات', about: 'من نحن', journal: 'المجلة', contact: 'تواصل معنا' },
+    links: { collections: 'المجموعات', brands: 'العلامات التجارية', about: 'من نحن', journal: 'المجلة', contact: 'تواصل معنا' },
+    customerServiceHeading: 'خدمة العملاء',
+    customerService: {
+      shipping: 'الشحن',
+      returns: 'الإرجاع',
+      giftCards: 'بطاقات الهدايا',
+      loyaltyProgram: 'برنامج الولاء',
+    },
     joinHeading: 'انضم إلى الدائرة',
     joinSubtitle: 'اشترك للحصول على وصول مبكر للإصدارات الجديدة.',
     emailPlaceholder: 'أدخل بريدك الإلكتروني',
@@ -615,6 +723,9 @@ const ar = {
     newBadge: 'جديد',
     saleBadge: 'تخفيض',
     wishlist: 'أضف إلى قائمة الرغبات',
+    quickView: 'عرض سريع',
+    colors: 'الألوان',
+    viewFullDetails: 'عرض التفاصيل الكاملة',
   },
   categories: {
     Swimwear: 'ملابس السباحة',
@@ -662,6 +773,11 @@ const ar = {
     editEyebrow: 'التشكيلة المختارة',
     summerCurationsTitle: 'مختارات الصيف',
     viewAllObjects: 'عرض كل القطع',
+    bestSellersEyebrow: 'الأكثر تفضيلاً',
+    bestSellersTitle: 'الأكثر مبيعاً',
+    travelInspirationEyebrow: 'المجلة الساحلية',
+    travelInspirationTitle: 'إلهام السفر',
+    viewAllStories: 'عرض كل القصص',
     craftsmanshipEyebrow: 'الحرفية',
     craftsmanshipTitle: 'جذور حرفية، أناقة عالمية.',
     craftsmanshipBody:
@@ -966,20 +1082,34 @@ const ar = {
     title: 'قصص من المحترف',
     posts: [
       {
-        tag: 'الحرفية',
-        title: 'أناقة في البساطة',
-        excerpt:
-          'اكتشف الفلسفة وراء مجموعاتنا الصيفية، المستوحاة من الملامح الخام لساحل البحر المتوسط.',
+        tag: 'السفر',
+        title: 'الدليل الشامل لحقيبة سفر الإجازة',
+        excerpt: 'كل ما يستحق طيّه في حقيبة يد لأسبوع قرب الماء — والأشياء القليلة التي يمكنك تركها خلفك.',
       },
       {
-        tag: 'المحترف',
-        title: 'حيث يلتقي الماء بالشاطئ',
-        excerpt: 'أمضى مؤسسنا ثلاثة صيفيات على ساحل أمالفي موثقاً تغير رائحة البحر.',
+        tag: 'الأناقة',
+        title: 'نصائح أزياء الشاطئ لكل قوام',
+        excerpt: 'كيف تُنسّق ملابس السباحة والأغطية والإكسسوارات بحيث تناسب الإطلالة من الرمال إلى مشروبات الغروب.',
       },
       {
-        tag: 'العناية الشمسية',
-        title: 'حجة واقي الشمس المعدني',
-        excerpt: 'لماذا يتفوق أكسيد الزنك على المرشحات الكيميائية للثبات طوال اليوم — ولماذا يهم ذلك للشعاب المرجانية التي تسبح فوقها.',
+        tag: 'الأساسيات',
+        title: 'أساسيات الصيف التي تحتاجها فعلاً',
+        excerpt: 'القائمة القصيرة والصادقة — العناية الشمسية، الترطيب، وحفنة من الإضافات التي تستحق مساحة الحقيبة.',
+      },
+      {
+        tag: 'دليل العناية',
+        title: 'كيف تُطيل عمر ملابس السباحة',
+        excerpt: 'اشطف، جفف، خزّن: العادة الثلاثية الخطوات التي تحافظ على المرونة واللون لمواسم لا لأسابيع.',
+      },
+      {
+        tag: 'الوجهات',
+        title: 'عشرة شواطئ تستحق الرحلة',
+        excerpt: 'من الخلجان الهادئة إلى الخلجان المحاطة بالشعاب المرجانية، السواحل التي يعود إليها فريقنا دائماً.',
+      },
+      {
+        tag: 'الرياضات المائية',
+        title: 'دليل المبتدئين للرياضات المائية',
+        excerpt: 'الغطس بالأنبوب، التجديف واقفاً، أو درس السباحة الأول — ما الذي يهم فعلاً من التجهيزات عندما تبدأ.',
       },
     ],
   },
@@ -1085,6 +1215,72 @@ const ar = {
     flagship: 'العلامة الرئيسية',
     shopBtn: 'تسوق الكل',
     comingSoon: 'قريباً',
+  },
+  bundles: {
+    eyebrow: 'مُختار لك',
+    sectionTitle: 'حزم الإجازات',
+    shopBundle: 'تسوق الحزمة',
+    maldivesEscape: {
+      title: 'هروب المالديف',
+      description: 'قطع جاهزة للمنتجعات، مناسبة للأكواخ فوق الماء وأمسيات الشعاب الزرقاء.',
+    },
+    familyBeachDay: {
+      title: 'يوم شاطئ عائلي',
+      description: 'كل ما يحتاجه الجميع ليوم كامل على الرمال.',
+    },
+    surfStarterKit: {
+      title: 'مجموعة بداية ركوب الأمواج',
+      description: 'الأساسيات لأول جولة تجديف لك، من اللوح إلى الأحذية المائية.',
+    },
+    poolPartyBundle: {
+      title: 'مجموعة حفلة المسبح',
+      description: 'ملابس سباحة مميزة ولمسات أخيرة ليوم قرب الماء.',
+    },
+    luxuryResortCollection: {
+      title: 'مجموعة المنتجع الفاخر',
+      description: 'ملابس منتجع راقية لوصول بخمس نجوم وعشاء عند الغروب.',
+    },
+  },
+  testimonials: {
+    eyebrow: 'رحلات حقيقية، تجهيزات حقيقية',
+    title: 'ماذا يقول عملاؤنا',
+    items: [
+      {
+        name: 'صوفيا م.',
+        quote:
+          'طلبت مجموعة شاطئية كاملة لرحلتنا إلى المالديف ووصل كل شيء كما في الصور تماماً — بدلة السباحة كانت بالمقاس المثالي وواقي الشمس لم يترك أي أثر أبيض.',
+      },
+      {
+        name: 'جيمس ك.',
+        quote:
+          'أخيراً متجر رياضات مائية لا يبدو وكأنه متجر ضخم بلا روح. مجموعة لوح التجديف كانت مدروسة بعناية حقاً، حتى حقيبة الظهر.',
+      },
+      {
+        name: 'أمارا أو.',
+        quote:
+          'ميزة العرض السريع وحدها وفّرت عليّ الكثير من الوقت في مقارنة قبعات الشمس. شحن سريع، والجودة تطابق السعر.',
+      },
+    ],
+  },
+  instagram: {
+    eyebrow: 'شارك أجواءك',
+    title: 'تسوق من خلال الصور',
+    subtitle: 'أضف وسم @beachvibes لفرصة الظهور معنا.',
+  },
+  assistant: {
+    toggleLabel: 'مساعد بيتش فايبس',
+    title: 'مساعد بيتش فايبس',
+    question: 'إلى أين أنت ذاهب؟',
+    destinations: {
+      beachResort: 'منتجع شاطئي',
+      swimmingPool: 'مسبح',
+      bali: 'بالي',
+      maldives: 'المالديف',
+      familyVacation: 'إجازة عائلية',
+    },
+    startOver: 'البدء من جديد',
+    recommendationIntro: 'اختيار رائع. إليك ما ننصح بحزمه من أجل {{destination}}:',
+    shopEdit: 'تسوق هذه التشكيلة',
   },
 }
 
