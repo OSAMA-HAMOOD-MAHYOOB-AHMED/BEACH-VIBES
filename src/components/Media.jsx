@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { Waves, Sun, Umbrella, Fish, Footprints, ShoppingBag } from 'lucide-react'
+import { Waves, Sun, Umbrella, Fish, Footprints, ShoppingBag, Shirt, Glasses } from 'lucide-react'
 
 const PRODUCT_TONES = {
   swimwear: { from: '#bfe3ea', via: '#6fb8c9', to: '#2e7d95', Icon: Waves },
+  beachwear: { from: '#fbe0d4', via: '#f2a488', to: '#c96b4a', Icon: Shirt },
   suncare: { from: '#ffe7b3', via: '#ffbf69', to: '#e8873f', Icon: Sun },
   beachgear: { from: '#f4ecd8', via: '#e0d2ab', to: '#c9a876', Icon: Umbrella },
+  swimequipment: { from: '#d4f1f4', via: '#75c9c9', to: '#1c6e6e', Icon: Glasses },
   watersports: { from: '#b8d4e3', via: '#4f83a3', to: '#1f4e68', Icon: Fish },
   footwear: { from: '#ecdec0', via: '#c99f6c', to: '#83592f', Icon: Footprints },
   accessories: { from: '#f0e2c0', via: '#d4b483', to: '#a8783f', Icon: ShoppingBag },

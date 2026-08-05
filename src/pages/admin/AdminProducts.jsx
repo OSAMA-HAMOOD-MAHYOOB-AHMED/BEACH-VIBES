@@ -4,7 +4,7 @@ import { api } from '../../lib/api'
 import { CATEGORIES, MATERIALS } from '../../data/products'
 import { formatPrice } from '../../utils/format'
 
-const TONES = ['swimwear', 'suncare', 'beachgear', 'watersports', 'footwear', 'accessories']
+const TONES = ['swimwear', 'beachwear', 'suncare', 'beachgear', 'swimequipment', 'watersports', 'footwear', 'accessories']
 
 const EMPTY_FORM = {
   id: '',
@@ -13,7 +13,9 @@ const EMPTY_FORM = {
   category: CATEGORIES[0],
   material: MATERIALS[0],
   tone: TONES[0],
+  brand: 'Beach Vibes',
   price: '',
+  compareAtPrice: '',
   image: '',
   rating: '',
   reviews: '',
@@ -31,7 +33,9 @@ function toFormState(product) {
     category: product.category,
     material: product.material,
     tone: product.tone,
+    brand: product.brand || 'Beach Vibes',
     price: product.price,
+    compareAtPrice: product.compareAtPrice ?? '',
     image: product.image || '',
     rating: product.rating ?? '',
     reviews: product.reviews ?? '',
@@ -93,7 +97,9 @@ export default function AdminProducts() {
         category: form.category,
         material: form.material,
         tone: form.tone,
+        brand: form.brand || 'Beach Vibes',
         price: Number(form.price),
+        compare_at_price: form.compareAtPrice === '' ? null : Number(form.compareAtPrice),
         image: form.image || null,
         rating: form.rating === '' ? null : Number(form.rating),
         reviews: form.reviews === '' ? 0 : Number(form.reviews),
@@ -202,6 +208,12 @@ export default function AdminProducts() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+            <Field label={t('admin.products.brand')}>
+              <input value={form.brand} onChange={onChange('brand')} className="input-field" />
+            </Field>
+            <Field label={t('admin.products.compareAtPrice')}>
+              <input type="number" min="0" step="0.01" value={form.compareAtPrice} onChange={onChange('compareAtPrice')} className="input-field" />
+            </Field>
             <Field label={t('admin.products.rating')}>
               <input type="number" min="0" max="5" step="0.1" value={form.rating} onChange={onChange('rating')} className="input-field" />
             </Field>

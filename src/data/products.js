@@ -1,6 +1,14 @@
-export const CATEGORIES = ['Swimwear', 'Sun Care', 'Beach Gear', 'Water Sports', 'Footwear', 'Accessories']
+export const CATEGORIES = [
+  'Swimwear',
+  'Beachwear',
+  'Footwear',
+  'Swimming Equipment',
+  'Water Sports',
+  'Beach Essentials',
+  'Accessories',
+]
 
-export const MATERIALS = ['Nylon', 'Cotton', 'Neoprene', 'Rubber', 'Straw', 'Mineral', 'Aluminum']
+export const MATERIALS = ['Nylon', 'Cotton', 'Neoprene', 'Rubber', 'Straw', 'Mineral', 'Aluminum', 'PVC']
 
 export const PRODUCTS = [
   {
@@ -10,6 +18,7 @@ export const PRODUCTS = [
     price: 128,
     tone: 'swimwear',
     material: 'Nylon',
+    brand: 'Beach Vibes',
     rating: 4.8,
     reviews: 112,
     isSignature: true,
@@ -24,8 +33,10 @@ export const PRODUCTS = [
     name: 'Cerulean Bikini Set',
     category: 'Swimwear',
     price: 96,
+    compareAtPrice: 120,
     tone: 'swimwear',
     material: 'Nylon',
+    brand: 'Beach Vibes',
     rating: 4.6,
     reviews: 54,
     isNew: true,
@@ -36,98 +47,54 @@ export const PRODUCTS = [
       'طقم بيكيني بلونٍ سماوي غني، بأربطة قابلة للتعديل وتغطية متوسطة، مصمم لأيامٍ طويلة في الماء.',
   },
   {
-    id: 'mineral-sunscreen-spf50',
-    name: 'Mineral Sunscreen SPF 50',
-    category: 'Sun Care',
-    price: 34,
-    tone: 'suncare',
-    material: 'Mineral',
-    rating: 4.9,
-    reviews: 203,
-    isSignature: true,
-    description:
-      'A reef-safe, broad-spectrum mineral sunscreen that blends in clear and never feels greasy — the one bottle worth reapplying.',
-    name_ar: 'واقي شمس معدني SPF 50',
-    description_ar:
-      'واقٍ شمسي معدني آمن للشعاب المرجانية وواسع الطيف، يمتزج بالبشرة دون أثر أبيض أو لمعان دهني — الزجاجة الوحيدة التي تستحق إعادة الاستخدام.',
-  },
-  {
-    id: 'after-sun-aloe-balm',
-    name: 'After-Sun Aloe Balm',
-    category: 'Sun Care',
-    price: 26,
-    tone: 'suncare',
-    material: 'Mineral',
-    rating: 4.7,
-    reviews: 68,
-    isNew: true,
-    description:
-      'A cooling aloe and chamomile balm that calms sun-warmed skin and locks in moisture after a long day at the beach.',
-    name_ar: 'بلسم الصبار لما بعد الشمس',
-    description_ar:
-      'بلسم مهدئ من الصبار والبابونج يخفف احمرار البشرة المتعبة من الشمس ويحافظ على ترطيبها بعد يومٍ طويل على الشاطئ.',
-  },
-  {
-    id: 'turkish-beach-towel',
-    name: 'Oversized Turkish Beach Towel',
-    category: 'Beach Gear',
-    price: 58,
-    tone: 'beachgear',
-    material: 'Cotton',
-    rating: 4.8,
-    reviews: 91,
-    isNew: true,
-    description:
-      "Densely woven Turkish cotton that's sand-resistant, quick-drying, and generous enough to share.",
-    name_ar: 'منشفة شاطئ تركية كبيرة الحجم',
-    description_ar:
-      'منشفة من القطن التركي المنسوج بإحكام، تقاوم الرمل وتجف بسرعة، وبحجمٍ كبير يكفي للمشاركة.',
-  },
-  {
-    id: 'portable-beach-umbrella',
-    name: 'Portable Beach Umbrella',
-    category: 'Beach Gear',
-    price: 89,
-    tone: 'beachgear',
-    material: 'Aluminum',
-    rating: 4.6,
-    reviews: 47,
-    description:
-      'A UPF 50+ canopy on a corrosion-resistant aluminum pole, with a sand anchor for wind-steady shade.',
-    name_ar: 'مظلة شاطئ محمولة',
-    description_ar:
-      'مظلة بحماية UPF 50+ على عمودٍ من الألومنيوم المقاوم للتآكل، مزودة بمثبت رملي لظلٍ ثابت مهما اشتدت الرياح.',
-  },
-  {
-    id: 'anti-fog-swim-goggles',
-    name: 'Anti-Fog Swim Goggles',
-    category: 'Water Sports',
-    price: 32,
-    tone: 'watersports',
-    material: 'Rubber',
-    rating: 4.7,
-    reviews: 84,
-    description:
-      'A wide-vision anti-fog lens with a soft silicone gasket for a leak-free, mark-free fit.',
-    name_ar: 'نظارات سباحة مضادة للضباب',
-    description_ar:
-      'عدسة بمجال رؤية واسع ومقاومة للضباب، بحشية سيليكون ناعمة لملاءمة محكمة دون تسرب أو أثر على الوجه.',
-  },
-  {
-    id: 'full-face-snorkel-mask',
-    name: 'Full-Face Snorkel Mask',
-    category: 'Water Sports',
+    id: 'amalfi-swim-trunks',
+    name: 'Amalfi Swim Trunks',
+    category: 'Swimwear',
     price: 68,
-    tone: 'watersports',
-    material: 'Rubber',
-    rating: 4.8,
-    reviews: 76,
+    tone: 'swimwear',
+    material: 'Nylon',
+    brand: 'Beach Vibes',
+    rating: 4.7,
+    reviews: 41,
+    description:
+      'Quick-dry swim trunks in a mid-length cut with a mesh liner and secure zip pocket, built for the water and the walk back.',
+    name_ar: 'شورت سباحة أمالفي',
+    description_ar:
+      'شورت سباحة سريع الجفاف بطول متوسط وبطانة شبكية وجيب بسحاب آمن، مناسب للماء وللطريق عودةً منه.',
+  },
+  {
+    id: 'sun-washed-kaftan',
+    name: 'Sun-Washed Kaftan',
+    category: 'Beachwear',
+    price: 118,
+    tone: 'beachwear',
+    material: 'Cotton',
+    brand: 'Beach Vibes',
+    rating: 4.7,
+    reviews: 36,
     isSignature: true,
     description:
-      'A 180-degree panoramic mask with a dry-top snorkel and anti-fog ventilation, built for effortless breathing at the surface.',
-    name_ar: 'قناع غطس كامل للوجه',
+      'A breezy cotton kaftan in a sun-bleached wash, cut loose enough to throw over a swimsuit or wear on its own at golden hour.',
+    name_ar: 'قفطان مغسول بالشمس',
     description_ar:
-      'قناع بانورامي بزاوية رؤية 180 درجة مع أنبوب تنفس علوي جاف وتهوية مضادة للضباب، مصمم لتنفسٍ سلس عند سطح الماء.',
+      'قفطان قطني منعش بغسلة مبيّضة بالشمس، بقصة فضفاضة تُلبس فوق ملابس السباحة أو بمفردها عند الغروب.',
+  },
+  {
+    id: 'printed-sarong-wrap',
+    name: 'Printed Sarong Wrap',
+    category: 'Beachwear',
+    price: 52,
+    tone: 'beachwear',
+    material: 'Cotton',
+    brand: 'Beach Vibes',
+    rating: 4.5,
+    reviews: 22,
+    isNew: true,
+    description:
+      'A lightweight cotton sarong in a hand-drawn wave print, tied a dozen ways from beach cover-up to sundress.',
+    name_ar: 'لفة ساحلية بنقشة مطبوعة',
+    description_ar:
+      'لفة قطنية خفيفة بنقشة أمواج مرسومة يدوياً، تُربط بعشرات الطرق من غطاء شاطئ إلى فستان صيفي.',
   },
   {
     id: 'quick-dry-water-shoes',
@@ -136,6 +103,7 @@ export const PRODUCTS = [
     price: 54,
     tone: 'footwear',
     material: 'Neoprene',
+    brand: 'Beach Vibes',
     rating: 4.5,
     reviews: 39,
     description:
@@ -151,6 +119,7 @@ export const PRODUCTS = [
     price: 72,
     tone: 'footwear',
     material: 'Straw',
+    brand: 'Beach Vibes',
     rating: 4.6,
     reviews: 28,
     isNew: true,
@@ -161,12 +130,180 @@ export const PRODUCTS = [
       'أحزمة من الرافيا المنسوجة يدوياً على نعلٍ مبطن، عملية على الرمال وأنيقة بما يكفي لغداءٍ قرب الشاطئ.',
   },
   {
+    id: 'classic-flip-flops',
+    name: 'Classic Rubber Flip-Flops',
+    category: 'Footwear',
+    price: 28,
+    tone: 'footwear',
+    material: 'Rubber',
+    brand: 'Beach Vibes',
+    rating: 4.4,
+    reviews: 67,
+    description:
+      'Soft rubber flip-flops with a contoured footbed and a sole that grips wet tile as well as dry sand.',
+    name_ar: 'شبشب مطاطي كلاسيكي',
+    description_ar:
+      'شبشب من المطاط الناعم بقاعدة مقوسة تدعم القدم ونعل يثبت جيداً على البلاط المبلل والرمل الجاف على حد سواء.',
+  },
+  {
+    id: 'anti-fog-swim-goggles',
+    name: 'Anti-Fog Swim Goggles',
+    category: 'Swimming Equipment',
+    price: 32,
+    tone: 'swimequipment',
+    material: 'Rubber',
+    brand: 'Beach Vibes',
+    rating: 4.7,
+    reviews: 84,
+    description:
+      'A wide-vision anti-fog lens with a soft silicone gasket for a leak-free, mark-free fit.',
+    name_ar: 'نظارات سباحة مضادة للضباب',
+    description_ar:
+      'عدسة بمجال رؤية واسع ومقاومة للضباب، بحشية سيليكون ناعمة لملاءمة محكمة دون تسرب أو أثر على الوجه.',
+  },
+  {
+    id: 'full-face-snorkel-mask',
+    name: 'Full-Face Snorkel Mask',
+    category: 'Swimming Equipment',
+    price: 68,
+    compareAtPrice: 82,
+    tone: 'swimequipment',
+    material: 'Rubber',
+    brand: 'Beach Vibes',
+    rating: 4.8,
+    reviews: 76,
+    isSignature: true,
+    description:
+      'A 180-degree panoramic mask with a dry-top snorkel and anti-fog ventilation, built for effortless breathing at the surface.',
+    name_ar: 'قناع غطس كامل للوجه',
+    description_ar:
+      'قناع بانورامي بزاوية رؤية 180 درجة مع أنبوب تنفس علوي جاف وتهوية مضادة للضباب، مصمم لتنفسٍ سلس عند سطح الماء.',
+  },
+  {
+    id: 'silicone-swim-cap',
+    name: 'Silicone Swim Cap',
+    category: 'Swimming Equipment',
+    price: 22,
+    tone: 'swimequipment',
+    material: 'Rubber',
+    brand: 'Beach Vibes',
+    rating: 4.5,
+    reviews: 31,
+    description:
+      'A durable silicone cap that grips without pulling, cutting drag for laps and keeping hair dry-ish at the beach.',
+    name_ar: 'قبعة سباحة سيليكون',
+    description_ar:
+      'قبعة سيليكون متينة تثبت دون أن تشد الشعر، تقلل مقاومة الماء أثناء السباحة وتحافظ على الشعر شبه جاف على الشاطئ.',
+  },
+  {
+    id: 'inflatable-sup-board',
+    name: 'Inflatable Stand-Up Paddleboard',
+    category: 'Water Sports',
+    price: 449,
+    tone: 'watersports',
+    material: 'PVC',
+    brand: 'Beach Vibes',
+    rating: 4.8,
+    reviews: 44,
+    isSignature: true,
+    description:
+      'A rigid-when-inflated touring board with a carbon-hybrid paddle, hand pump, and backpack — the whole kit rolls up small enough for a car trunk.',
+    name_ar: 'لوح تجديف واقفاً قابل للنفخ',
+    description_ar:
+      'لوح تجول يصبح صلباً عند نفخه، مع مجداف هجين من الكربون ومنفاخ يدوي وحقيبة ظهر — تنطوي المجموعة كاملة لتناسب صندوق السيارة.',
+  },
+  {
+    id: 'coastal-life-jacket',
+    name: 'Coastal Life Jacket',
+    category: 'Water Sports',
+    price: 74,
+    tone: 'watersports',
+    material: 'Nylon',
+    brand: 'Beach Vibes',
+    rating: 4.6,
+    reviews: 19,
+    isNew: true,
+    description:
+      'A US Coast Guard-approved life vest in a low-profile cut, sized for a real range of paddling and boating days.',
+    name_ar: 'سترة نجاة ساحلية',
+    description_ar:
+      'سترة نجاة معتمدة من خفر السواحل الأمريكي بقصة منخفضة الحجم، مناسبة لأيام التجديف والإبحار الحقيقية.',
+  },
+  {
+    id: 'mineral-sunscreen-spf50',
+    name: 'Mineral Sunscreen SPF 50',
+    category: 'Beach Essentials',
+    price: 34,
+    tone: 'suncare',
+    material: 'Mineral',
+    brand: 'Beach Vibes',
+    rating: 4.9,
+    reviews: 203,
+    isSignature: true,
+    description:
+      'A reef-safe, broad-spectrum mineral sunscreen that blends in clear and never feels greasy — the one bottle worth reapplying.',
+    name_ar: 'واقي شمس معدني SPF 50',
+    description_ar:
+      'واقٍ شمسي معدني آمن للشعاب المرجانية وواسع الطيف، يمتزج بالبشرة دون أثر أبيض أو لمعان دهني — الزجاجة الوحيدة التي تستحق إعادة الاستخدام.',
+  },
+  {
+    id: 'after-sun-aloe-balm',
+    name: 'After-Sun Aloe Balm',
+    category: 'Beach Essentials',
+    price: 26,
+    tone: 'suncare',
+    material: 'Mineral',
+    brand: 'Beach Vibes',
+    rating: 4.7,
+    reviews: 68,
+    isNew: true,
+    description:
+      'A cooling aloe and chamomile balm that calms sun-warmed skin and locks in moisture after a long day at the beach.',
+    name_ar: 'بلسم الصبار لما بعد الشمس',
+    description_ar:
+      'بلسم مهدئ من الصبار والبابونج يخفف احمرار البشرة المتعبة من الشمس ويحافظ على ترطيبها بعد يومٍ طويل على الشاطئ.',
+  },
+  {
+    id: 'turkish-beach-towel',
+    name: 'Oversized Turkish Beach Towel',
+    category: 'Beach Essentials',
+    price: 58,
+    tone: 'beachgear',
+    material: 'Cotton',
+    brand: 'Beach Vibes',
+    rating: 4.8,
+    reviews: 91,
+    isNew: true,
+    description:
+      "Densely woven Turkish cotton that's sand-resistant, quick-drying, and generous enough to share.",
+    name_ar: 'منشفة شاطئ تركية كبيرة الحجم',
+    description_ar:
+      'منشفة من القطن التركي المنسوج بإحكام، تقاوم الرمل وتجف بسرعة، وبحجمٍ كبير يكفي للمشاركة.',
+  },
+  {
+    id: 'portable-beach-umbrella',
+    name: 'Portable Beach Umbrella',
+    category: 'Beach Essentials',
+    price: 89,
+    tone: 'beachgear',
+    material: 'Aluminum',
+    brand: 'Beach Vibes',
+    rating: 4.6,
+    reviews: 47,
+    description:
+      'A UPF 50+ canopy on a corrosion-resistant aluminum pole, with a sand anchor for wind-steady shade.',
+    name_ar: 'مظلة شاطئ محمولة',
+    description_ar:
+      'مظلة بحماية UPF 50+ على عمودٍ من الألومنيوم المقاوم للتآكل، مزودة بمثبت رملي لظلٍ ثابت مهما اشتدت الرياح.',
+  },
+  {
     id: 'woven-straw-beach-bag',
     name: 'Woven Straw Beach Bag',
     category: 'Accessories',
     price: 86,
     tone: 'accessories',
     material: 'Straw',
+    brand: 'Beach Vibes',
     rating: 4.7,
     reviews: 52,
     isSignature: true,
@@ -183,6 +320,7 @@ export const PRODUCTS = [
     price: 48,
     tone: 'accessories',
     material: 'Straw',
+    brand: 'Beach Vibes',
     rating: 4.5,
     reviews: 33,
     description:
@@ -190,6 +328,24 @@ export const PRODUCTS = [
     name_ar: 'قبعة شمس قابلة للطي',
     description_ar:
       'قبعة قش عريضة الحواف تُطوى بسهولة للسفر وتستعيد شكلها فوراً، بحماية UPF 50+ للوجه والرقبة.',
+  },
+  {
+    id: 'polarized-beach-sunglasses',
+    name: 'Polarized Beach Sunglasses',
+    category: 'Accessories',
+    price: 118,
+    compareAtPrice: 145,
+    tone: 'accessories',
+    material: 'Aluminum',
+    brand: 'Beach Vibes',
+    rating: 4.6,
+    reviews: 29,
+    isNew: true,
+    description:
+      'Polarized lenses in a lightweight aluminum frame, cutting glare off the water without distorting the color of the day.',
+    name_ar: 'نظارة شمسية مستقطبة للشاطئ',
+    description_ar:
+      'عدسات مستقطبة بإطار خفيف من الألومنيوم، تقلل وهج الماء دون أن تُغيّر ألوان اليوم من حولك.',
   },
 ]
 

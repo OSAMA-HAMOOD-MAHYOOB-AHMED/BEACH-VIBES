@@ -15,7 +15,8 @@ export default function Shop() {
   const { products } = useProducts()
   const [params, setParams] = useSearchParams()
   const category = params.get('category')
-  const isNewOnly = params.get('filter') === 'new'
+  const brand = params.get('brand')
+  const activeFilter = params.get('filter') // 'new' | 'sale'
   const [query, setQuery] = useState(() => params.get('q') || '')
   const [visible, setVisible] = useState(PAGE_SIZE)
 
@@ -29,18 +30,22 @@ export default function Shop() {
   const filtered = useMemo(() => {
     let result = products.map((p) => localizeProduct(p, language))
     if (category) result = result.filter((p) => p.category === category)
-    if (isNewOnly) result = result.filter((p) => p.isNew)
+    if (brand) result = result.filter((p) => p.brand === brand)
+    if (activeFilter === 'new') result = result.filter((p) => p.isNew)
+    if (activeFilter === 'sale') result = result.filter((p) => p.compareAtPrice > p.price)
     if (query.trim()) {
       const q = query.trim().toLowerCase()
       result = result.filter((p) => p.name.toLowerCase().includes(q))
     }
     return result
-  }, [products, category, isNewOnly, query, language])
+  }, [products, category, brand, activeFilter, query, language])
 
   const shown = filtered.slice(0, visible)
   const activeChips = [
-    ...(isNewOnly ? [{ key: 'filter', label: t('shop.newArrivalsChip') }] : []),
+    ...(activeFilter === 'new' ? [{ key: 'filter', label: t('shop.newArrivalsChip') }] : []),
+    ...(activeFilter === 'sale' ? [{ key: 'filter', label: t('shop.saleChip') }] : []),
     ...(category ? [{ key: 'category', label: t(`categories.${category}`) }] : []),
+    ...(brand ? [{ key: 'brand', label: brand }] : []),
   ]
 
   return (

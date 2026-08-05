@@ -30,10 +30,21 @@ create table if not exists products (
   name_ar text,
   description_ar text,
   notes_ar jsonb,
+  -- Original pre-discount price; product is "on sale" when this is set
+  -- and greater than price.
+  compare_at_price numeric,
+  -- House/vendor label. Defaults to the storefront's own brand; a
+  -- second value only becomes meaningful once a second real vendor is
+  -- onboarded (see /brands and the admin product form).
+  brand text default 'Beach Vibes',
   created_at timestamptz default now()
 );
 
 alter table products enable row level security;
+
+-- Safe to re-run against a products table that predates these columns:
+alter table products add column if not exists compare_at_price numeric;
+alter table products add column if not exists brand text default 'Beach Vibes';
 
 drop policy if exists "Public read access" on products;
 create policy "Public read access" on products
@@ -98,11 +109,11 @@ delete from products where id in (
 -- ============================================================
 -- seed: product catalog (matches src/data/products.js)
 -- ============================================================
-insert into products (id, name, category, price, tone, image, material, rating, reviews, is_new, is_signature, description, notes, name_ar, description_ar, notes_ar)
+insert into products (id, name, category, price, compare_at_price, tone, image, material, brand, rating, reviews, is_new, is_signature, description, notes, name_ar, description_ar, notes_ar)
 values
   (
-    'riviera-one-piece', 'Riviera One-Piece Swimsuit', 'Swimwear', 128, 'swimwear',
-    null, 'Nylon', 4.8, 112, false, true,
+    'riviera-one-piece', 'Riviera One-Piece Swimsuit', 'Swimwear', 128, null, 'swimwear',
+    null, 'Nylon', 'Beach Vibes', 4.8, 112, false, true,
     'A sculpted one-piece in UPF 50+ recycled nylon, cut for confident lines from poolside to shoreline.',
     null,
     'بدلة سباحة قطعة واحدة – ريفييرا',
@@ -110,8 +121,8 @@ values
     null
   ),
   (
-    'cerulean-bikini-set', 'Cerulean Bikini Set', 'Swimwear', 96, 'swimwear',
-    null, 'Nylon', 4.6, 54, true, false,
+    'cerulean-bikini-set', 'Cerulean Bikini Set', 'Swimwear', 96, 120, 'swimwear',
+    null, 'Nylon', 'Beach Vibes', 4.6, 54, true, false,
     'A two-piece in a rich cerulean hue with adjustable ties and moderate coverage, built for long days in the water.',
     null,
     'طقم بيكيني بلون سماوي',
@@ -119,62 +130,35 @@ values
     null
   ),
   (
-    'mineral-sunscreen-spf50', 'Mineral Sunscreen SPF 50', 'Sun Care', 34, 'suncare',
-    null, 'Mineral', 4.9, 203, false, true,
-    'A reef-safe, broad-spectrum mineral sunscreen that blends in clear and never feels greasy — the one bottle worth reapplying.',
+    'amalfi-swim-trunks', 'Amalfi Swim Trunks', 'Swimwear', 68, null, 'swimwear',
+    null, 'Nylon', 'Beach Vibes', 4.7, 41, false, false,
+    'Quick-dry swim trunks in a mid-length cut with a mesh liner and secure zip pocket, built for the water and the walk back.',
     null,
-    'واقي شمس معدني SPF 50',
-    'واقٍ شمسي معدني آمن للشعاب المرجانية وواسع الطيف، يمتزج بالبشرة دون أثر أبيض أو لمعان دهني — الزجاجة الوحيدة التي تستحق إعادة الاستخدام.',
+    'شورت سباحة أمالفي',
+    'شورت سباحة سريع الجفاف بطول متوسط وبطانة شبكية وجيب بسحاب آمن، مناسب للماء وللطريق عودةً منه.',
     null
   ),
   (
-    'after-sun-aloe-balm', 'After-Sun Aloe Balm', 'Sun Care', 26, 'suncare',
-    null, 'Mineral', 4.7, 68, true, false,
-    'A cooling aloe and chamomile balm that calms sun-warmed skin and locks in moisture after a long day at the beach.',
+    'sun-washed-kaftan', 'Sun-Washed Kaftan', 'Beachwear', 118, null, 'beachwear',
+    null, 'Cotton', 'Beach Vibes', 4.7, 36, false, true,
+    'A breezy cotton kaftan in a sun-bleached wash, cut loose enough to throw over a swimsuit or wear on its own at golden hour.',
     null,
-    'بلسم الصبار لما بعد الشمس',
-    'بلسم مهدئ من الصبار والبابونج يخفف احمرار البشرة المتعبة من الشمس ويحافظ على ترطيبها بعد يومٍ طويل على الشاطئ.',
+    'قفطان مغسول بالشمس',
+    'قفطان قطني منعش بغسلة مبيّضة بالشمس، بقصة فضفاضة تُلبس فوق ملابس السباحة أو بمفردها عند الغروب.',
     null
   ),
   (
-    'turkish-beach-towel', 'Oversized Turkish Beach Towel', 'Beach Gear', 58, 'beachgear',
-    null, 'Cotton', 4.8, 91, true, false,
-    'Densely woven Turkish cotton that''s sand-resistant, quick-drying, and generous enough to share.',
+    'printed-sarong-wrap', 'Printed Sarong Wrap', 'Beachwear', 52, null, 'beachwear',
+    null, 'Cotton', 'Beach Vibes', 4.5, 22, true, false,
+    'A lightweight cotton sarong in a hand-drawn wave print, tied a dozen ways from beach cover-up to sundress.',
     null,
-    'منشفة شاطئ تركية كبيرة الحجم',
-    'منشفة من القطن التركي المنسوج بإحكام، تقاوم الرمل وتجف بسرعة، وبحجمٍ كبير يكفي للمشاركة.',
+    'لفة ساحلية بنقشة مطبوعة',
+    'لفة قطنية خفيفة بنقشة أمواج مرسومة يدوياً، تُربط بعشرات الطرق من غطاء شاطئ إلى فستان صيفي.',
     null
   ),
   (
-    'portable-beach-umbrella', 'Portable Beach Umbrella', 'Beach Gear', 89, 'beachgear',
-    null, 'Aluminum', 4.6, 47, false, false,
-    'A UPF 50+ canopy on a corrosion-resistant aluminum pole, with a sand anchor for wind-steady shade.',
-    null,
-    'مظلة شاطئ محمولة',
-    'مظلة بحماية UPF 50+ على عمودٍ من الألومنيوم المقاوم للتآكل، مزودة بمثبت رملي لظلٍ ثابت مهما اشتدت الرياح.',
-    null
-  ),
-  (
-    'anti-fog-swim-goggles', 'Anti-Fog Swim Goggles', 'Water Sports', 32, 'watersports',
-    null, 'Rubber', 4.7, 84, false, false,
-    'A wide-vision anti-fog lens with a soft silicone gasket for a leak-free, mark-free fit.',
-    null,
-    'نظارات سباحة مضادة للضباب',
-    'عدسة بمجال رؤية واسع ومقاومة للضباب، بحشية سيليكون ناعمة لملاءمة محكمة دون تسرب أو أثر على الوجه.',
-    null
-  ),
-  (
-    'full-face-snorkel-mask', 'Full-Face Snorkel Mask', 'Water Sports', 68, 'watersports',
-    null, 'Rubber', 4.8, 76, false, true,
-    'A 180-degree panoramic mask with a dry-top snorkel and anti-fog ventilation, built for effortless breathing at the surface.',
-    null,
-    'قناع غطس كامل للوجه',
-    'قناع بانورامي بزاوية رؤية 180 درجة مع أنبوب تنفس علوي جاف وتهوية مضادة للضباب، مصمم لتنفسٍ سلس عند سطح الماء.',
-    null
-  ),
-  (
-    'quick-dry-water-shoes', 'Quick-Dry Water Shoes', 'Footwear', 54, 'footwear',
-    null, 'Neoprene', 4.5, 39, false, false,
+    'quick-dry-water-shoes', 'Quick-Dry Water Shoes', 'Footwear', 54, null, 'footwear',
+    null, 'Neoprene', 'Beach Vibes', 4.5, 39, false, false,
     'Barefoot-feel neoprene shoes with a grippy sole, made for rocky shores and slippery decks alike.',
     null,
     'أحذية مائية سريعة الجفاف',
@@ -182,8 +166,8 @@ values
     null
   ),
   (
-    'woven-raffia-sandals', 'Woven Raffia Sandals', 'Footwear', 72, 'footwear',
-    null, 'Straw', 4.6, 28, true, false,
+    'woven-raffia-sandals', 'Woven Raffia Sandals', 'Footwear', 72, null, 'footwear',
+    null, 'Straw', 'Beach Vibes', 4.6, 28, true, false,
     'Hand-woven raffia straps on a cushioned footbed, easy enough for sand and polished enough for a beachside lunch.',
     null,
     'صنادل من الرافيا المنسوجة',
@@ -191,8 +175,98 @@ values
     null
   ),
   (
-    'woven-straw-beach-bag', 'Woven Straw Beach Bag', 'Accessories', 86, 'accessories',
-    null, 'Straw', 4.7, 52, false, true,
+    'classic-flip-flops', 'Classic Rubber Flip-Flops', 'Footwear', 28, null, 'footwear',
+    null, 'Rubber', 'Beach Vibes', 4.4, 67, false, false,
+    'Soft rubber flip-flops with a contoured footbed and a sole that grips wet tile as well as dry sand.',
+    null,
+    'شبشب مطاطي كلاسيكي',
+    'شبشب من المطاط الناعم بقاعدة مقوسة تدعم القدم ونعل يثبت جيداً على البلاط المبلل والرمل الجاف على حد سواء.',
+    null
+  ),
+  (
+    'anti-fog-swim-goggles', 'Anti-Fog Swim Goggles', 'Swimming Equipment', 32, null, 'swimequipment',
+    null, 'Rubber', 'Beach Vibes', 4.7, 84, false, false,
+    'A wide-vision anti-fog lens with a soft silicone gasket for a leak-free, mark-free fit.',
+    null,
+    'نظارات سباحة مضادة للضباب',
+    'عدسة بمجال رؤية واسع ومقاومة للضباب، بحشية سيليكون ناعمة لملاءمة محكمة دون تسرب أو أثر على الوجه.',
+    null
+  ),
+  (
+    'full-face-snorkel-mask', 'Full-Face Snorkel Mask', 'Swimming Equipment', 68, 82, 'swimequipment',
+    null, 'Rubber', 'Beach Vibes', 4.8, 76, false, true,
+    'A 180-degree panoramic mask with a dry-top snorkel and anti-fog ventilation, built for effortless breathing at the surface.',
+    null,
+    'قناع غطس كامل للوجه',
+    'قناع بانورامي بزاوية رؤية 180 درجة مع أنبوب تنفس علوي جاف وتهوية مضادة للضباب، مصمم لتنفسٍ سلس عند سطح الماء.',
+    null
+  ),
+  (
+    'silicone-swim-cap', 'Silicone Swim Cap', 'Swimming Equipment', 22, null, 'swimequipment',
+    null, 'Rubber', 'Beach Vibes', 4.5, 31, false, false,
+    'A durable silicone cap that grips without pulling, cutting drag for laps and keeping hair dry-ish at the beach.',
+    null,
+    'قبعة سباحة سيليكون',
+    'قبعة سيليكون متينة تثبت دون أن تشد الشعر، تقلل مقاومة الماء أثناء السباحة وتحافظ على الشعر شبه جاف على الشاطئ.',
+    null
+  ),
+  (
+    'inflatable-sup-board', 'Inflatable Stand-Up Paddleboard', 'Water Sports', 449, null, 'watersports',
+    null, 'PVC', 'Beach Vibes', 4.8, 44, false, true,
+    'A rigid-when-inflated touring board with a carbon-hybrid paddle, hand pump, and backpack — the whole kit rolls up small enough for a car trunk.',
+    null,
+    'لوح تجديف واقفاً قابل للنفخ',
+    'لوح تجول يصبح صلباً عند نفخه، مع مجداف هجين من الكربون ومنفاخ يدوي وحقيبة ظهر — تنطوي المجموعة كاملة لتناسب صندوق السيارة.',
+    null
+  ),
+  (
+    'coastal-life-jacket', 'Coastal Life Jacket', 'Water Sports', 74, null, 'watersports',
+    null, 'Nylon', 'Beach Vibes', 4.6, 19, true, false,
+    'A US Coast Guard-approved life vest in a low-profile cut, sized for a real range of paddling and boating days.',
+    null,
+    'سترة نجاة ساحلية',
+    'سترة نجاة معتمدة من خفر السواحل الأمريكي بقصة منخفضة الحجم، مناسبة لأيام التجديف والإبحار الحقيقية.',
+    null
+  ),
+  (
+    'mineral-sunscreen-spf50', 'Mineral Sunscreen SPF 50', 'Beach Essentials', 34, null, 'suncare',
+    null, 'Mineral', 'Beach Vibes', 4.9, 203, false, true,
+    'A reef-safe, broad-spectrum mineral sunscreen that blends in clear and never feels greasy — the one bottle worth reapplying.',
+    null,
+    'واقي شمس معدني SPF 50',
+    'واقٍ شمسي معدني آمن للشعاب المرجانية وواسع الطيف، يمتزج بالبشرة دون أثر أبيض أو لمعان دهني — الزجاجة الوحيدة التي تستحق إعادة الاستخدام.',
+    null
+  ),
+  (
+    'after-sun-aloe-balm', 'After-Sun Aloe Balm', 'Beach Essentials', 26, null, 'suncare',
+    null, 'Mineral', 'Beach Vibes', 4.7, 68, true, false,
+    'A cooling aloe and chamomile balm that calms sun-warmed skin and locks in moisture after a long day at the beach.',
+    null,
+    'بلسم الصبار لما بعد الشمس',
+    'بلسم مهدئ من الصبار والبابونج يخفف احمرار البشرة المتعبة من الشمس ويحافظ على ترطيبها بعد يومٍ طويل على الشاطئ.',
+    null
+  ),
+  (
+    'turkish-beach-towel', 'Oversized Turkish Beach Towel', 'Beach Essentials', 58, null, 'beachgear',
+    null, 'Cotton', 'Beach Vibes', 4.8, 91, true, false,
+    'Densely woven Turkish cotton that''s sand-resistant, quick-drying, and generous enough to share.',
+    null,
+    'منشفة شاطئ تركية كبيرة الحجم',
+    'منشفة من القطن التركي المنسوج بإحكام، تقاوم الرمل وتجف بسرعة، وبحجمٍ كبير يكفي للمشاركة.',
+    null
+  ),
+  (
+    'portable-beach-umbrella', 'Portable Beach Umbrella', 'Beach Essentials', 89, null, 'beachgear',
+    null, 'Aluminum', 'Beach Vibes', 4.6, 47, false, false,
+    'A UPF 50+ canopy on a corrosion-resistant aluminum pole, with a sand anchor for wind-steady shade.',
+    null,
+    'مظلة شاطئ محمولة',
+    'مظلة بحماية UPF 50+ على عمودٍ من الألومنيوم المقاوم للتآكل، مزودة بمثبت رملي لظلٍ ثابت مهما اشتدت الرياح.',
+    null
+  ),
+  (
+    'woven-straw-beach-bag', 'Woven Straw Beach Bag', 'Accessories', 86, null, 'accessories',
+    null, 'Straw', 'Beach Vibes', 4.7, 52, false, true,
     'A roomy hand-woven tote with a water-resistant lining, sized for towels, sunscreen, and everything else the day needs.',
     null,
     'حقيبة شاطئ من القش المنسوج',
@@ -200,21 +274,32 @@ values
     null
   ),
   (
-    'packable-sun-hat', 'Packable Sun Hat', 'Accessories', 48, 'accessories',
-    null, 'Straw', 4.5, 33, false, false,
+    'packable-sun-hat', 'Packable Sun Hat', 'Accessories', 48, null, 'accessories',
+    null, 'Straw', 'Beach Vibes', 4.5, 33, false, false,
     'A wide-brim straw hat that folds flat for travel and springs back into shape, with UPF 50+ coverage for face and neck.',
     null,
     'قبعة شمس قابلة للطي',
     'قبعة قش عريضة الحواف تُطوى بسهولة للسفر وتستعيد شكلها فوراً، بحماية UPF 50+ للوجه والرقبة.',
+    null
+  ),
+  (
+    'polarized-beach-sunglasses', 'Polarized Beach Sunglasses', 'Accessories', 118, 145, 'accessories',
+    null, 'Aluminum', 'Beach Vibes', 4.6, 29, true, false,
+    'Polarized lenses in a lightweight aluminum frame, cutting glare off the water without distorting the color of the day.',
+    null,
+    'نظارة شمسية مستقطبة للشاطئ',
+    'عدسات مستقطبة بإطار خفيف من الألومنيوم، تقلل وهج الماء دون أن تُغيّر ألوان اليوم من حولك.',
     null
   )
 on conflict (id) do update set
   name = excluded.name,
   category = excluded.category,
   price = excluded.price,
+  compare_at_price = excluded.compare_at_price,
   tone = excluded.tone,
   image = excluded.image,
   material = excluded.material,
+  brand = excluded.brand,
   rating = excluded.rating,
   reviews = excluded.reviews,
   is_new = excluded.is_new,

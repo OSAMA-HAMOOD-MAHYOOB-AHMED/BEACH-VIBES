@@ -1,10 +1,25 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Leaf, Sparkles, ShieldCheck, Globe2, Headset } from 'lucide-react'
+import {
+  ArrowRight,
+  Leaf,
+  Sparkles,
+  ShieldCheck,
+  Globe2,
+  Headset,
+  Waves,
+  Shirt,
+  Footprints,
+  Glasses,
+  Fish,
+  Umbrella,
+  ShoppingBag,
+} from 'lucide-react'
 import { SceneMedia } from '../components/Media'
 import ProductCard from '../components/ProductCard'
 import Newsletter from '../components/Newsletter'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
+import { CATEGORIES } from '../data/products'
 
 const CURATION_IDS = [
   'riviera-one-piece',
@@ -15,11 +30,33 @@ const CURATION_IDS = [
 
 const PILLAR_ICONS = [ShieldCheck, Globe2, Headset]
 
+const CATEGORY_ICONS = {
+  Swimwear: Waves,
+  Beachwear: Shirt,
+  Footwear: Footprints,
+  'Swimming Equipment': Glasses,
+  'Water Sports': Fish,
+  'Beach Essentials': Umbrella,
+  Accessories: ShoppingBag,
+}
+
+const ACTIVITIES = [
+  { key: 'swimming', tone: 'hero', query: 'category=Swimming Equipment' },
+  { key: 'surfing', tone: 'coastal', query: 'category=Water Sports' },
+  { key: 'snorkeling', tone: 'spotlight', query: 'category=Swimming Equipment' },
+  { key: 'diving', tone: 'dark', query: 'category=Water Sports' },
+  { key: 'beachVacation', tone: 'beach', query: 'category=Beachwear' },
+  { key: 'poolParty', tone: 'invite', query: 'category=Swimwear' },
+  { key: 'familyBeachDay', tone: 'interior', query: 'category=Beach Essentials' },
+  { key: 'luxuryResort', tone: 'hero', query: 'category=Accessories' },
+]
+
 export default function Home() {
   const { t } = useLanguage()
   const { products } = useProducts()
   const curated = CURATION_IDS.map((id) => products.find((p) => p.id === id)).filter(Boolean)
   const qualityPillars = t('home.qualityPillars')
+  const activityLabels = t('home.activities')
 
   return (
     <div>
@@ -44,16 +81,71 @@ export default function Home() {
                 {t('home.heroSubtitle')}
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/collections" className="btn-primary">
-                  {t('home.shopCollectionBtn')}
+                <Link to="/shop?category=Swimwear" className="btn-primary">
+                  {t('home.shopSwimwearBtn')}
                 </Link>
-                <Link to="/about" className="btn-outline-light">
-                  {t('home.ourStoryBtn')}
+                <Link to="/shop?category=Beach Essentials" className="btn-outline-light">
+                  {t('home.exploreEssentialsBtn')}
                 </Link>
               </div>
             </div>
           </div>
         </SceneMedia>
+      </section>
+
+      {/* Shop by Category */}
+      <section className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20 sm:py-24">
+        <div className="text-center mb-10">
+          <p className="section-eyebrow justify-center flex">{t('home.shopByCategoryEyebrow')}</p>
+          <h2 className="font-serif text-3xl sm:text-4xl text-navy-900">{t('home.shopByCategoryTitle')}</h2>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+          {CATEGORIES.map((category) => {
+            const Icon = CATEGORY_ICONS[category]
+            return (
+              <Link
+                key={category}
+                to={`/shop?category=${encodeURIComponent(category)}`}
+                className="group flex flex-col items-center gap-3 border border-navy-100 px-4 py-7 text-center hover:border-navy-400 hover:-translate-y-0.5 transition-all"
+              >
+                <Icon className="w-6 h-6 text-navy-600 group-hover:text-navy-900 transition-colors" strokeWidth={1.5} />
+                <span className="text-[11px] font-medium uppercase tracking-wide text-navy-700 group-hover:text-navy-900 transition-colors">
+                  {t(`categories.${category}`)}
+                </span>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* Shop by Activity */}
+      <section className="bg-sand-100 border-y border-navy-100 py-20 sm:py-24">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
+          <div className="text-center mb-10">
+            <p className="section-eyebrow justify-center flex">{t('home.shopByActivityEyebrow')}</p>
+            <h2 className="font-serif text-3xl sm:text-4xl text-navy-900 mb-4">{t('home.shopByActivityTitle')}</h2>
+            <p className="text-sm text-navy-500 max-w-lg mx-auto leading-relaxed">
+              {t('home.shopByActivitySubtitle')}
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {ACTIVITIES.map((activity, i) => (
+              <Link
+                key={activity.key}
+                to={`/shop?${activity.query}`}
+                className="group relative block overflow-hidden aspect-[4/5]"
+              >
+                <SceneMedia tone={activity.tone} overlay="dark-bottom" className="w-full h-full">
+                  <div className="relative h-full flex flex-col justify-end p-4">
+                    <h3 className="font-serif text-base sm:text-lg text-white group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 transition-transform">
+                      {activityLabels[i]}
+                    </h3>
+                  </div>
+                </SceneMedia>
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Summer Curations */}
@@ -136,7 +228,7 @@ export default function Home() {
                 </div>
               </SceneMedia>
             </Link>
-            <Link to="/shop?category=Beach Gear" className="group relative block overflow-hidden">
+            <Link to="/shop?category=Beach Essentials" className="group relative block overflow-hidden">
               <SceneMedia tone="interior" overlay="dark-bottom" className="w-full h-full min-h-[192px]">
                 <div className="relative h-full flex flex-col justify-end p-6">
                   <h3 className="font-serif text-xl text-white">{t('home.coastalComfortTitle')}</h3>

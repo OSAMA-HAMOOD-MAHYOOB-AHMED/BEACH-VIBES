@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Search, User, ShoppingBag, Menu, X, Droplet } from 'lucide-react'
+import { Search, User, ShoppingBag, Menu, X, Droplet, ChevronDown } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLanguage } from '../context/LanguageContext'
 import SearchOverlay from './SearchOverlay'
+import MegaMenu from './MegaMenu'
+import { CATEGORIES } from '../data/products'
 
 function LanguageSwitcher({ language, setLanguage, className = '' }) {
   return (
@@ -36,13 +38,15 @@ export default function Header() {
   const { isAuthenticated, isAdmin } = useAuth()
   const { t, language, setLanguage } = useLanguage()
   const [open, setOpen] = useState(false)
+  const [shopOpenMobile, setShopOpenMobile] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
 
   const navLinks = [
     { to: '/shop?filter=new', label: t('header.nav.newArrivals') },
-    { to: '/collections', label: t('header.nav.collections') },
-    { to: '/shop', label: t('header.nav.artisanal') },
+    { to: '/shop?filter=sale', label: t('header.nav.sale') },
+    { to: '/brands', label: t('header.nav.brands') },
     { to: '/about', label: t('header.nav.about') },
+    { to: '/contact', label: t('header.nav.contact') },
     ...(isAdmin ? [{ to: '/admin', label: t('header.nav.admin') }] : []),
   ]
 
@@ -56,7 +60,8 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-9">
+        <nav className="hidden md:flex items-center gap-8">
+          <MegaMenu />
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
@@ -113,7 +118,30 @@ export default function Header() {
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-navy-100 bg-sand px-5 py-4 flex flex-col gap-4">
+        <div className="md:hidden border-t border-navy-100 bg-sand px-5 py-4 flex flex-col gap-4 max-h-[75vh] overflow-y-auto">
+          <div>
+            <button
+              onClick={() => setShopOpenMobile((o) => !o)}
+              className="flex items-center justify-between w-full text-xs font-medium uppercase tracking-widest text-navy-700"
+            >
+              {t('header.nav.shop')}
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${shopOpenMobile ? 'rotate-180' : ''}`} />
+            </button>
+            {shopOpenMobile && (
+              <div className="mt-3 ml-3 rtl:ml-0 rtl:mr-3 flex flex-col gap-3">
+                {CATEGORIES.map((category) => (
+                  <Link
+                    key={category}
+                    to={`/shop?category=${encodeURIComponent(category)}`}
+                    onClick={() => setOpen(false)}
+                    className="text-xs text-navy-500"
+                  >
+                    {t(`categories.${category}`)}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
           {navLinks.map((link) => (
             <NavLink
               key={link.to}

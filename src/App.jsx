@@ -14,6 +14,7 @@ import Checkout from './pages/Checkout'
 import About from './pages/About'
 import Journal from './pages/Journal'
 import Contact from './pages/Contact'
+import Brands from './pages/Brands'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Account from './pages/Account'
@@ -39,6 +40,7 @@ export default function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/journal" element={<Journal />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/brands" element={<Brands />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
 
