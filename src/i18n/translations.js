@@ -878,7 +878,7 @@ const ar = {
     sizeGuide: 'دليل المقاسات',
     decreaseQty: 'إنقاص الكمية',
     increaseQty: 'زيادة الكمية',
-    addToBag: 'أضف إلى حقيبة الشاطئ',
+    addToBag: 'أضف إلى السلة',
     addedToBag: 'أُضيفت إلى الحقيبة',
     complimentaryShipping: 'شحن مجاني',
     certifiedAuthentic: 'أصالة موثقة',
