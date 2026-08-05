@@ -110,27 +110,34 @@ delete from products where id in (
   'heritage-leather-tote', 'riviera-leather-sandal'
 );
 
+-- Swapped 5 women's-styled items for men's equivalents (same category
+-- mix: 2 Swimwear, 2 Beachwear, 1 Swimming Equipment) under new ids.
+delete from products where id in (
+  'riviera-one-piece', 'cerulean-bikini-set', 'sun-washed-kaftan',
+  'printed-sarong-wrap', 'silicone-swim-cap'
+);
+
 -- ============================================================
 -- seed: product catalog (matches src/data/products.js)
 -- ============================================================
 insert into products (id, name, category, price, compare_at_price, tone, image, material, brand, colors, rating, reviews, is_new, is_signature, description, notes, name_ar, description_ar, notes_ar)
 values
   (
-    'riviera-one-piece', 'Riviera One-Piece Swimsuit', 'Swimwear', 128, null, 'swimwear',
-    'https://images.unsplash.com/photo-1542427361-4388a46a654a?auto=format&fit=crop&w=800&q=80', 'Nylon', 'Beach Vibes', '["#0f2a40","#2e7d95","#1c1c1c"]', 4.8, 112, false, true,
-    'A sculpted one-piece in UPF 50+ recycled nylon, cut for confident lines from poolside to shoreline.',
+    'sorrento-swim-jammer', 'Sorrento Swim Jammer', 'Swimwear', 74, null, 'swimwear',
+    'https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=800&q=80', 'Nylon', 'Beach Vibes', '["#0f2a40","#1c1c1c"]', 4.6, 38, true, false,
+    'A knee-length compression jammer in chlorine-resistant nylon, built for lap-focused mornings and open-water swims alike.',
     null,
-    'بدلة سباحة قطعة واحدة – ريفييرا',
-    'بدلة سباحة من قطعة واحدة، مصنوعة من نايلون معاد تدويره بحماية UPF 50+، بقصة نحيلة تمنحك حضوراً واثقاً من حمام السباحة إلى الشاطئ.',
+    'سروال سباحة سورينتو الضاغط',
+    'سروال سباحة ضاغط بطول الركبة من نايلون مقاوم للكلور، مصمم لصباحات السباحة المكثفة والسباحة في المياه المفتوحة على حد سواء.',
     null
   ),
   (
-    'cerulean-bikini-set', 'Cerulean Bikini Set', 'Swimwear', 96, 120, 'swimwear',
-    'https://images.unsplash.com/photo-1656457981333-a9e055bd783f?auto=format&fit=crop&w=800&q=80', 'Nylon', 'Beach Vibes', '["#2e7d95","#0f2a40"]', 4.6, 54, true, false,
-    'A two-piece in a rich cerulean hue with adjustable ties and moderate coverage, built for long days in the water.',
+    'regatta-swim-briefs', 'Regatta Swim Briefs', 'Swimwear', 58, null, 'swimwear',
+    'https://images.unsplash.com/photo-1566230555350-59683b1d16e0?auto=format&fit=crop&w=800&q=80', 'Nylon', 'Beach Vibes', '["#1c1c1c","#2e7d95"]', 4.5, 27, false, false,
+    'Classic low-rise racing briefs in matte nylon, cut close for minimal drag from the first lap to the last.',
     null,
-    'طقم بيكيني بلون سماوي',
-    'طقم بيكيني بلونٍ سماوي غني، بأربطة قابلة للتعديل وتغطية متوسطة، مصمم لأيامٍ طويلة في الماء.',
+    'سروال سباحة ريغاتا التنافسي',
+    'سروال سباحة تنافسي منخفض الخصر من نايلون غير لامع، بقصة ضيقة تقلل المقاومة من اللفة الأولى إلى الأخيرة.',
     null
   ),
   (
@@ -143,21 +150,21 @@ values
     null
   ),
   (
-    'sun-washed-kaftan', 'Sun-Washed Kaftan', 'Beachwear', 118, null, 'beachwear',
-    'https://images.unsplash.com/photo-1753192103616-53e7e0ef83e6?auto=format&fit=crop&w=800&q=80', 'Cotton', 'Beach Vibes', '["#f2a488","#f4ecd8"]', 4.7, 36, false, true,
-    'A breezy cotton kaftan in a sun-bleached wash, cut loose enough to throw over a swimsuit or wear on its own at golden hour.',
+    'linen-resort-shirt', 'Linen Resort Shirt', 'Beachwear', 98, null, 'beachwear',
+    'https://images.unsplash.com/photo-1772583435283-b07bc9950497?auto=format&fit=crop&w=800&q=80', 'Cotton', 'Beach Vibes', '["#f4ecd8","#1c1c1c"]', 4.8, 44, false, true,
+    'A relaxed short-sleeve shirt in breathable linen-weave cotton, worn open over swimwear or buttoned for golden-hour drinks.',
     null,
-    'قفطان مغسول بالشمس',
-    'قفطان قطني منعش بغسلة مبيّضة بالشمس، بقصة فضفاضة تُلبس فوق ملابس السباحة أو بمفردها عند الغروب.',
+    'قميص المنتجع الكتاني',
+    'قميص فضفاض بأكمام قصيرة من قطن بنسيج كتاني قابل للتنفس، يُلبس مفتوحاً فوق ملابس السباحة أو مزرراً لمشروبات وقت الغروب.',
     null
   ),
   (
-    'printed-sarong-wrap', 'Printed Sarong Wrap', 'Beachwear', 52, null, 'beachwear',
-    'https://plus.unsplash.com/premium_photo-1780358592028-811e9b139c0c?auto=format&fit=crop&w=800&q=80', 'Cotton', 'Beach Vibes', '["#2e7d95","#c96b4a"]', 4.5, 22, true, false,
-    'A lightweight cotton sarong in a hand-drawn wave print, tied a dozen ways from beach cover-up to sundress.',
+    'palm-print-beach-shorts', 'Palm Print Beach Shorts', 'Beachwear', 64, null, 'beachwear',
+    'https://images.unsplash.com/photo-1591737591066-7b8c9a2a6940?auto=format&fit=crop&w=800&q=80', 'Cotton', 'Beach Vibes', '["#c96b4a","#2e7d95"]', 4.6, 33, true, false,
+    'Tropical palm-print shorts in a quick-dry cotton blend, easy enough for the boardwalk and built to survive a wave or two.',
     null,
-    'لفة ساحلية بنقشة مطبوعة',
-    'لفة قطنية خفيفة بنقشة أمواج مرسومة يدوياً، تُربط بعشرات الطرق من غطاء شاطئ إلى فستان صيفي.',
+    'شورت الشاطئ بنقشة النخيل',
+    'شورت بنقشة نخيل استوائية من قطن سريع الجفاف، مريح للنزهة على الرصيف الساحلي ومتين بما يكفي لمواجهة بضع موجات.',
     null
   ),
   (
@@ -206,12 +213,12 @@ values
     null
   ),
   (
-    'silicone-swim-cap', 'Silicone Swim Cap', 'Swimming Equipment', 22, null, 'swimequipment',
-    'https://images.unsplash.com/photo-1528803030572-cf341cadda3e?auto=format&fit=crop&w=800&q=80', 'Rubber', 'Beach Vibes', null, 4.5, 31, false, false,
-    'A durable silicone cap that grips without pulling, cutting drag for laps and keeping hair dry-ish at the beach.',
+    'racing-swim-cap', 'Racing Swim Cap', 'Swimming Equipment', 24, null, 'swimequipment',
+    'https://images.unsplash.com/photo-1615928567812-29ef7e5388d9?auto=format&fit=crop&w=800&q=80', 'Rubber', 'Beach Vibes', null, 4.7, 58, false, false,
+    'A low-profile silicone racing cap with a snug, seamless fit, built to cut drag without pulling at the hairline.',
     null,
-    'قبعة سباحة سيليكون',
-    'قبعة سيليكون متينة تثبت دون أن تشد الشعر، تقلل مقاومة الماء أثناء السباحة وتحافظ على الشعر شبه جاف على الشاطئ.',
+    'قبعة سباحة تنافسية',
+    'قبعة سباحة تنافسية من السيليكون منخفضة الحجم بملاءمة محكمة وسلسة، مصممة لتقليل المقاومة دون شد فروة الرأس.',
     null
   ),
   (

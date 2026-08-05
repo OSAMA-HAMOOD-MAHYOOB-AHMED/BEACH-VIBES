@@ -24,7 +24,7 @@ import { useLanguage } from '../context/LanguageContext'
 import { CATEGORIES } from '../data/products'
 
 const CURATION_IDS = [
-  'riviera-one-piece',
+  'sorrento-swim-jammer',
   'mineral-sunscreen-spf50',
   'full-face-snorkel-mask',
   'woven-straw-beach-bag',

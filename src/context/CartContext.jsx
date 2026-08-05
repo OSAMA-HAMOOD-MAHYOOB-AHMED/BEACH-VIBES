@@ -4,7 +4,7 @@ import { useProducts } from './ProductsContext'
 const CartContext = createContext(null)
 
 const INITIAL_ITEMS = [
-  { id: 'riviera-one-piece', qty: 1 },
+  { id: 'sorrento-swim-jammer', qty: 1 },
   { id: 'mineral-sunscreen-spf50', qty: 1 },
   { id: 'woven-straw-beach-bag', qty: 1 },
 ]
