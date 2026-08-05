@@ -91,7 +91,7 @@ export default function Header() {
           <Link
             to={isAuthenticated ? '/account' : '/login'}
             aria-label={t('header.accountLabel')}
-            className="text-navy-800 hover:text-navy-500 transition-colors hidden sm:block"
+            className="text-navy-800 hover:text-navy-500 transition-colors"
           >
             <User className="w-[18px] h-[18px]" strokeWidth={1.5} />
           </Link>
