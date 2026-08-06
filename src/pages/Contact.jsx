@@ -51,7 +51,7 @@ export default function Contact() {
             <Phone className="w-4 h-4 text-navy-600 mt-1" strokeWidth={1.5} />
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-1">{t('contact.phoneLabel')}</p>
-              <p className="text-sm text-navy-500">+96651234567</p>
+              <p className="text-sm text-navy-500">+966 50 123 4567</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
