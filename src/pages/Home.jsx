@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom'
 import {
   ArrowRight,
-  Leaf,
-  Sparkles,
   ShieldCheck,
   Globe2,
   Headset,
@@ -251,44 +249,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
-      {/* Craftsmanship */}
-      <section className="bg-sand-100 border-y border-navy-100">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20 sm:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <SceneMedia
-            tone="beach"
-            image="https://images.unsplash.com/photo-1606501126768-b78d4569d3f9?auto=format&fit=crop&w=1000&q=80"
-            alt={t('home.craftsmanshipTitle')}
-            className="w-full aspect-[4/5] sm:aspect-[5/4]"
-          />
-          <div>
-            <p className="section-eyebrow">{t('home.craftsmanshipEyebrow')}</p>
-            <h2 className="font-serif text-3xl sm:text-4xl text-navy-900 mb-5 leading-tight">
-              {t('home.craftsmanshipTitle')}
-            </h2>
-            <p className="text-sm text-navy-500 leading-relaxed mb-8 max-w-md">
-              {t('home.craftsmanshipBody')}
-            </p>
-            <div className="flex gap-10 mb-9">
-              <div className="flex items-center gap-2.5">
-                <Leaf className="w-5 h-5 text-navy-600" strokeWidth={1.5} />
-                <span className="text-xs font-medium uppercase tracking-wide text-navy-700">
-                  {t('home.sustainableLabel')}
-                </span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Sparkles className="w-5 h-5 text-navy-600" strokeWidth={1.5} />
-                <span className="text-xs font-medium uppercase tracking-wide text-navy-700">
-                  {t('home.uniqueLabel')}
-                </span>
-              </div>
-            </div>
-            <Link to="/about" className="btn-secondary">
-              {t('home.discoverProcessBtn')}
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* Explore Collections */}
       <section className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20 sm:py-24 text-center">
