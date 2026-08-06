@@ -1,7 +1,8 @@
-import { createContext, useContext, useMemo, useState, useCallback } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react'
 import { useProducts } from './ProductsContext'
 
 const CartContext = createContext(null)
+const STORAGE_KEY = 'beach-vibes-cart'
 
 const INITIAL_ITEMS = [
   { id: 'sorrento-swim-jammer', qty: 1 },
@@ -9,9 +10,22 @@ const INITIAL_ITEMS = [
   { id: 'woven-straw-beach-bag', qty: 1 },
 ]
 
+function readStored() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    return raw ? JSON.parse(raw) : INITIAL_ITEMS
+  } catch {
+    return INITIAL_ITEMS
+  }
+}
+
 export function CartProvider({ children }) {
   const { findProduct } = useProducts()
-  const [items, setItems] = useState(INITIAL_ITEMS)
+  const [items, setItems] = useState(readStored)
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+  }, [items])
 
   const addItem = useCallback((id, qty = 1) => {
     setItems((prev) => {

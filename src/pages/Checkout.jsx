@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CreditCard, Lock, PackageCheck, ChevronRight } from 'lucide-react'
+import { CreditCard, Wallet, Smartphone, Lock, PackageCheck, ChevronRight } from 'lucide-react'
 import { ProductMedia } from '../components/Media'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
@@ -22,6 +22,7 @@ export default function Checkout() {
   )
 
   const [shippingMethod, setShippingMethod] = useState('express')
+  const [paymentMethod, setPaymentMethod] = useState('card')
   const [placed, setPlaced] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -214,54 +215,81 @@ export default function Checkout() {
           </Section>
 
           <Section number="03" title={t('checkout.section3Title')}>
-            <div className="border border-navy-200 p-5">
-              <div className="flex items-center justify-between mb-5">
-                <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-navy-800">
-                  <CreditCard className="w-4 h-4" /> {t('checkout.creditCard')}
-                </span>
-                <div className="flex gap-1.5">
-                  <span className="w-8 h-5 bg-navy-100" />
-                  <span className="w-8 h-5 bg-navy-100" />
-                  <span className="w-8 h-5 bg-navy-100" />
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
-                <Field label={t('checkout.cardNumber')} full>
-                  <input
-                    required
-                    value={form.cardNumber}
-                    onChange={onChange('cardNumber')}
-                    placeholder="0000 0000 0000 0000"
-                    maxLength={19}
-                    className="input-field"
-                  />
-                </Field>
-                <Field label={t('checkout.expiryDate')}>
-                  <input
-                    required
-                    value={form.expiry}
-                    onChange={onChange('expiry')}
-                    placeholder="MM / YY"
-                    maxLength={7}
-                    className="input-field"
-                  />
-                </Field>
-                <Field label={t('checkout.cvv')}>
-                  <input
-                    required
-                    value={form.cvv}
-                    onChange={onChange('cvv')}
-                    placeholder="123"
-                    maxLength={4}
-                    className="input-field"
-                  />
-                </Field>
-              </div>
-              <label className="flex items-center gap-2.5 mt-6 text-xs text-navy-600">
-                <input type="checkbox" defaultChecked className="w-3.5 h-3.5 accent-navy-800" />
-                {t('checkout.billingSameAsShipping')}
-              </label>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+              <PaymentOption
+                id="pay-card"
+                icon={CreditCard}
+                label={t('checkout.creditCard')}
+                selected={paymentMethod === 'card'}
+                onSelect={() => setPaymentMethod('card')}
+              />
+              <PaymentOption
+                id="pay-paypal"
+                icon={Wallet}
+                label={t('checkout.payPal')}
+                selected={paymentMethod === 'payPal'}
+                onSelect={() => setPaymentMethod('payPal')}
+              />
+              <PaymentOption
+                id="pay-apple"
+                icon={Smartphone}
+                label={t('checkout.applePay')}
+                selected={paymentMethod === 'applePay'}
+                onSelect={() => setPaymentMethod('applePay')}
+              />
+              <PaymentOption
+                id="pay-google"
+                icon={Smartphone}
+                label={t('checkout.googlePay')}
+                selected={paymentMethod === 'googlePay'}
+                onSelect={() => setPaymentMethod('googlePay')}
+              />
             </div>
+
+            {paymentMethod === 'card' ? (
+              <div className="border border-navy-200 p-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+                  <Field label={t('checkout.cardNumber')} full>
+                    <input
+                      required
+                      value={form.cardNumber}
+                      onChange={onChange('cardNumber')}
+                      placeholder="0000 0000 0000 0000"
+                      maxLength={19}
+                      className="input-field"
+                    />
+                  </Field>
+                  <Field label={t('checkout.expiryDate')}>
+                    <input
+                      required
+                      value={form.expiry}
+                      onChange={onChange('expiry')}
+                      placeholder="MM / YY"
+                      maxLength={7}
+                      className="input-field"
+                    />
+                  </Field>
+                  <Field label={t('checkout.cvv')}>
+                    <input
+                      required
+                      value={form.cvv}
+                      onChange={onChange('cvv')}
+                      placeholder="123"
+                      maxLength={4}
+                      className="input-field"
+                    />
+                  </Field>
+                </div>
+                <label className="flex items-center gap-2.5 mt-6 text-xs text-navy-600">
+                  <input type="checkbox" defaultChecked className="w-3.5 h-3.5 accent-navy-800" />
+                  {t('checkout.billingSameAsShipping')}
+                </label>
+              </div>
+            ) : (
+              <div className="border border-navy-200 p-5 text-sm text-navy-600">
+                {t('checkout.payRedirectNote', { method: t(`checkout.${paymentMethod}`) })}
+              </div>
+            )}
           </Section>
 
           {error && <p className="text-xs text-red-600 mb-4">{error}</p>}
@@ -371,6 +399,28 @@ function Field({ label, full, children }) {
         {label}
       </span>
       {children}
+    </label>
+  )
+}
+
+function PaymentOption({ id, icon: Icon, label, selected, onSelect }) {
+  return (
+    <label
+      htmlFor={id}
+      className={`flex flex-col items-center gap-2 border px-3 py-4 text-center cursor-pointer transition-colors ${
+        selected ? 'border-navy-700 bg-navy-50' : 'border-navy-200'
+      }`}
+    >
+      <input
+        id={id}
+        type="radio"
+        name="paymentMethod"
+        checked={selected}
+        onChange={onSelect}
+        className="sr-only"
+      />
+      <Icon className="w-5 h-5 text-navy-800" strokeWidth={1.5} />
+      <span className="text-[11px] font-medium text-navy-900">{label}</span>
     </label>
   )
 }
