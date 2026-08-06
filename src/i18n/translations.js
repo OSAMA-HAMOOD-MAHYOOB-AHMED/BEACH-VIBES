@@ -418,10 +418,10 @@ const en = {
     eyebrow: 'Get In Touch',
     title: "We'd Love to Hear From You",
     subtitle:
-      'For concierge styling, trade inquiries, or press requests, reach our team directly — we typically respond within one business day.',
+      'For order support, sizing advice, or press requests, reach our team directly — we typically respond within one business day.',
     emailLabel: 'Email',
     phoneLabel: 'Phone',
-    atelierLabel: 'Atelier',
+    atelierLabel: 'Headquarters',
     formFirstName: 'First Name',
     formLastName: 'Last Name',
     formEmail: 'Email Address',
@@ -429,7 +429,7 @@ const en = {
     sendBtn: 'Send Message',
     sending: 'Sending…',
     sentMessage:
-      'Thank you — your message has been received. Our concierge team will be in touch shortly.',
+      'Thank you — your message has been received. Our team will be in touch shortly.',
     errorMessage: 'Something went wrong sending your message — please try again.',
   },
   journal: {
@@ -1062,17 +1062,17 @@ const ar = {
     eyebrow: 'تواصل معنا',
     title: 'يسعدنا التواصل معك',
     subtitle:
-      'لطلبات التنسيق الشخصي، أو الاستفسارات التجارية، أو طلبات الصحافة، تواصل مع فريقنا مباشرة — نرد عادةً خلال يوم عمل واحد.',
+      'لدعم الطلبات، أو نصائح المقاسات، أو طلبات الصحافة، تواصل مع فريقنا مباشرة — نرد عادةً خلال يوم عمل واحد.',
     emailLabel: 'البريد الإلكتروني',
     phoneLabel: 'الهاتف',
-    atelierLabel: 'المحترف',
+    atelierLabel: 'المقر الرئيسي',
     formFirstName: 'الاسم الأول',
     formLastName: 'اسم العائلة',
     formEmail: 'البريد الإلكتروني',
     formMessage: 'الرسالة',
     sendBtn: 'إرسال الرسالة',
     sending: 'جارٍ الإرسال…',
-    sentMessage: 'شكراً لك — تم استلام رسالتك. سيتواصل معك فريق خدمة العملاء قريباً.',
+    sentMessage: 'شكراً لك — تم استلام رسالتك. سيتواصل معك فريقنا قريباً.',
     errorMessage: 'حدث خطأ أثناء إرسال رسالتك — يرجى المحاولة مرة أخرى.',
   },
   journal: {

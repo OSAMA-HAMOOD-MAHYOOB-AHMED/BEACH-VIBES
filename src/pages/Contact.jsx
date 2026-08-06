@@ -44,7 +44,7 @@ export default function Contact() {
             <Mail className="w-4 h-4 text-navy-600 mt-1" strokeWidth={1.5} />
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-1">{t('contact.emailLabel')}</p>
-              <p className="text-sm text-navy-500">concierge@aquaatelier.com</p>
+              <p className="text-sm text-navy-500">hello@beachvibes.com</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
@@ -58,7 +58,7 @@ export default function Contact() {
             <MapPin className="w-4 h-4 text-navy-600 mt-1" strokeWidth={1.5} />
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-1">{t('contact.atelierLabel')}</p>
-              <p className="text-sm text-navy-500">14 Rue des Ateliers, Antibes, France</p>
+              <p className="text-sm text-navy-500">14 Promenade de la Plage, Antibes, France</p>
             </div>
           </div>
         </div>
