@@ -132,9 +132,9 @@ const en = {
     travelInspirationTitle: 'Travel Inspiration',
     viewAllStories: 'View All Stories',
     craftsmanshipEyebrow: 'Craftsmanship',
-    craftsmanshipTitle: 'Artisanal Roots, Global Elegance.',
+    craftsmanshipTitle: 'Built to Outlast the Tide.',
     craftsmanshipBody:
-      'At Beach Vibes, we believe in the luxury of patience. Every piece in our collection is sourced from artisans who preserve centuries-old techniques, blending them with a modern coastal sensibility.',
+      'Every piece in our collection is cut from recycled, UPF-rated fabrics and finished with reinforced stitching, built to hold up to saltwater, chlorine, and sun — tested in the water, not just styled for it.',
     sustainableLabel: 'Sustainable',
     uniqueLabel: 'Unique',
     discoverProcessBtn: 'Discover Our Process',
@@ -785,9 +785,9 @@ const ar = {
     travelInspirationTitle: 'إلهام السفر',
     viewAllStories: 'عرض كل القصص',
     craftsmanshipEyebrow: 'الحرفية',
-    craftsmanshipTitle: 'جذور حرفية، أناقة عالمية.',
+    craftsmanshipTitle: 'مصمم ليصمد أمام المد.',
     craftsmanshipBody:
-      'في بيتش فايبس، نؤمن بفخامة الصبر. كل قطعة في مجموعتنا مصدرها حرفيون يحافظون على تقنيات عمرها قرون، ممزوجة بحس ساحلي عصري.',
+      'كل قطعة في مجموعتنا مصنوعة من أقمشة معاد تدويرها بحماية UPF، ومُشطّبة بخياطة معزّزة تصمد أمام مياه البحر والكلور وأشعة الشمس — مُختبرة في الماء فعلاً، لا مصممة لتبدو جيدة فيه فحسب.',
     sustainableLabel: 'مستدام',
     uniqueLabel: 'فريد',
     discoverProcessBtn: 'اكتشف عمليتنا',

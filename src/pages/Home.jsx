@@ -255,7 +255,12 @@ export default function Home() {
       {/* Craftsmanship */}
       <section className="bg-sand-100 border-y border-navy-100">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20 sm:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <SceneMedia tone="beach" className="w-full aspect-[4/5] sm:aspect-[5/4]" />
+          <SceneMedia
+            tone="beach"
+            image="https://images.unsplash.com/photo-1606501126768-b78d4569d3f9?auto=format&fit=crop&w=1000&q=80"
+            alt={t('home.craftsmanshipTitle')}
+            className="w-full aspect-[4/5] sm:aspect-[5/4]"
+          />
           <div>
             <p className="section-eyebrow">{t('home.craftsmanshipEyebrow')}</p>
             <h2 className="font-serif text-3xl sm:text-4xl text-navy-900 mb-5 leading-tight">

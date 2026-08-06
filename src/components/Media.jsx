@@ -64,8 +64,9 @@ const SCENE_TONES = {
   dark: 'linear-gradient(160deg, #0b1c2c 0%, #16344c 100%)',
 }
 
-export function SceneMedia({ tone = 'hero', overlay = 'none', className = '', children }) {
+export function SceneMedia({ tone = 'hero', overlay = 'none', image, alt = '', className = '', children }) {
   const bg = SCENE_TONES[tone] || SCENE_TONES.hero
+  const [failed, setFailed] = useState(false)
   const overlays = {
     none: '',
     'dark-bottom': 'linear-gradient(to top, rgba(9,17,26,0.65), rgba(9,17,26,0) 55%)',
@@ -74,13 +75,23 @@ export function SceneMedia({ tone = 'hero', overlay = 'none', className = '', ch
   }
   return (
     <div className={`relative overflow-hidden ${className}`} style={{ background: bg }}>
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(circle at 75% 15%, rgba(255,255,255,0.35), transparent 40%)',
-        }}
-      />
+      {(!image || failed) && (
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(circle at 75% 15%, rgba(255,255,255,0.35), transparent 40%)',
+          }}
+        />
+      )}
+      {image && !failed && (
+        <img
+          src={image}
+          alt={alt}
+          onError={() => setFailed(true)}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
       {overlay !== 'none' && (
         <div className="absolute inset-0" style={{ background: overlays[overlay] }} />
       )}
