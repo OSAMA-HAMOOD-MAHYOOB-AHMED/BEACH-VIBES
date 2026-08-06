@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CreditCard, Wallet, Smartphone, Lock, PackageCheck, ChevronRight } from 'lucide-react'
+import { CreditCard, Wallet, Smartphone, Banknote, Lock, PackageCheck, ChevronRight } from 'lucide-react'
 import { ProductMedia } from '../components/Media'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
@@ -215,7 +215,7 @@ export default function Checkout() {
           </Section>
 
           <Section number="03" title={t('checkout.section3Title')}>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-5">
               <PaymentOption
                 id="pay-card"
                 icon={CreditCard}
@@ -243,6 +243,13 @@ export default function Checkout() {
                 label={t('checkout.googlePay')}
                 selected={paymentMethod === 'googlePay'}
                 onSelect={() => setPaymentMethod('googlePay')}
+              />
+              <PaymentOption
+                id="pay-cod"
+                icon={Banknote}
+                label={t('checkout.cashOnDelivery')}
+                selected={paymentMethod === 'cod'}
+                onSelect={() => setPaymentMethod('cod')}
               />
             </div>
 
@@ -284,6 +291,10 @@ export default function Checkout() {
                   <input type="checkbox" defaultChecked className="w-3.5 h-3.5 accent-navy-800" />
                   {t('checkout.billingSameAsShipping')}
                 </label>
+              </div>
+            ) : paymentMethod === 'cod' ? (
+              <div className="border border-navy-200 p-5 text-sm text-navy-600">
+                {t('checkout.codNote')}
               </div>
             ) : (
               <div className="border border-navy-200 p-5 text-sm text-navy-600">
