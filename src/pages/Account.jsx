@@ -214,6 +214,7 @@ export default function Account() {
                   </span>
                   <input
                     type="password"
+                    autoComplete="new-password"
                     value={passwordForm.currentPassword}
                     onChange={onPasswordChange('currentPassword')}
                     className="input-field"
@@ -226,6 +227,7 @@ export default function Account() {
                     </span>
                     <input
                       type="password"
+                      autoComplete="new-password"
                       minLength={8}
                       value={passwordForm.newPassword}
                       onChange={onPasswordChange('newPassword')}
@@ -238,6 +240,7 @@ export default function Account() {
                     </span>
                     <input
                       type="password"
+                      autoComplete="new-password"
                       minLength={8}
                       value={passwordForm.confirmPassword}
                       onChange={onPasswordChange('confirmPassword')}
