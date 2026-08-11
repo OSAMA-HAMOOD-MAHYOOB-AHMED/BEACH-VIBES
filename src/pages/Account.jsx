@@ -260,9 +260,6 @@ export default function Account() {
           </form>
 
           <div className="pt-8 border-t border-red-200">
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-red-700 mb-4">
-              {t('account.dangerZone')}
-            </h3>
             <p className="text-sm text-navy-500 mb-5">{t('account.deleteAccountWarning')}</p>
             {deleting ? (
               <form onSubmit={onConfirmDelete} className="space-y-4">
