@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLanguage } from '../context/LanguageContext'
+import { useProducts } from '../context/ProductsContext'
+import { localizeProduct } from '../utils/localize'
 import { api } from '../lib/api'
 import { useFormatPrice } from '../hooks/useFormatPrice'
 
 export default function Account() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const formatPrice = useFormatPrice()
+  const { findProduct } = useProducts()
   const { user, logout, updateProfile, changePassword, deleteAccount } = useAuth()
   const navigate = useNavigate()
   const [orders, setOrders] = useState([])
@@ -352,8 +355,12 @@ export default function Account() {
             <div key={o.id} className="py-4 flex items-center justify-between gap-4">
               <div className="min-w-0">
                 <p className="text-sm text-navy-900 font-medium truncate">
-                  {(o.order_items || []).map((item) => item.product_name).join(', ') ||
-                    `#${o.id.slice(0, 8).toUpperCase()}`}
+                  {(o.order_items || [])
+                    .map((item) => {
+                      const product = findProduct(item.product_id)
+                      return product ? localizeProduct(product, language).name : item.product_name
+                    })
+                    .join(', ') || `#${o.id.slice(0, 8).toUpperCase()}`}
                 </p>
                 <p className="text-xs text-navy-400">
                   {new Date(o.created_at).toLocaleDateString()} · {t(`orderStatus.${o.status}`)}
