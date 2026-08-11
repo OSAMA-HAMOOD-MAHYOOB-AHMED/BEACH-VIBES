@@ -128,7 +128,7 @@ export default function AdminProducts() {
     if (!window.confirm(t('admin.products.deleteConfirm'))) return
     setError('')
     try {
-      await api.del(`/api/admin/products/${product.id}`, { auth: true })
+      await api.del(`/api/admin/products/${product.id}`, undefined, { auth: true })
       setProducts((prev) => prev.filter((p) => p.id !== product.id))
     } catch (err) {
       setError(err.message)

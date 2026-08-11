@@ -8,8 +8,9 @@ import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 
-// Brute-force protection: register/login are the only unauthenticated
-// endpoints that touch a password, so they're the ones worth throttling.
+// Brute-force protection for every endpoint that checks a password
+// (register/login unauthenticated, password-change/account-delete
+// authenticated but still guessable via a stolen token).
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 20,
@@ -147,6 +148,69 @@ router.patch('/me', requireAuth, async (req, res, next) => {
 
     if (error) throw error;
     res.json({ user });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.patch('/password', authLimiter, requireAuth, async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Current and new password are required' });
+    }
+    if (newPassword.length < 8) {
+      return res.status(400).json({ error: 'New password must be at least 8 characters' });
+    }
+
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('password_hash')
+      .eq('id', req.user.id)
+      .single();
+
+    if (error) throw error;
+    if (!(await verifyPassword(currentPassword, user.password_hash))) {
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+
+    const passwordHash = await hashPassword(newPassword);
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ password_hash: passwordHash })
+      .eq('id', req.user.id);
+
+    if (updateError) throw updateError;
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.delete('/me', authLimiter, requireAuth, async (req, res, next) => {
+  try {
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({ error: 'Password is required to delete your account' });
+    }
+
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('password_hash')
+      .eq('id', req.user.id)
+      .single();
+
+    if (error) throw error;
+    if (!(await verifyPassword(password, user.password_hash))) {
+      return res.status(401).json({ error: 'Incorrect password' });
+    }
+
+    const { error: deleteError } = await supabase.from('users').delete().eq('id', req.user.id);
+    if (deleteError) throw deleteError;
+
+    res.status(204).end();
   } catch (err) {
     next(err);
   }

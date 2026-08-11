@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLanguage } from '../context/LanguageContext'
 import { api } from '../lib/api'
@@ -7,7 +7,8 @@ import { formatPrice } from '../utils/format'
 
 export default function Account() {
   const { t } = useLanguage()
-  const { user, logout, updateProfile } = useAuth()
+  const { user, logout, updateProfile, changePassword, deleteAccount } = useAuth()
+  const navigate = useNavigate()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -15,6 +16,16 @@ export default function Account() {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '' })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+
+  const [changingPassword, setChangingPassword] = useState(false)
+  const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
+  const [passwordSaving, setPasswordSaving] = useState(false)
+  const [passwordError, setPasswordError] = useState('')
+
+  const [deleting, setDeleting] = useState(false)
+  const [deletePassword, setDeletePassword] = useState('')
+  const [deleteSaving, setDeleteSaving] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -60,6 +71,64 @@ export default function Account() {
       setError(err.message)
     } finally {
       setSaving(false)
+    }
+  }
+
+  const onPasswordChange = (key) => (e) => setPasswordForm((f) => ({ ...f, [key]: e.target.value }))
+
+  const onStartPasswordChange = () => {
+    setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
+    setPasswordError('')
+    setChangingPassword(true)
+  }
+
+  const onCancelPasswordChange = () => {
+    setChangingPassword(false)
+    setPasswordError('')
+  }
+
+  const onSavePassword = async (e) => {
+    e.preventDefault()
+    setPasswordError('')
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setPasswordError(t('account.passwordMismatch'))
+      return
+    }
+    setPasswordSaving(true)
+    try {
+      await changePassword({
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword,
+      })
+      setChangingPassword(false)
+    } catch (err) {
+      setPasswordError(err.message)
+    } finally {
+      setPasswordSaving(false)
+    }
+  }
+
+  const onStartDelete = () => {
+    setDeletePassword('')
+    setDeleteError('')
+    setDeleting(true)
+  }
+
+  const onCancelDelete = () => {
+    setDeleting(false)
+    setDeleteError('')
+  }
+
+  const onConfirmDelete = async (e) => {
+    e.preventDefault()
+    setDeleteError('')
+    setDeleteSaving(true)
+    try {
+      await deleteAccount(deletePassword)
+      navigate('/', { replace: true })
+    } catch (err) {
+      setDeleteError(err.message)
+      setDeleteSaving(false)
     }
   }
 
@@ -151,6 +220,71 @@ export default function Account() {
         </dl>
       )}
 
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-navy-800">
+          {t('account.changePassword')}
+        </h2>
+        {!changingPassword && (
+          <button onClick={onStartPasswordChange} className="text-xs text-navy-800 underline">
+            {t('account.changeAction')}
+          </button>
+        )}
+      </div>
+
+      {changingPassword && (
+        <form onSubmit={onSavePassword} className="border border-navy-100 p-6 mb-12 space-y-5">
+          <label className="block">
+            <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+              {t('account.currentPassword')}
+            </span>
+            <input
+              required
+              type="password"
+              value={passwordForm.currentPassword}
+              onChange={onPasswordChange('currentPassword')}
+              className="input-field"
+            />
+          </label>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <label className="block">
+              <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                {t('account.newPassword')}
+              </span>
+              <input
+                required
+                type="password"
+                minLength={8}
+                value={passwordForm.newPassword}
+                onChange={onPasswordChange('newPassword')}
+                className="input-field"
+              />
+            </label>
+            <label className="block">
+              <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                {t('account.confirmNewPassword')}
+              </span>
+              <input
+                required
+                type="password"
+                minLength={8}
+                value={passwordForm.confirmPassword}
+                onChange={onPasswordChange('confirmPassword')}
+                className="input-field"
+              />
+            </label>
+          </div>
+          {passwordError && <p className="text-xs text-red-600">{passwordError}</p>}
+          <div className="flex gap-3">
+            <button type="submit" disabled={passwordSaving} className="btn-primary disabled:opacity-60">
+              {passwordSaving ? t('account.saving') : t('account.saveChanges')}
+            </button>
+            <button type="button" onClick={onCancelPasswordChange} className="btn-secondary">
+              {t('account.cancel')}
+            </button>
+          </div>
+        </form>
+      )}
+
       <h2 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-4">
         {t('account.orderHistory')}
       </h2>
@@ -178,6 +312,49 @@ export default function Account() {
           ))}
         </div>
       )}
+
+      <h2 className="text-xs font-semibold uppercase tracking-widest text-red-700 mt-16 mb-4">
+        {t('account.dangerZone')}
+      </h2>
+      <div className="border border-red-200 p-6">
+        <p className="text-sm text-navy-500 mb-5">{t('account.deleteAccountWarning')}</p>
+        {deleting ? (
+          <form onSubmit={onConfirmDelete} className="space-y-4">
+            <label className="block max-w-xs">
+              <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                {t('account.deleteAccountConfirmPrompt')}
+              </span>
+              <input
+                required
+                type="password"
+                value={deletePassword}
+                onChange={(e) => setDeletePassword(e.target.value)}
+                className="input-field"
+              />
+            </label>
+            {deleteError && <p className="text-xs text-red-600">{deleteError}</p>}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                disabled={deleteSaving}
+                className="inline-flex items-center justify-center gap-2 bg-red-700 text-white px-7 py-3.5 text-xs font-medium uppercase tracking-widest hover:bg-red-800 transition-colors disabled:opacity-60"
+              >
+                {deleteSaving ? t('account.deleting') : t('account.deleteAccountConfirmBtn')}
+              </button>
+              <button type="button" onClick={onCancelDelete} className="btn-secondary">
+                {t('account.cancel')}
+              </button>
+            </div>
+          </form>
+        ) : (
+          <button
+            onClick={onStartDelete}
+            className="inline-flex items-center justify-center gap-2 bg-white text-red-700 border border-red-700 px-7 py-3.5 text-xs font-medium uppercase tracking-widest hover:bg-red-700 hover:text-white transition-colors"
+          >
+            {t('account.deleteAccountAction')}
+          </button>
+        )}
+      </div>
     </div>
   )
 }

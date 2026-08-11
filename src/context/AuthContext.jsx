@@ -54,6 +54,16 @@ export function AuthProvider({ children }) {
     return data.user;
   }, []);
 
+  const changePassword = useCallback(async (payload) => {
+    await api.patch('/api/auth/password', payload, { auth: true });
+  }, []);
+
+  const deleteAccount = useCallback(async (password) => {
+    await api.del('/api/auth/me', { password }, { auth: true });
+    clearToken();
+    setUser(null);
+  }, []);
+
   const value = useMemo(
     () => ({
       user,
@@ -62,10 +72,12 @@ export function AuthProvider({ children }) {
       register,
       logout,
       updateProfile,
+      changePassword,
+      deleteAccount,
       isAuthenticated: !!user,
       isAdmin: user?.role === 'admin',
     }),
-    [user, loading, login, register, logout, updateProfile],
+    [user, loading, login, register, logout, updateProfile, changePassword, deleteAccount],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
