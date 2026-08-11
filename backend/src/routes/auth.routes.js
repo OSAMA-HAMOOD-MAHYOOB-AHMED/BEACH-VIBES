@@ -106,4 +106,50 @@ router.get('/me', requireAuth, async (req, res, next) => {
   }
 });
 
+router.patch('/me', requireAuth, async (req, res, next) => {
+  try {
+    const { firstName, lastName, email } = req.body;
+    const updates = {};
+
+    if (firstName !== undefined) updates.first_name = firstName || null;
+    if (lastName !== undefined) updates.last_name = lastName || null;
+
+    if (email !== undefined) {
+      if (!isValidEmail(email)) {
+        return res.status(400).json({ error: 'A valid email is required' });
+      }
+      const normalizedEmail = email.toLowerCase();
+
+      const { data: existing, error: lookupError } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', normalizedEmail)
+        .neq('id', req.user.id)
+        .maybeSingle();
+
+      if (lookupError) throw lookupError;
+      if (existing) {
+        return res.status(409).json({ error: 'An account with this email already exists' });
+      }
+      updates.email = normalizedEmail;
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ error: 'No changes provided' });
+    }
+
+    const { data: user, error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', req.user.id)
+      .select('id, email, first_name, last_name, role, created_at')
+      .single();
+
+    if (error) throw error;
+    res.json({ user });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;

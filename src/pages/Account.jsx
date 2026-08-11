@@ -7,9 +7,14 @@ import { formatPrice } from '../utils/format'
 
 export default function Account() {
   const { t } = useLanguage()
-  const { user, logout } = useAuth()
+  const { user, logout, updateProfile } = useAuth()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const [editing, setEditing] = useState(false)
+  const [form, setForm] = useState({ firstName: '', lastName: '', email: '' })
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -30,9 +35,33 @@ export default function Account() {
   const fullName = user?.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : ''
   const initials =
     (user?.first_name?.[0] || user?.email?.[0] || '?').toUpperCase() + (user?.last_name?.[0] || '').toUpperCase()
-  const memberSince = user?.created_at
-    ? new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
-    : '—'
+
+  const onChange = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }))
+
+  const onStartEdit = () => {
+    setForm({ firstName: user?.first_name || '', lastName: user?.last_name || '', email: user?.email || '' })
+    setError('')
+    setEditing(true)
+  }
+
+  const onCancelEdit = () => {
+    setEditing(false)
+    setError('')
+  }
+
+  const onSaveProfile = async (e) => {
+    e.preventDefault()
+    setError('')
+    setSaving(true)
+    try {
+      await updateProfile(form)
+      setEditing(false)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
 
   return (
     <div className="max-w-3xl mx-auto px-5 py-16">
@@ -56,39 +85,71 @@ export default function Account() {
         </button>
       </div>
 
-      <h2 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-4">
-        {t('account.profileDetails')}
-      </h2>
-      <dl className="grid sm:grid-cols-2 gap-x-8 gap-y-5 border border-navy-100 p-6 mb-12">
-        <div>
-          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.fullName')}</dt>
-          <dd className="text-sm text-navy-900">{fullName || '—'}</dd>
-        </div>
-        <div>
-          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.emailLabel')}</dt>
-          <dd className="text-sm text-navy-900">{user?.email}</dd>
-        </div>
-        <div>
-          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.accountType')}</dt>
-          <dd className="text-sm text-navy-900">
-            {user?.role === 'admin' ? t('account.roleAdmin') : t('account.roleCustomer')}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.memberSince')}</dt>
-          <dd className="text-sm text-navy-900">{memberSince}</dd>
-        </div>
-        <div>
-          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.totalOrders')}</dt>
-          <dd className="text-sm text-navy-900">{loading ? '—' : orders.length}</dd>
-        </div>
-        <div>
-          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.lifetimeSpent')}</dt>
-          <dd className="text-sm text-navy-900">
-            {loading ? '—' : formatPrice(orders.reduce((sum, o) => sum + Number(o.total), 0))}
-          </dd>
-        </div>
-      </dl>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-navy-800">
+          {t('account.profileDetails')}
+        </h2>
+        {!editing && (
+          <button onClick={onStartEdit} className="text-xs text-navy-800 underline">
+            {t('account.editProfile')}
+          </button>
+        )}
+      </div>
+
+      {editing ? (
+        <form onSubmit={onSaveProfile} className="border border-navy-100 p-6 mb-12 space-y-5">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <label className="block">
+              <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                {t('auth.firstName')}
+              </span>
+              <input value={form.firstName} onChange={onChange('firstName')} className="input-field" />
+            </label>
+            <label className="block">
+              <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                {t('auth.lastName')}
+              </span>
+              <input value={form.lastName} onChange={onChange('lastName')} className="input-field" />
+            </label>
+          </div>
+          <label className="block">
+            <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+              {t('auth.email')}
+            </span>
+            <input required type="email" value={form.email} onChange={onChange('email')} className="input-field" />
+          </label>
+          {error && <p className="text-xs text-red-600">{error}</p>}
+          <div className="flex gap-3">
+            <button type="submit" disabled={saving} className="btn-primary disabled:opacity-60">
+              {saving ? t('account.saving') : t('account.saveChanges')}
+            </button>
+            <button type="button" onClick={onCancelEdit} className="btn-secondary">
+              {t('account.cancel')}
+            </button>
+          </div>
+        </form>
+      ) : (
+        <dl className="grid sm:grid-cols-2 gap-x-8 gap-y-5 border border-navy-100 p-6 mb-12">
+          <div>
+            <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.fullName')}</dt>
+            <dd className="text-sm text-navy-900">{fullName || '—'}</dd>
+          </div>
+          <div>
+            <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.emailLabel')}</dt>
+            <dd className="text-sm text-navy-900">{user?.email}</dd>
+          </div>
+          <div>
+            <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.totalOrders')}</dt>
+            <dd className="text-sm text-navy-900">{loading ? '—' : orders.length}</dd>
+          </div>
+          <div>
+            <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.lifetimeSpent')}</dt>
+            <dd className="text-sm text-navy-900">
+              {loading ? '—' : formatPrice(orders.reduce((sum, o) => sum + Number(o.total), 0))}
+            </dd>
+          </div>
+        </dl>
+      )}
 
       <h2 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-4">
         {t('account.orderHistory')}
