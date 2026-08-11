@@ -19,6 +19,7 @@ export default function Account() {
 
   const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
   const [passwordError, setPasswordError] = useState('')
+  const [passwordFieldsUnlocked, setPasswordFieldsUnlocked] = useState(false)
 
   const [deleting, setDeleting] = useState(false)
   const [deletePassword, setDeletePassword] = useState('')
@@ -53,6 +54,7 @@ export default function Account() {
     setError('')
     setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
     setPasswordError('')
+    setPasswordFieldsUnlocked(false)
     setDeleting(false)
     setDeletePassword('')
     setDeleteError('')
@@ -215,6 +217,8 @@ export default function Account() {
                   <input
                     type="password"
                     autoComplete="new-password"
+                    readOnly={!passwordFieldsUnlocked}
+                    onFocus={() => setPasswordFieldsUnlocked(true)}
                     value={passwordForm.currentPassword}
                     onChange={onPasswordChange('currentPassword')}
                     className="input-field"
@@ -228,6 +232,8 @@ export default function Account() {
                     <input
                       type="password"
                       autoComplete="new-password"
+                      readOnly={!passwordFieldsUnlocked}
+                      onFocus={() => setPasswordFieldsUnlocked(true)}
                       minLength={8}
                       value={passwordForm.newPassword}
                       onChange={onPasswordChange('newPassword')}
@@ -241,6 +247,8 @@ export default function Account() {
                     <input
                       type="password"
                       autoComplete="new-password"
+                      readOnly={!passwordFieldsUnlocked}
+                      onFocus={() => setPasswordFieldsUnlocked(true)}
                       minLength={8}
                       value={passwordForm.confirmPassword}
                       onChange={onPasswordChange('confirmPassword')}
