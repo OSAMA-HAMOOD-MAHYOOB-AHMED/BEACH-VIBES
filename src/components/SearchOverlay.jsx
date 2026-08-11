@@ -4,7 +4,7 @@ import { Search, X } from 'lucide-react'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
 import { localizeProduct } from '../utils/localize'
-import { formatPrice } from '../utils/format'
+import { useFormatPrice } from '../hooks/useFormatPrice'
 import { ProductMedia } from './Media'
 
 const MAX_PRODUCT_RESULTS = 5
@@ -12,6 +12,7 @@ const MAX_JOURNAL_RESULTS = 3
 
 export default function SearchOverlay({ open, onClose }) {
   const { t, language } = useLanguage()
+  const formatPrice = useFormatPrice()
   const { products } = useProducts()
   const navigate = useNavigate()
   const [query, setQuery] = useState('')

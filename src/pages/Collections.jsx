@@ -8,7 +8,7 @@ import { CATEGORIES, MATERIALS } from '../data/products'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
 import { localizeProduct } from '../utils/localize'
-import { formatPrice } from '../utils/format'
+import { useFormatPrice } from '../hooks/useFormatPrice'
 
 const PRICE_RANGES = [
   { id: 'under-200', test: (p) => p < 200 },
@@ -28,6 +28,7 @@ const PAGE_SIZE = 6
 
 export default function Collections() {
   const { t, language } = useLanguage()
+  const formatPrice = useFormatPrice()
   const { products } = useProducts()
   const [category, setCategory] = useState('All Collections')
   const [priceFilters, setPriceFilters] = useState([])

@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLanguage } from '../context/LanguageContext'
 import { api } from '../lib/api'
-import { formatPrice } from '../utils/format'
+import { useFormatPrice } from '../hooks/useFormatPrice'
 
 export default function Account() {
   const { t } = useLanguage()
+  const formatPrice = useFormatPrice()
   const { user, logout, updateProfile, changePassword, deleteAccount } = useAuth()
   const navigate = useNavigate()
   const [orders, setOrders] = useState([])

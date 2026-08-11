@@ -7,12 +7,13 @@ import { useCart } from '../context/CartContext'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
 import { localizeProduct } from '../utils/localize'
-import { formatPrice } from '../utils/format'
+import { useFormatPrice } from '../hooks/useFormatPrice'
 
 const TAX_RATE = 0.08
 
 export default function Cart() {
   const { t, language } = useLanguage()
+  const formatPrice = useFormatPrice()
   const { lines: rawLines, subtotal, count, updateQty, removeItem } = useCart()
   const { products } = useProducts()
 

@@ -4,7 +4,7 @@ import { Heart } from 'lucide-react'
 import { ProductMedia } from './Media'
 import StarRating from './StarRating'
 import QuickViewModal from './QuickViewModal'
-import { formatPrice } from '../utils/format'
+import { useFormatPrice } from '../hooks/useFormatPrice'
 import { useLanguage } from '../context/LanguageContext'
 import { localizeProduct } from '../utils/localize'
 import { useWishlist } from '../hooks/useWishlist'
@@ -12,6 +12,7 @@ import { useWishlist } from '../hooks/useWishlist'
 export default function ProductCard({ product: rawProduct, showCategory = true }) {
   const { t, language } = useLanguage()
   const product = localizeProduct(rawProduct, language)
+  const formatPrice = useFormatPrice()
   const { isWishlisted, toggle } = useWishlist()
   const [quickViewOpen, setQuickViewOpen] = useState(false)
   const wishlisted = isWishlisted(product.id)

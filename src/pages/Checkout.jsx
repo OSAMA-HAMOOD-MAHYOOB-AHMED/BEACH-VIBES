@@ -6,13 +6,14 @@ import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLanguage } from '../context/LanguageContext'
 import { localizeProduct } from '../utils/localize'
-import { formatPrice } from '../utils/format'
+import { useFormatPrice } from '../hooks/useFormatPrice'
 import { api } from '../lib/api'
 
 const TAX_RATE = 0.08
 
 export default function Checkout() {
   const { t, language } = useLanguage()
+  const formatPrice = useFormatPrice()
   const { user } = useAuth()
   const { lines: rawLines, subtotal, clearCart } = useCart()
 

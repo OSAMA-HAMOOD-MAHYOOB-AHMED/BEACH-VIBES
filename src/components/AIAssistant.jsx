@@ -5,7 +5,7 @@ import { ProductMedia } from './Media'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
 import { localizeProduct } from '../utils/localize'
-import { formatPrice } from '../utils/format'
+import { useFormatPrice } from '../hooks/useFormatPrice'
 
 const DESTINATIONS = [
   { key: 'beachResort', categories: ['Beachwear', 'Accessories'] },
@@ -17,6 +17,7 @@ const DESTINATIONS = [
 
 export default function AIAssistant() {
   const { t, language } = useLanguage()
+  const formatPrice = useFormatPrice()
   const { products } = useProducts()
   const [open, setOpen] = useState(false)
   const [destination, setDestination] = useState(null)

@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom'
 import { X } from 'lucide-react'
 import { ProductMedia } from './Media'
 import StarRating from './StarRating'
-import { formatPrice } from '../utils/format'
+import { useFormatPrice } from '../hooks/useFormatPrice'
 import { useLanguage } from '../context/LanguageContext'
 import { useCart } from '../context/CartContext'
 
 export default function QuickViewModal({ product, open, onClose }) {
   const { t } = useLanguage()
   const { addItem } = useCart()
+  const formatPrice = useFormatPrice()
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
   const onSale = product?.compareAtPrice > product?.price

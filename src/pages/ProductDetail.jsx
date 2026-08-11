@@ -18,7 +18,7 @@ import Newsletter from '../components/Newsletter'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
 import { localizeProduct } from '../utils/localize'
-import { formatPrice } from '../utils/format'
+import { useFormatPrice } from '../hooks/useFormatPrice'
 import { useCart } from '../context/CartContext'
 
 const SIZES = ['S', 'M', 'L', 'XL']
@@ -26,6 +26,7 @@ const SIZES = ['S', 'M', 'L', 'XL']
 export default function ProductDetail() {
   const { id } = useParams()
   const { t, language } = useLanguage()
+  const formatPrice = useFormatPrice()
   const { products, findProduct } = useProducts()
   const rawProduct = findProduct(id)
   const product = localizeProduct(rawProduct, language)
