@@ -18,7 +18,6 @@ export default function Account() {
   const [error, setError] = useState('')
 
   const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
-  const [passwordSaving, setPasswordSaving] = useState(false)
   const [passwordError, setPasswordError] = useState('')
 
   const [deleting, setDeleting] = useState(false)
@@ -68,39 +67,50 @@ export default function Account() {
     setDeleteError('')
   }
 
-  const onSaveProfile = async (e) => {
+  const onSaveAll = async (e) => {
     e.preventDefault()
     setError('')
+    setPasswordError('')
+
+    const wantsPasswordChange = Boolean(
+      passwordForm.currentPassword || passwordForm.newPassword || passwordForm.confirmPassword,
+    )
+    if (wantsPasswordChange) {
+      if (!passwordForm.currentPassword || !passwordForm.newPassword || !passwordForm.confirmPassword) {
+        setPasswordError(t('account.passwordFieldsRequired'))
+        return
+      }
+      if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+        setPasswordError(t('account.passwordMismatch'))
+        return
+      }
+    }
+
     setSaving(true)
     try {
       await updateProfile(form)
-      setEditing(false)
     } catch (err) {
       setError(err.message)
-    } finally {
       setSaving(false)
-    }
-  }
-
-  const onSavePassword = async (e) => {
-    e.preventDefault()
-    setPasswordError('')
-    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      setPasswordError(t('account.passwordMismatch'))
       return
     }
-    setPasswordSaving(true)
-    try {
-      await changePassword({
-        currentPassword: passwordForm.currentPassword,
-        newPassword: passwordForm.newPassword,
-      })
-      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
-    } catch (err) {
-      setPasswordError(err.message)
-    } finally {
-      setPasswordSaving(false)
+
+    if (wantsPasswordChange) {
+      try {
+        await changePassword({
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword,
+        })
+        setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
+      } catch (err) {
+        setPasswordError(err.message)
+        setSaving(false)
+        return
+      }
     }
+
+    setSaving(false)
+    setEditing(false)
   }
 
   const onStartDelete = () => {
@@ -162,34 +172,83 @@ export default function Account() {
 
       {editing ? (
         <div className="border border-navy-100 p-6 mb-12 space-y-10">
-          <form onSubmit={onSaveProfile} className="space-y-5">
-            <div className="grid sm:grid-cols-2 gap-4">
+          <form onSubmit={onSaveAll} className="space-y-10">
+            <div className="space-y-5">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <label className="block">
+                  <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                    {t('auth.firstName')}
+                  </span>
+                  <input value={form.firstName} onChange={onChange('firstName')} className="input-field" />
+                </label>
+                <label className="block">
+                  <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                    {t('auth.lastName')}
+                  </span>
+                  <input value={form.lastName} onChange={onChange('lastName')} className="input-field" />
+                </label>
+              </div>
               <label className="block">
                 <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                  {t('auth.firstName')}
+                  {t('auth.email')}
                 </span>
-                <input value={form.firstName} onChange={onChange('firstName')} className="input-field" />
+                <input
+                  required
+                  type="email"
+                  value={form.email}
+                  onChange={onChange('email')}
+                  className="input-field"
+                />
               </label>
-              <label className="block">
-                <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                  {t('auth.lastName')}
-                </span>
-                <input value={form.lastName} onChange={onChange('lastName')} className="input-field" />
-              </label>
+              {error && <p className="text-xs text-red-600">{error}</p>}
             </div>
-            <label className="block">
-              <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                {t('auth.email')}
-              </span>
-              <input
-                required
-                type="email"
-                value={form.email}
-                onChange={onChange('email')}
-                className="input-field"
-              />
-            </label>
-            {error && <p className="text-xs text-red-600">{error}</p>}
+
+            <div className="pt-8 border-t border-navy-100">
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-5">
+                {t('account.changePassword')}
+              </h3>
+              <div className="space-y-5">
+                <label className="block">
+                  <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                    {t('account.currentPassword')}
+                  </span>
+                  <input
+                    type="password"
+                    value={passwordForm.currentPassword}
+                    onChange={onPasswordChange('currentPassword')}
+                    className="input-field"
+                  />
+                </label>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <label className="block">
+                    <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                      {t('account.newPassword')}
+                    </span>
+                    <input
+                      type="password"
+                      minLength={8}
+                      value={passwordForm.newPassword}
+                      onChange={onPasswordChange('newPassword')}
+                      className="input-field"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                      {t('account.confirmNewPassword')}
+                    </span>
+                    <input
+                      type="password"
+                      minLength={8}
+                      value={passwordForm.confirmPassword}
+                      onChange={onPasswordChange('confirmPassword')}
+                      className="input-field"
+                    />
+                  </label>
+                </div>
+                {passwordError && <p className="text-xs text-red-600">{passwordError}</p>}
+              </div>
+            </div>
+
             <div className="flex gap-3">
               <button type="submit" disabled={saving} className="btn-primary disabled:opacity-60">
                 {saving ? t('account.saving') : t('account.saveChanges')}
@@ -199,58 +258,6 @@ export default function Account() {
               </button>
             </div>
           </form>
-
-          <div className="pt-8 border-t border-navy-100">
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-5">
-              {t('account.changePassword')}
-            </h3>
-            <form onSubmit={onSavePassword} className="space-y-5">
-              <label className="block">
-                <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                  {t('account.currentPassword')}
-                </span>
-                <input
-                  required
-                  type="password"
-                  value={passwordForm.currentPassword}
-                  onChange={onPasswordChange('currentPassword')}
-                  className="input-field"
-                />
-              </label>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <label className="block">
-                  <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                    {t('account.newPassword')}
-                  </span>
-                  <input
-                    required
-                    type="password"
-                    minLength={8}
-                    value={passwordForm.newPassword}
-                    onChange={onPasswordChange('newPassword')}
-                    className="input-field"
-                  />
-                </label>
-                <label className="block">
-                  <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                    {t('account.confirmNewPassword')}
-                  </span>
-                  <input
-                    required
-                    type="password"
-                    minLength={8}
-                    value={passwordForm.confirmPassword}
-                    onChange={onPasswordChange('confirmPassword')}
-                    className="input-field"
-                  />
-                </label>
-              </div>
-              {passwordError && <p className="text-xs text-red-600">{passwordError}</p>}
-              <button type="submit" disabled={passwordSaving} className="btn-primary disabled:opacity-60">
-                {passwordSaving ? t('account.saving') : t('account.saveChanges')}
-              </button>
-            </form>
-          </div>
 
           <div className="pt-8 border-t border-red-200">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-red-700 mb-4">
