@@ -78,6 +78,16 @@ export default function Account() {
           <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.memberSince')}</dt>
           <dd className="text-sm text-navy-900">{memberSince}</dd>
         </div>
+        <div>
+          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.totalOrders')}</dt>
+          <dd className="text-sm text-navy-900">{loading ? '—' : orders.length}</dd>
+        </div>
+        <div>
+          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.lifetimeSpent')}</dt>
+          <dd className="text-sm text-navy-900">
+            {loading ? '—' : formatPrice(orders.reduce((sum, o) => sum + Number(o.total), 0))}
+          </dd>
+        </div>
       </dl>
 
       <h2 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-4">
