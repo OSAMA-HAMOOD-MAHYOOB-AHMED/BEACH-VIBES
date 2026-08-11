@@ -27,24 +27,58 @@ export default function Account() {
     }
   }, [])
 
+  const fullName = user?.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : ''
+  const initials =
+    (user?.first_name?.[0] || user?.email?.[0] || '?').toUpperCase() + (user?.last_name?.[0] || '').toUpperCase()
+  const memberSince = user?.created_at
+    ? new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
+    : '—'
+
   return (
     <div className="max-w-3xl mx-auto px-5 py-16">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
-        <div>
-          <h1 className="font-serif text-3xl text-navy-900 mb-1">{t('account.title')}</h1>
-          <p className="text-sm text-navy-500">
-            {user?.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : user?.email}
-          </p>
-          {user?.role === 'admin' && (
-            <Link to="/admin" className="text-xs text-navy-800 underline mt-1 inline-block">
-              {t('account.adminDashboard')}
-            </Link>
-          )}
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-full bg-navy-800 text-white flex items-center justify-center font-serif text-lg shrink-0">
+            {initials}
+          </div>
+          <div>
+            <h1 className="font-serif text-3xl text-navy-900 mb-1">{t('account.title')}</h1>
+            <p className="text-sm text-navy-500">{fullName || user?.email}</p>
+            {user?.role === 'admin' && (
+              <Link to="/admin" className="text-xs text-navy-800 underline mt-1 inline-block">
+                {t('account.adminDashboard')}
+              </Link>
+            )}
+          </div>
         </div>
         <button onClick={logout} className="btn-secondary">
           {t('account.logout')}
         </button>
       </div>
+
+      <h2 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-4">
+        {t('account.profileDetails')}
+      </h2>
+      <dl className="grid sm:grid-cols-2 gap-x-8 gap-y-5 border border-navy-100 p-6 mb-12">
+        <div>
+          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.fullName')}</dt>
+          <dd className="text-sm text-navy-900">{fullName || '—'}</dd>
+        </div>
+        <div>
+          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.emailLabel')}</dt>
+          <dd className="text-sm text-navy-900">{user?.email}</dd>
+        </div>
+        <div>
+          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.accountType')}</dt>
+          <dd className="text-sm text-navy-900">
+            {user?.role === 'admin' ? t('account.roleAdmin') : t('account.roleCustomer')}
+          </dd>
+        </div>
+        <div>
+          <dt className="text-xs text-navy-400 uppercase tracking-widest mb-1">{t('account.memberSince')}</dt>
+          <dd className="text-sm text-navy-900">{memberSince}</dd>
+        </div>
+      </dl>
 
       <h2 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-4">
         {t('account.orderHistory')}
