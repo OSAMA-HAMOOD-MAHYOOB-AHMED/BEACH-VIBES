@@ -350,13 +350,16 @@ export default function Account() {
         <div className="divide-y divide-navy-100">
           {orders.map((o) => (
             <div key={o.id} className="py-4 flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm text-navy-900 font-medium">#{o.id.slice(0, 8).toUpperCase()}</p>
+              <div className="min-w-0">
+                <p className="text-sm text-navy-900 font-medium truncate">
+                  {(o.order_items || []).map((item) => item.product_name).join(', ') ||
+                    `#${o.id.slice(0, 8).toUpperCase()}`}
+                </p>
                 <p className="text-xs text-navy-400">
                   {new Date(o.created_at).toLocaleDateString()} · {t(`orderStatus.${o.status}`)}
                 </p>
               </div>
-              <p className="text-sm text-navy-700">{formatPrice(o.total)}</p>
+              <p className="text-sm text-navy-700 shrink-0">{formatPrice(o.total)}</p>
             </div>
           ))}
         </div>
