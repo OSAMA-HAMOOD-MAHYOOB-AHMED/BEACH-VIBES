@@ -17,7 +17,6 @@ export default function Account() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
-  const [changingPassword, setChangingPassword] = useState(false)
   const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
   const [passwordSaving, setPasswordSaving] = useState(false)
   const [passwordError, setPasswordError] = useState('')
@@ -48,16 +47,25 @@ export default function Account() {
     (user?.first_name?.[0] || user?.email?.[0] || '?').toUpperCase() + (user?.last_name?.[0] || '').toUpperCase()
 
   const onChange = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }))
+  const onPasswordChange = (key) => (e) => setPasswordForm((f) => ({ ...f, [key]: e.target.value }))
 
   const onStartEdit = () => {
     setForm({ firstName: user?.first_name || '', lastName: user?.last_name || '', email: user?.email || '' })
     setError('')
+    setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
+    setPasswordError('')
+    setDeleting(false)
+    setDeletePassword('')
+    setDeleteError('')
     setEditing(true)
   }
 
   const onCancelEdit = () => {
     setEditing(false)
     setError('')
+    setPasswordError('')
+    setDeleting(false)
+    setDeleteError('')
   }
 
   const onSaveProfile = async (e) => {
@@ -74,19 +82,6 @@ export default function Account() {
     }
   }
 
-  const onPasswordChange = (key) => (e) => setPasswordForm((f) => ({ ...f, [key]: e.target.value }))
-
-  const onStartPasswordChange = () => {
-    setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
-    setPasswordError('')
-    setChangingPassword(true)
-  }
-
-  const onCancelPasswordChange = () => {
-    setChangingPassword(false)
-    setPasswordError('')
-  }
-
   const onSavePassword = async (e) => {
     e.preventDefault()
     setPasswordError('')
@@ -100,7 +95,7 @@ export default function Account() {
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword,
       })
-      setChangingPassword(false)
+      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
     } catch (err) {
       setPasswordError(err.message)
     } finally {
@@ -166,37 +161,140 @@ export default function Account() {
       </div>
 
       {editing ? (
-        <form onSubmit={onSaveProfile} className="border border-navy-100 p-6 mb-12 space-y-5">
-          <div className="grid sm:grid-cols-2 gap-4">
+        <div className="border border-navy-100 p-6 mb-12 space-y-10">
+          <form onSubmit={onSaveProfile} className="space-y-5">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <label className="block">
+                <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                  {t('auth.firstName')}
+                </span>
+                <input value={form.firstName} onChange={onChange('firstName')} className="input-field" />
+              </label>
+              <label className="block">
+                <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                  {t('auth.lastName')}
+                </span>
+                <input value={form.lastName} onChange={onChange('lastName')} className="input-field" />
+              </label>
+            </div>
             <label className="block">
               <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                {t('auth.firstName')}
+                {t('auth.email')}
               </span>
-              <input value={form.firstName} onChange={onChange('firstName')} className="input-field" />
+              <input
+                required
+                type="email"
+                value={form.email}
+                onChange={onChange('email')}
+                className="input-field"
+              />
             </label>
-            <label className="block">
-              <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                {t('auth.lastName')}
-              </span>
-              <input value={form.lastName} onChange={onChange('lastName')} className="input-field" />
-            </label>
+            {error && <p className="text-xs text-red-600">{error}</p>}
+            <div className="flex gap-3">
+              <button type="submit" disabled={saving} className="btn-primary disabled:opacity-60">
+                {saving ? t('account.saving') : t('account.saveChanges')}
+              </button>
+              <button type="button" onClick={onCancelEdit} className="btn-secondary">
+                {t('account.cancel')}
+              </button>
+            </div>
+          </form>
+
+          <div className="pt-8 border-t border-navy-100">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-5">
+              {t('account.changePassword')}
+            </h3>
+            <form onSubmit={onSavePassword} className="space-y-5">
+              <label className="block">
+                <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                  {t('account.currentPassword')}
+                </span>
+                <input
+                  required
+                  type="password"
+                  value={passwordForm.currentPassword}
+                  onChange={onPasswordChange('currentPassword')}
+                  className="input-field"
+                />
+              </label>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <label className="block">
+                  <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                    {t('account.newPassword')}
+                  </span>
+                  <input
+                    required
+                    type="password"
+                    minLength={8}
+                    value={passwordForm.newPassword}
+                    onChange={onPasswordChange('newPassword')}
+                    className="input-field"
+                  />
+                </label>
+                <label className="block">
+                  <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                    {t('account.confirmNewPassword')}
+                  </span>
+                  <input
+                    required
+                    type="password"
+                    minLength={8}
+                    value={passwordForm.confirmPassword}
+                    onChange={onPasswordChange('confirmPassword')}
+                    className="input-field"
+                  />
+                </label>
+              </div>
+              {passwordError && <p className="text-xs text-red-600">{passwordError}</p>}
+              <button type="submit" disabled={passwordSaving} className="btn-primary disabled:opacity-60">
+                {passwordSaving ? t('account.saving') : t('account.saveChanges')}
+              </button>
+            </form>
           </div>
-          <label className="block">
-            <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-              {t('auth.email')}
-            </span>
-            <input required type="email" value={form.email} onChange={onChange('email')} className="input-field" />
-          </label>
-          {error && <p className="text-xs text-red-600">{error}</p>}
-          <div className="flex gap-3">
-            <button type="submit" disabled={saving} className="btn-primary disabled:opacity-60">
-              {saving ? t('account.saving') : t('account.saveChanges')}
-            </button>
-            <button type="button" onClick={onCancelEdit} className="btn-secondary">
-              {t('account.cancel')}
-            </button>
+
+          <div className="pt-8 border-t border-red-200">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-red-700 mb-4">
+              {t('account.dangerZone')}
+            </h3>
+            <p className="text-sm text-navy-500 mb-5">{t('account.deleteAccountWarning')}</p>
+            {deleting ? (
+              <form onSubmit={onConfirmDelete} className="space-y-4">
+                <label className="block max-w-xs">
+                  <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
+                    {t('account.deleteAccountConfirmPrompt')}
+                  </span>
+                  <input
+                    required
+                    type="password"
+                    value={deletePassword}
+                    onChange={(e) => setDeletePassword(e.target.value)}
+                    className="input-field"
+                  />
+                </label>
+                {deleteError && <p className="text-xs text-red-600">{deleteError}</p>}
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    disabled={deleteSaving}
+                    className="inline-flex items-center justify-center gap-2 bg-red-700 text-white px-7 py-3.5 text-xs font-medium uppercase tracking-widest hover:bg-red-800 transition-colors disabled:opacity-60"
+                  >
+                    {deleteSaving ? t('account.deleting') : t('account.deleteAccountConfirmBtn')}
+                  </button>
+                  <button type="button" onClick={onCancelDelete} className="btn-secondary">
+                    {t('account.cancel')}
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <button
+                onClick={onStartDelete}
+                className="inline-flex items-center justify-center gap-2 bg-white text-red-700 border border-red-700 px-7 py-3.5 text-xs font-medium uppercase tracking-widest hover:bg-red-700 hover:text-white transition-colors"
+              >
+                {t('account.deleteAccountAction')}
+              </button>
+            )}
           </div>
-        </form>
+        </div>
       ) : (
         <dl className="grid sm:grid-cols-2 gap-x-8 gap-y-5 border border-navy-100 p-6 mb-12">
           <div>
@@ -218,71 +316,6 @@ export default function Account() {
             </dd>
           </div>
         </dl>
-      )}
-
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-navy-800">
-          {t('account.changePassword')}
-        </h2>
-        {!changingPassword && (
-          <button onClick={onStartPasswordChange} className="text-xs text-navy-800 underline">
-            {t('account.changeAction')}
-          </button>
-        )}
-      </div>
-
-      {changingPassword && (
-        <form onSubmit={onSavePassword} className="border border-navy-100 p-6 mb-12 space-y-5">
-          <label className="block">
-            <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-              {t('account.currentPassword')}
-            </span>
-            <input
-              required
-              type="password"
-              value={passwordForm.currentPassword}
-              onChange={onPasswordChange('currentPassword')}
-              className="input-field"
-            />
-          </label>
-          <div className="grid sm:grid-cols-2 gap-4">
-            <label className="block">
-              <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                {t('account.newPassword')}
-              </span>
-              <input
-                required
-                type="password"
-                minLength={8}
-                value={passwordForm.newPassword}
-                onChange={onPasswordChange('newPassword')}
-                className="input-field"
-              />
-            </label>
-            <label className="block">
-              <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                {t('account.confirmNewPassword')}
-              </span>
-              <input
-                required
-                type="password"
-                minLength={8}
-                value={passwordForm.confirmPassword}
-                onChange={onPasswordChange('confirmPassword')}
-                className="input-field"
-              />
-            </label>
-          </div>
-          {passwordError && <p className="text-xs text-red-600">{passwordError}</p>}
-          <div className="flex gap-3">
-            <button type="submit" disabled={passwordSaving} className="btn-primary disabled:opacity-60">
-              {passwordSaving ? t('account.saving') : t('account.saveChanges')}
-            </button>
-            <button type="button" onClick={onCancelPasswordChange} className="btn-secondary">
-              {t('account.cancel')}
-            </button>
-          </div>
-        </form>
       )}
 
       <h2 className="text-xs font-semibold uppercase tracking-widest text-navy-800 mb-4">
@@ -312,49 +345,6 @@ export default function Account() {
           ))}
         </div>
       )}
-
-      <h2 className="text-xs font-semibold uppercase tracking-widest text-red-700 mt-16 mb-4">
-        {t('account.dangerZone')}
-      </h2>
-      <div className="border border-red-200 p-6">
-        <p className="text-sm text-navy-500 mb-5">{t('account.deleteAccountWarning')}</p>
-        {deleting ? (
-          <form onSubmit={onConfirmDelete} className="space-y-4">
-            <label className="block max-w-xs">
-              <span className="block text-[10px] font-medium uppercase tracking-widest text-navy-400 mb-2">
-                {t('account.deleteAccountConfirmPrompt')}
-              </span>
-              <input
-                required
-                type="password"
-                value={deletePassword}
-                onChange={(e) => setDeletePassword(e.target.value)}
-                className="input-field"
-              />
-            </label>
-            {deleteError && <p className="text-xs text-red-600">{deleteError}</p>}
-            <div className="flex gap-3">
-              <button
-                type="submit"
-                disabled={deleteSaving}
-                className="inline-flex items-center justify-center gap-2 bg-red-700 text-white px-7 py-3.5 text-xs font-medium uppercase tracking-widest hover:bg-red-800 transition-colors disabled:opacity-60"
-              >
-                {deleteSaving ? t('account.deleting') : t('account.deleteAccountConfirmBtn')}
-              </button>
-              <button type="button" onClick={onCancelDelete} className="btn-secondary">
-                {t('account.cancel')}
-              </button>
-            </div>
-          </form>
-        ) : (
-          <button
-            onClick={onStartDelete}
-            className="inline-flex items-center justify-center gap-2 bg-white text-red-700 border border-red-700 px-7 py-3.5 text-xs font-medium uppercase tracking-widest hover:bg-red-700 hover:text-white transition-colors"
-          >
-            {t('account.deleteAccountAction')}
-          </button>
-        )}
-      </div>
     </div>
   )
 }
