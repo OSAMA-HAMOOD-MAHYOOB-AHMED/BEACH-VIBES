@@ -5,17 +5,12 @@ import ProductCard from '../components/ProductCard'
 import Newsletter from '../components/Newsletter'
 import { SceneMedia, ProductMedia } from '../components/Media'
 import { CATEGORIES, MATERIALS } from '../data/products'
+import { getPriceRanges } from '../data/priceRanges'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
+import { useCurrency } from '../context/CurrencyContext'
 import { localizeProduct } from '../utils/localize'
-import { useFormatPrice } from '../hooks/useFormatPrice'
-
-const PRICE_RANGES = [
-  { id: 'under-200', test: (p) => p < 200, bounds: { amount: 200 } },
-  { id: '200-500', test: (p) => p >= 200 && p <= 500, bounds: { min: 200, max: 500 } },
-  { id: '500-1000', test: (p) => p > 500 && p <= 1000, bounds: { min: 500, max: 1000 } },
-  { id: '1000-plus', test: (p) => p > 1000, bounds: { amount: 1000 } },
-]
+import { useFormatPrice, useFormatLocalAmount } from '../hooks/useFormatPrice'
 
 const SORT_FNS = {
   newest: (a, b) => (b.isNew === a.isNew ? 0 : b.isNew ? 1 : -1),
@@ -28,7 +23,9 @@ const PAGE_SIZE = 6
 
 export default function Collections() {
   const { t, language } = useLanguage()
+  const { currency, rate } = useCurrency()
   const formatPrice = useFormatPrice()
+  const formatLocalAmount = useFormatLocalAmount()
   const { products } = useProducts()
   const [category, setCategory] = useState('All Collections')
   const [priceFilters, setPriceFilters] = useState([])
@@ -37,6 +34,8 @@ export default function Collections() {
   const [sort, setSort] = useState('newest')
   const [view, setView] = useState('grid')
   const [visible, setVisible] = useState(PAGE_SIZE)
+
+  const priceRanges = useMemo(() => getPriceRanges(currency, rate), [currency, rate])
 
   const toggle = (list, setList, value) =>
     setList(list.includes(value) ? list.filter((v) => v !== value) : [...list, value])
@@ -49,7 +48,7 @@ export default function Collections() {
     }
     if (priceFilters.length) {
       result = result.filter((p) =>
-        priceFilters.some((id) => PRICE_RANGES.find((r) => r.id === id)?.test(p.price)),
+        priceFilters.some((id) => priceRanges.find((r) => r.id === id)?.test(p.price * rate)),
       )
     }
     if (materialFilters.length) {
@@ -61,7 +60,7 @@ export default function Collections() {
     }
     result.sort(SORT_FNS[sort])
     return result
-  }, [products, category, priceFilters, materialFilters, query, sort, language])
+  }, [products, category, priceFilters, materialFilters, query, sort, language, priceRanges, rate])
 
   const shown = filtered.slice(0, visible)
   const collectionLinks = ['All Collections', 'New Arrivals', ...CATEGORIES]
@@ -74,7 +73,7 @@ export default function Collections() {
   const priceRangeLabel = (r) =>
     t(
       `collections.priceRanges.${r.id}`,
-      Object.fromEntries(Object.entries(r.bounds).map(([k, v]) => [k, formatPrice(v)])),
+      Object.fromEntries(Object.entries(r.bounds).map(([k, v]) => [k, formatLocalAmount(v)])),
     )
 
   return (
@@ -117,7 +116,7 @@ export default function Collections() {
               {t('collections.priceRangeHeading')}
             </h4>
             <ul className="space-y-3">
-              {PRICE_RANGES.map((r) => (
+              {priceRanges.map((r) => (
                 <li key={r.id} className="flex items-center gap-2.5">
                   <input
                     id={r.id}

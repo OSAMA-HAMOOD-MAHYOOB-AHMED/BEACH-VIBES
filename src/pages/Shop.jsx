@@ -5,19 +5,14 @@ import ProductCard from '../components/ProductCard'
 import Newsletter from '../components/Newsletter'
 import { SceneMedia } from '../components/Media'
 import { MATERIALS } from '../data/products'
+import { getPriceRanges } from '../data/priceRanges'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
+import { useCurrency } from '../context/CurrencyContext'
 import { localizeProduct } from '../utils/localize'
-import { useFormatPrice } from '../hooks/useFormatPrice'
+import { useFormatPrice, useFormatLocalAmount } from '../hooks/useFormatPrice'
 
 const PAGE_SIZE = 8
-
-const PRICE_RANGES = [
-  { id: 'under-200', test: (p) => p < 200, bounds: { amount: 200 } },
-  { id: '200-500', test: (p) => p >= 200 && p <= 500, bounds: { min: 200, max: 500 } },
-  { id: '500-1000', test: (p) => p > 500 && p <= 1000, bounds: { min: 500, max: 1000 } },
-  { id: '1000-plus', test: (p) => p > 1000, bounds: { amount: 1000 } },
-]
 
 const SORT_FNS = {
   newest: (a, b) => (b.isNew === a.isNew ? 0 : b.isNew ? 1 : -1),
@@ -28,7 +23,9 @@ const SORT_FNS = {
 
 export default function Shop() {
   const { t, language } = useLanguage()
+  const { currency, rate } = useCurrency()
   const formatPrice = useFormatPrice()
+  const formatLocalAmount = useFormatLocalAmount()
   const { products } = useProducts()
   const [params, setParams] = useSearchParams()
   const category = params.get('category')
@@ -59,6 +56,8 @@ export default function Shop() {
     setVisible(PAGE_SIZE)
   }
 
+  const priceRanges = useMemo(() => getPriceRanges(currency, rate), [currency, rate])
+
   const filtered = useMemo(() => {
     let result = products.map((p) => localizeProduct(p, language))
     if (category) result = result.filter((p) => p.category === category)
@@ -68,7 +67,7 @@ export default function Shop() {
     if (activeFilter === 'sale') result = result.filter((p) => p.compareAtPrice > p.price)
     if (priceFilters.length) {
       result = result.filter((p) =>
-        priceFilters.some((id) => PRICE_RANGES.find((r) => r.id === id)?.test(p.price)),
+        priceFilters.some((id) => priceRanges.find((r) => r.id === id)?.test(p.price * rate)),
       )
     }
     if (materialFilters.length) {
@@ -80,14 +79,27 @@ export default function Shop() {
     }
     result.sort(SORT_FNS[sort])
     return result
-  }, [products, category, categoryList, brand, activeFilter, priceFilters, materialFilters, query, sort, language])
+  }, [
+    products,
+    category,
+    categoryList,
+    brand,
+    activeFilter,
+    priceFilters,
+    materialFilters,
+    query,
+    sort,
+    language,
+    priceRanges,
+    rate,
+  ])
 
   const shown = filtered.slice(0, visible)
   const sorts = t('collections.sorts')
   const priceRangeLabel = (r) =>
     t(
       `collections.priceRanges.${r.id}`,
-      Object.fromEntries(Object.entries(r.bounds).map(([k, v]) => [k, formatPrice(v)])),
+      Object.fromEntries(Object.entries(r.bounds).map(([k, v]) => [k, formatLocalAmount(v)])),
     )
   const activeChips = [
     ...(activeFilter === 'new' ? [{ key: 'filter', label: t('shop.newArrivalsChip') }] : []),
@@ -97,7 +109,7 @@ export default function Shop() {
     ...(brand ? [{ key: 'brand', label: brand }] : []),
     ...priceFilters.map((id) => ({
       key: `price-${id}`,
-      label: priceRangeLabel(PRICE_RANGES.find((r) => r.id === id)),
+      label: priceRangeLabel(priceRanges.find((r) => r.id === id)),
       onClear: () => toggleValue(priceFilters, setPriceFilters, id),
     })),
     ...materialFilters.map((m) => ({
@@ -146,7 +158,7 @@ export default function Shop() {
                       {t('collections.priceRangeHeading')}
                     </h4>
                     <ul className="space-y-2.5">
-                      {PRICE_RANGES.map((r) => (
+                      {priceRanges.map((r) => (
                         <li key={r.id} className="flex items-center gap-2.5">
                           <input
                             id={`shop-price-${r.id}`}

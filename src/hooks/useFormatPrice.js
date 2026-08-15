@@ -9,3 +9,13 @@ export function useFormatPrice() {
 
   return (value) => formatPriceBase(value, { currency, rate, locale })
 }
+
+// For values already expressed in the detected local currency (e.g. a
+// curated price-range threshold), as opposed to useFormatPrice's USD input.
+export function useFormatLocalAmount() {
+  const { currency } = useCurrency()
+  const { language } = useLanguage()
+  const locale = language === 'ar' ? 'ar' : 'en-US'
+
+  return (value) => formatPriceBase(value, { currency, rate: 1, locale })
+}
