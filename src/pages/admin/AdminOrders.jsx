@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLanguage } from '../../context/LanguageContext'
+import { useCurrency } from '../../context/CurrencyContext'
+import { useFormatPrice } from '../../hooks/useFormatPrice'
 import { api } from '../../lib/api'
 import { formatPrice } from '../../utils/format'
 
@@ -7,6 +9,8 @@ const STATUSES = ['pending', 'paid', 'shipped', 'cancelled']
 
 export default function AdminOrders() {
   const { t } = useLanguage()
+  const { currency } = useCurrency()
+  const formatLocalPrice = useFormatPrice()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -51,7 +55,12 @@ export default function AdminOrders() {
                 <th className="py-3 pr-4">{t('admin.orders.orderId')}</th>
                 <th className="py-3 pr-4">{t('admin.orders.customer')}</th>
                 <th className="py-3 pr-4">{t('admin.orders.date')}</th>
-                <th className="py-3 pr-4">{t('admin.orders.total')}</th>
+                <th className="py-3 pr-4">{t('admin.orders.totalUsd')}</th>
+                {currency !== 'USD' && (
+                  <th className="py-3 pr-4">
+                    {t('admin.orders.total')} ({currency})
+                  </th>
+                )}
                 <th className="py-3">{t('admin.orders.status')}</th>
               </tr>
             </thead>
@@ -62,6 +71,9 @@ export default function AdminOrders() {
                   <td className="py-3 pr-4 text-navy-600">{o.email}</td>
                   <td className="py-3 pr-4 text-navy-600">{new Date(o.created_at).toLocaleDateString()}</td>
                   <td className="py-3 pr-4 text-navy-600">{formatPrice(o.total)}</td>
+                  {currency !== 'USD' && (
+                    <td className="py-3 pr-4 text-navy-600">{formatLocalPrice(o.total)}</td>
+                  )}
                   <td className="py-3">
                     <select
                       value={o.status}

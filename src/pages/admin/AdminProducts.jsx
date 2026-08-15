@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLanguage } from '../../context/LanguageContext'
+import { useCurrency } from '../../context/CurrencyContext'
+import { useFormatPrice } from '../../hooks/useFormatPrice'
 import { api } from '../../lib/api'
 import { CATEGORIES, MATERIALS } from '../../data/products'
 import { formatPrice } from '../../utils/format'
@@ -48,6 +50,8 @@ function toFormState(product) {
 
 export default function AdminProducts() {
   const { t } = useLanguage()
+  const { currency } = useCurrency()
+  const formatLocalPrice = useFormatPrice()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -261,7 +265,12 @@ export default function AdminProducts() {
               <tr className="text-left text-[10px] font-semibold uppercase tracking-widest text-navy-400 border-b border-navy-100">
                 <th className="py-3 pr-4">{t('admin.products.name')}</th>
                 <th className="py-3 pr-4">{t('admin.products.category')}</th>
-                <th className="py-3 pr-4">{t('admin.products.price')}</th>
+                <th className="py-3 pr-4">{t('admin.products.priceUsd')}</th>
+                {currency !== 'USD' && (
+                  <th className="py-3 pr-4">
+                    {t('admin.products.price')} ({currency})
+                  </th>
+                )}
                 <th className="py-3"></th>
               </tr>
             </thead>
@@ -271,6 +280,9 @@ export default function AdminProducts() {
                   <td className="py-3 pr-4 text-navy-900 font-medium">{p.name}</td>
                   <td className="py-3 pr-4 text-navy-600">{p.category}</td>
                   <td className="py-3 pr-4 text-navy-600">{formatPrice(p.price)}</td>
+                  {currency !== 'USD' && (
+                    <td className="py-3 pr-4 text-navy-600">{formatLocalPrice(p.price)}</td>
+                  )}
                   <td className="py-3 text-right rtl:text-left">
                     <button onClick={() => startEdit(p)} className="text-xs text-navy-700 underline mr-4 rtl:mr-0 rtl:ml-4">
                       {t('admin.common.edit')}

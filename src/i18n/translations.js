@@ -541,6 +541,7 @@ const en = {
       customer: 'Customer',
       date: 'Date',
       total: 'Total',
+      totalUsd: 'Total (USD)',
       status: 'Status',
     },
     messages: {
@@ -572,6 +573,7 @@ const en = {
       tone: 'Tone',
       brand: 'Brand',
       price: 'Price',
+      priceUsd: 'Price (USD)',
       compareAtPrice: 'Compare-at Price (optional, for sale badge)',
       rating: 'Rating',
       reviews: 'Review Count',
@@ -1199,6 +1201,7 @@ const ar = {
       customer: 'العميل',
       date: 'التاريخ',
       total: 'الإجمالي',
+      totalUsd: 'الإجمالي (دولار أمريكي)',
       status: 'الحالة',
     },
     messages: {
@@ -1230,6 +1233,7 @@ const ar = {
       tone: 'درجة اللون',
       brand: 'العلامة التجارية',
       price: 'السعر',
+      priceUsd: 'السعر (دولار أمريكي)',
       compareAtPrice: 'السعر قبل الخصم (اختياري، لعرض شارة التخفيض)',
       rating: 'التقييم',
       reviews: 'عدد التقييمات',
