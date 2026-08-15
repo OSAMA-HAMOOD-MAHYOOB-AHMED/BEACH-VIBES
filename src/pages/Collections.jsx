@@ -11,10 +11,10 @@ import { localizeProduct } from '../utils/localize'
 import { useFormatPrice } from '../hooks/useFormatPrice'
 
 const PRICE_RANGES = [
-  { id: 'under-200', test: (p) => p < 200 },
-  { id: '200-500', test: (p) => p >= 200 && p <= 500 },
-  { id: '500-1000', test: (p) => p > 500 && p <= 1000 },
-  { id: '1000-plus', test: (p) => p > 1000 },
+  { id: 'under-200', test: (p) => p < 200, bounds: { amount: 200 } },
+  { id: '200-500', test: (p) => p >= 200 && p <= 500, bounds: { min: 200, max: 500 } },
+  { id: '500-1000', test: (p) => p > 500 && p <= 1000, bounds: { min: 500, max: 1000 } },
+  { id: '1000-plus', test: (p) => p > 1000, bounds: { amount: 1000 } },
 ]
 
 const SORT_FNS = {
@@ -71,7 +71,11 @@ export default function Collections() {
     return t(`categories.${c}`)
   }
   const sorts = t('collections.sorts')
-  const priceRanges = t('collections.priceRanges')
+  const priceRangeLabel = (r) =>
+    t(
+      `collections.priceRanges.${r.id}`,
+      Object.fromEntries(Object.entries(r.bounds).map(([k, v]) => [k, formatPrice(v)])),
+    )
 
   return (
     <div>
@@ -126,7 +130,7 @@ export default function Collections() {
                     className="w-3.5 h-3.5 accent-navy-800"
                   />
                   <label htmlFor={r.id} className="text-sm text-navy-600">
-                    {priceRanges[r.id]}
+                    {priceRangeLabel(r)}
                   </label>
                 </li>
               ))}

@@ -8,14 +8,15 @@ import { MATERIALS } from '../data/products'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
 import { localizeProduct } from '../utils/localize'
+import { useFormatPrice } from '../hooks/useFormatPrice'
 
 const PAGE_SIZE = 8
 
 const PRICE_RANGES = [
-  { id: 'under-200', test: (p) => p < 200 },
-  { id: '200-500', test: (p) => p >= 200 && p <= 500 },
-  { id: '500-1000', test: (p) => p > 500 && p <= 1000 },
-  { id: '1000-plus', test: (p) => p > 1000 },
+  { id: 'under-200', test: (p) => p < 200, bounds: { amount: 200 } },
+  { id: '200-500', test: (p) => p >= 200 && p <= 500, bounds: { min: 200, max: 500 } },
+  { id: '500-1000', test: (p) => p > 500 && p <= 1000, bounds: { min: 500, max: 1000 } },
+  { id: '1000-plus', test: (p) => p > 1000, bounds: { amount: 1000 } },
 ]
 
 const SORT_FNS = {
@@ -27,6 +28,7 @@ const SORT_FNS = {
 
 export default function Shop() {
   const { t, language } = useLanguage()
+  const formatPrice = useFormatPrice()
   const { products } = useProducts()
   const [params, setParams] = useSearchParams()
   const category = params.get('category')
@@ -81,8 +83,12 @@ export default function Shop() {
   }, [products, category, categoryList, brand, activeFilter, priceFilters, materialFilters, query, sort, language])
 
   const shown = filtered.slice(0, visible)
-  const priceRanges = t('collections.priceRanges')
   const sorts = t('collections.sorts')
+  const priceRangeLabel = (r) =>
+    t(
+      `collections.priceRanges.${r.id}`,
+      Object.fromEntries(Object.entries(r.bounds).map(([k, v]) => [k, formatPrice(v)])),
+    )
   const activeChips = [
     ...(activeFilter === 'new' ? [{ key: 'filter', label: t('shop.newArrivalsChip') }] : []),
     ...(activeFilter === 'sale' ? [{ key: 'filter', label: t('shop.saleChip') }] : []),
@@ -91,7 +97,7 @@ export default function Shop() {
     ...(brand ? [{ key: 'brand', label: brand }] : []),
     ...priceFilters.map((id) => ({
       key: `price-${id}`,
-      label: priceRanges[id],
+      label: priceRangeLabel(PRICE_RANGES.find((r) => r.id === id)),
       onClear: () => toggleValue(priceFilters, setPriceFilters, id),
     })),
     ...materialFilters.map((m) => ({
@@ -150,7 +156,7 @@ export default function Shop() {
                             className="w-3.5 h-3.5 accent-navy-800"
                           />
                           <label htmlFor={`shop-price-${r.id}`} className="text-sm text-navy-600">
-                            {priceRanges[r.id]}
+                            {priceRangeLabel(r)}
                           </label>
                         </li>
                       ))}
