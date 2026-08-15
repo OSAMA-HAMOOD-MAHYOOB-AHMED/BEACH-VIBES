@@ -384,3 +384,35 @@ create table if not exists order_items (
 
 alter table order_items enable row level security;
 -- No policies: only the backend may read/write, joined through orders.
+
+-- ============================================================
+-- currency_price_ranges
+-- ============================================================
+-- Admin-editable price-range filter thresholds per currency, shown on
+-- the Collections/Shop "Filter" panel. tier1 < tier2 < tier3 define
+-- four buckets: under tier1, tier1-tier2, tier2-tier3, over tier3 —
+-- all in that currency's own units (not USD-converted). A currency
+-- with no row here falls back to the USD thresholds converted at the
+-- live exchange rate (see src/data/priceRanges.js).
+create table if not exists currency_price_ranges (
+  currency text primary key,
+  tier1 numeric not null,
+  tier2 numeric not null,
+  tier3 numeric not null,
+  updated_at timestamptz default now(),
+  constraint currency_price_ranges_ascending check (tier1 < tier2 and tier2 < tier3)
+);
+
+alter table currency_price_ranges enable row level security;
+-- No policies: only the backend (service_role key) may read/write.
+
+-- Seed with the same defaults previously hardcoded in the frontend.
+insert into currency_price_ranges (currency, tier1, tier2, tier3)
+values
+  ('USD', 200, 500, 1000),
+  ('SAR', 750, 1875, 3750),
+  ('MYR', 800, 2000, 4000),
+  ('AED', 750, 1875, 3750),
+  ('GBP', 150, 400, 800),
+  ('EUR', 180, 450, 900)
+on conflict (currency) do nothing;

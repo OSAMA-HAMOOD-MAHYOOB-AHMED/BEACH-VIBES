@@ -533,6 +533,7 @@ const en = {
       orders: 'Orders',
       messages: 'Messages',
       users: 'Users',
+      priceRanges: 'Price Ranges',
     },
     orders: {
       title: 'All Orders',
@@ -543,6 +544,22 @@ const en = {
       total: 'Total',
       totalUsd: 'Total (USD)',
       status: 'Status',
+    },
+    priceRanges: {
+      title: 'Price Ranges',
+      explainer:
+        'These thresholds power the "Filter" panel\'s price-range checkboxes on the Shop and Collections pages, per currency. A currency without a row here falls back to the USD thresholds converted at the live exchange rate.',
+      addBtn: 'Add Currency',
+      createTitle: 'New Currency',
+      editTitle: 'Edit Currency',
+      currency: 'Currency',
+      tier1: 'Tier 1',
+      tier2: 'Tier 2',
+      tier3: 'Tier 3',
+      empty: 'No custom ranges set yet — every currency is using the converted-USD fallback.',
+      invalidCurrency: 'Currency must be a 3-letter code, e.g. SAR.',
+      invalidOrder: 'Tier 1, Tier 2, and Tier 3 must be positive and strictly increasing.',
+      deleteConfirm: 'Remove the custom range for {{currency}}? It will fall back to converted USD.',
     },
     messages: {
       contactTitle: 'Contact Messages',
@@ -1193,6 +1210,7 @@ const ar = {
       orders: 'الطلبات',
       messages: 'الرسائل',
       users: 'المستخدمون',
+      priceRanges: 'نطاقات الأسعار',
     },
     orders: {
       title: 'كل الطلبات',
@@ -1203,6 +1221,22 @@ const ar = {
       total: 'الإجمالي',
       totalUsd: 'الإجمالي (دولار أمريكي)',
       status: 'الحالة',
+    },
+    priceRanges: {
+      title: 'نطاقات الأسعار',
+      explainer:
+        'تُستخدم هذه الحدود في خانات نطاق السعر ضمن لوحة "تصفية" في صفحتي المتجر والمجموعات، لكل عملة. أي عملة بلا صف هنا تعتمد على تحويل الحدود الدولارية بسعر الصرف اللحظي.',
+      addBtn: 'إضافة عملة',
+      createTitle: 'عملة جديدة',
+      editTitle: 'تعديل العملة',
+      currency: 'العملة',
+      tier1: 'المستوى 1',
+      tier2: 'المستوى 2',
+      tier3: 'المستوى 3',
+      empty: 'لا توجد نطاقات مخصصة بعد — تعتمد جميع العملات على التحويل الدولاري الافتراضي.',
+      invalidCurrency: 'يجب أن تكون العملة رمزاً من 3 أحرف، مثل SAR.',
+      invalidOrder: 'يجب أن تكون المستويات 1 و2 و3 موجبة ومتصاعدة بشكل صارم.',
+      deleteConfirm: 'إزالة النطاق المخصص لعملة {{currency}}؟ ستعتمد بعدها على التحويل الدولاري.',
     },
     messages: {
       contactTitle: 'رسائل التواصل',

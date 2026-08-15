@@ -227,4 +227,68 @@ router.patch('/users/:id/role', async (req, res, next) => {
   }
 });
 
+// ============================================================
+// Currency price ranges
+// ============================================================
+
+router.get('/price-ranges', async (req, res, next) => {
+  try {
+    const { data, error } = await supabase.from('currency_price_ranges').select('*').order('currency');
+    if (error) throw error;
+    res.json({ priceRanges: data });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put('/price-ranges/:currency', async (req, res, next) => {
+  try {
+    const currency = req.params.currency.toUpperCase();
+    if (!/^[A-Z]{3}$/.test(currency)) {
+      return res.status(400).json({ error: 'currency must be a 3-letter ISO code, e.g. SAR' });
+    }
+
+    const tiers = [req.body.tier1, req.body.tier2, req.body.tier3].map(Number);
+    if (tiers.some((n) => !Number.isFinite(n) || n <= 0)) {
+      return res.status(400).json({ error: 'tier1, tier2, and tier3 must be positive numbers' });
+    }
+    if (!(tiers[0] < tiers[1] && tiers[1] < tiers[2])) {
+      return res.status(400).json({ error: 'Thresholds must be strictly increasing: tier1 < tier2 < tier3' });
+    }
+
+    const { data: priceRange, error } = await supabase
+      .from('currency_price_ranges')
+      .upsert({
+        currency,
+        tier1: tiers[0],
+        tier2: tiers[1],
+        tier3: tiers[2],
+        updated_at: new Date().toISOString(),
+      })
+      .select('*')
+      .single();
+
+    if (error) throw error;
+    res.json({ priceRange });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.delete('/price-ranges/:currency', async (req, res, next) => {
+  try {
+    const currency = req.params.currency.toUpperCase();
+    const { error, count } = await supabase
+      .from('currency_price_ranges')
+      .delete({ count: 'exact' })
+      .eq('currency', currency);
+
+    if (error) throw error;
+    if (!count) return res.status(404).json({ error: 'No custom range set for this currency' });
+    res.status(204).end();
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;

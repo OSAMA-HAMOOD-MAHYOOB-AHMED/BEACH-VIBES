@@ -9,6 +9,7 @@ import { getPriceRanges } from '../data/priceRanges'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
 import { useCurrency } from '../context/CurrencyContext'
+import { usePriceRangeThresholds } from '../context/PriceRangesContext'
 import { localizeProduct } from '../utils/localize'
 import { useFormatPrice, useFormatLocalAmount } from '../hooks/useFormatPrice'
 
@@ -24,6 +25,7 @@ const SORT_FNS = {
 export default function Shop() {
   const { t, language } = useLanguage()
   const { currency, rate } = useCurrency()
+  const thresholds = usePriceRangeThresholds()
   const formatPrice = useFormatPrice()
   const formatLocalAmount = useFormatLocalAmount()
   const { products } = useProducts()
@@ -56,7 +58,7 @@ export default function Shop() {
     setVisible(PAGE_SIZE)
   }
 
-  const priceRanges = useMemo(() => getPriceRanges(currency, rate), [currency, rate])
+  const priceRanges = useMemo(() => getPriceRanges(currency, rate, thresholds), [currency, rate, thresholds])
 
   const filtered = useMemo(() => {
     let result = products.map((p) => localizeProduct(p, language))

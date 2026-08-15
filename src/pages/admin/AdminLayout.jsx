@@ -9,6 +9,7 @@ export default function AdminLayout() {
     { to: '/admin/orders', label: t('admin.nav.orders') },
     { to: '/admin/messages', label: t('admin.nav.messages') },
     { to: '/admin/users', label: t('admin.nav.users') },
+    { to: '/admin/price-ranges', label: t('admin.nav.priceRanges') },
   ]
 
   return (

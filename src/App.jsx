@@ -3,6 +3,7 @@ import Layout from './components/Layout'
 import { RequireAuth, RequireAdmin } from './components/RouteGuards'
 import { LanguageProvider } from './context/LanguageContext'
 import { CurrencyProvider } from './context/CurrencyContext'
+import { PriceRangesProvider } from './context/PriceRangesContext'
 import { AuthProvider } from './context/AuthContext'
 import { ProductsProvider } from './context/ProductsContext'
 import { CartProvider } from './context/CartContext'
@@ -24,47 +25,51 @@ import AdminProducts from './pages/admin/AdminProducts'
 import AdminOrders from './pages/admin/AdminOrders'
 import AdminMessages from './pages/admin/AdminMessages'
 import AdminUsers from './pages/admin/AdminUsers'
+import AdminPriceRanges from './pages/admin/AdminPriceRanges'
 
 export default function App() {
   return (
     <LanguageProvider>
       <CurrencyProvider>
-        <AuthProvider>
-          <ProductsProvider>
-            <CartProvider>
-              <Routes>
-                <Route element={<Layout />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/collections" element={<Collections />} />
-                  <Route path="/shop" element={<Shop />} />
-                  <Route path="/product/:id" element={<ProductDetail />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/journal" element={<Journal />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/brands" element={<Brands />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
+        <PriceRangesProvider>
+          <AuthProvider>
+            <ProductsProvider>
+              <CartProvider>
+                <Routes>
+                  <Route element={<Layout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/collections" element={<Collections />} />
+                    <Route path="/shop" element={<Shop />} />
+                    <Route path="/product/:id" element={<ProductDetail />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/journal" element={<Journal />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/brands" element={<Brands />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
 
-                  <Route element={<RequireAuth />}>
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/account" element={<Account />} />
-                  </Route>
+                    <Route element={<RequireAuth />}>
+                      <Route path="/checkout" element={<Checkout />} />
+                      <Route path="/account" element={<Account />} />
+                    </Route>
 
-                  <Route element={<RequireAdmin />}>
-                    <Route path="/admin" element={<AdminLayout />}>
-                      <Route index element={<AdminOrders />} />
-                      <Route path="products" element={<AdminProducts />} />
-                      <Route path="orders" element={<AdminOrders />} />
-                      <Route path="messages" element={<AdminMessages />} />
-                      <Route path="users" element={<AdminUsers />} />
+                    <Route element={<RequireAdmin />}>
+                      <Route path="/admin" element={<AdminLayout />}>
+                        <Route index element={<AdminOrders />} />
+                        <Route path="products" element={<AdminProducts />} />
+                        <Route path="orders" element={<AdminOrders />} />
+                        <Route path="messages" element={<AdminMessages />} />
+                        <Route path="users" element={<AdminUsers />} />
+                        <Route path="price-ranges" element={<AdminPriceRanges />} />
+                      </Route>
                     </Route>
                   </Route>
-                </Route>
-              </Routes>
-            </CartProvider>
-          </ProductsProvider>
-        </AuthProvider>
+                </Routes>
+              </CartProvider>
+            </ProductsProvider>
+          </AuthProvider>
+        </PriceRangesProvider>
       </CurrencyProvider>
     </LanguageProvider>
   )

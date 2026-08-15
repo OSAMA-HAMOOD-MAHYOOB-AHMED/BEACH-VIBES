@@ -5,6 +5,7 @@ import newsletterRoutes from './newsletter.routes.js';
 import contactRoutes from './contact.routes.js';
 import ordersRoutes from './orders.routes.js';
 import adminRoutes from './admin.routes.js';
+import priceRangesRoutes from './priceRanges.routes.js';
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use('/newsletter', newsletterRoutes);
 router.use('/contact', contactRoutes);
 router.use('/orders', ordersRoutes);
 router.use('/admin', adminRoutes);
+router.use('/price-ranges', priceRangesRoutes);
 
 export default router;

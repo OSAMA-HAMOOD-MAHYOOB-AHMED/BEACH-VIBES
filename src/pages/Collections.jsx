@@ -9,6 +9,7 @@ import { getPriceRanges } from '../data/priceRanges'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
 import { useCurrency } from '../context/CurrencyContext'
+import { usePriceRangeThresholds } from '../context/PriceRangesContext'
 import { localizeProduct } from '../utils/localize'
 import { useFormatPrice, useFormatLocalAmount } from '../hooks/useFormatPrice'
 
@@ -24,6 +25,7 @@ const PAGE_SIZE = 6
 export default function Collections() {
   const { t, language } = useLanguage()
   const { currency, rate } = useCurrency()
+  const thresholds = usePriceRangeThresholds()
   const formatPrice = useFormatPrice()
   const formatLocalAmount = useFormatLocalAmount()
   const { products } = useProducts()
@@ -35,7 +37,7 @@ export default function Collections() {
   const [view, setView] = useState('grid')
   const [visible, setVisible] = useState(PAGE_SIZE)
 
-  const priceRanges = useMemo(() => getPriceRanges(currency, rate), [currency, rate])
+  const priceRanges = useMemo(() => getPriceRanges(currency, rate, thresholds), [currency, rate, thresholds])
 
   const toggle = (list, setList, value) =>
     setList(list.includes(value) ? list.filter((v) => v !== value) : [...list, value])
