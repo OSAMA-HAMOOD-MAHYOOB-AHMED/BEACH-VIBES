@@ -1,14 +1,29 @@
 import { useMemo, useState } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
-import { Search, SlidersHorizontal, ChevronDown, X } from 'lucide-react'
+import { Search, SlidersHorizontal, ChevronDown, X, Check } from 'lucide-react'
 import ProductCard from '../components/ProductCard'
 import Newsletter from '../components/Newsletter'
 import { SceneMedia } from '../components/Media'
+import { MATERIALS } from '../data/products'
 import { useProducts } from '../context/ProductsContext'
 import { useLanguage } from '../context/LanguageContext'
 import { localizeProduct } from '../utils/localize'
 
 const PAGE_SIZE = 8
+
+const PRICE_RANGES = [
+  { id: 'under-200', test: (p) => p < 200 },
+  { id: '200-500', test: (p) => p >= 200 && p <= 500 },
+  { id: '500-1000', test: (p) => p > 500 && p <= 1000 },
+  { id: '1000-plus', test: (p) => p > 1000 },
+]
+
+const SORT_FNS = {
+  newest: (a, b) => (b.isNew === a.isNew ? 0 : b.isNew ? 1 : -1),
+  'price-asc': (a, b) => a.price - b.price,
+  'price-desc': (a, b) => b.price - a.price,
+  name: (a, b) => a.name.localeCompare(b.name),
+}
 
 export default function Shop() {
   const { t, language } = useLanguage()
@@ -22,6 +37,17 @@ export default function Shop() {
   const bundle = params.get('bundle')
   const [query, setQuery] = useState(() => params.get('q') || '')
   const [visible, setVisible] = useState(PAGE_SIZE)
+
+  const [priceFilters, setPriceFilters] = useState([])
+  const [materialFilters, setMaterialFilters] = useState([])
+  const [sort, setSort] = useState('newest')
+  const [filterOpen, setFilterOpen] = useState(false)
+  const [sortOpen, setSortOpen] = useState(false)
+
+  const toggleValue = (list, setList, value) => {
+    setList(list.includes(value) ? list.filter((v) => v !== value) : [...list, value])
+    setVisible(PAGE_SIZE)
+  }
 
   const clearFilter = (key) => {
     const next = new URLSearchParams(params)
@@ -38,20 +64,41 @@ export default function Shop() {
     if (brand) result = result.filter((p) => p.brand === brand)
     if (activeFilter === 'new') result = result.filter((p) => p.isNew)
     if (activeFilter === 'sale') result = result.filter((p) => p.compareAtPrice > p.price)
+    if (priceFilters.length) {
+      result = result.filter((p) =>
+        priceFilters.some((id) => PRICE_RANGES.find((r) => r.id === id)?.test(p.price)),
+      )
+    }
+    if (materialFilters.length) {
+      result = result.filter((p) => materialFilters.includes(p.material))
+    }
     if (query.trim()) {
       const q = query.trim().toLowerCase()
       result = result.filter((p) => p.name.toLowerCase().includes(q))
     }
+    result.sort(SORT_FNS[sort])
     return result
-  }, [products, category, categoryList, brand, activeFilter, query, language])
+  }, [products, category, categoryList, brand, activeFilter, priceFilters, materialFilters, query, sort, language])
 
   const shown = filtered.slice(0, visible)
+  const priceRanges = t('collections.priceRanges')
+  const sorts = t('collections.sorts')
   const activeChips = [
     ...(activeFilter === 'new' ? [{ key: 'filter', label: t('shop.newArrivalsChip') }] : []),
     ...(activeFilter === 'sale' ? [{ key: 'filter', label: t('shop.saleChip') }] : []),
     ...(category ? [{ key: 'category', label: t(`categories.${category}`) }] : []),
     ...(bundle ? [{ key: 'categories', label: t(`bundles.${bundle}.title`) }] : []),
     ...(brand ? [{ key: 'brand', label: brand }] : []),
+    ...priceFilters.map((id) => ({
+      key: `price-${id}`,
+      label: priceRanges[id],
+      onClear: () => toggleValue(priceFilters, setPriceFilters, id),
+    })),
+    ...materialFilters.map((m) => ({
+      key: `material-${m}`,
+      label: t(`materials.${m}`),
+      onClear: () => toggleValue(materialFilters, setMaterialFilters, m),
+    })),
   ]
 
   return (
@@ -76,12 +123,92 @@ export default function Shop() {
             />
           </div>
           <div className="flex items-center gap-3">
-            <button className="inline-flex items-center gap-1.5 border border-navy-100 px-4 py-2.5 text-xs font-medium uppercase tracking-widest text-navy-700 hover:border-navy-400 transition-colors">
-              <SlidersHorizontal className="w-3.5 h-3.5" /> {t('shop.filterBtn')}
-            </button>
-            <button className="inline-flex items-center gap-1.5 border border-navy-100 px-4 py-2.5 text-xs font-medium uppercase tracking-widest text-navy-700 hover:border-navy-400 transition-colors">
-              {t('shop.sortBtn')} <ChevronDown className="w-3.5 h-3.5" />
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setFilterOpen((v) => !v)
+                  setSortOpen(false)
+                }}
+                className="inline-flex items-center gap-1.5 border border-navy-100 px-4 py-2.5 text-xs font-medium uppercase tracking-widest text-navy-700 hover:border-navy-400 transition-colors"
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5" /> {t('shop.filterBtn')}
+              </button>
+              {filterOpen && (
+                <div className="absolute top-full left-0 rtl:left-auto rtl:right-0 mt-2 w-64 bg-white border border-navy-100 shadow-xl p-5 z-10 space-y-6">
+                  <div>
+                    <h4 className="text-[10px] font-semibold uppercase tracking-widest text-navy-800 mb-3">
+                      {t('collections.priceRangeHeading')}
+                    </h4>
+                    <ul className="space-y-2.5">
+                      {PRICE_RANGES.map((r) => (
+                        <li key={r.id} className="flex items-center gap-2.5">
+                          <input
+                            id={`shop-price-${r.id}`}
+                            type="checkbox"
+                            checked={priceFilters.includes(r.id)}
+                            onChange={() => toggleValue(priceFilters, setPriceFilters, r.id)}
+                            className="w-3.5 h-3.5 accent-navy-800"
+                          />
+                          <label htmlFor={`shop-price-${r.id}`} className="text-sm text-navy-600">
+                            {priceRanges[r.id]}
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-semibold uppercase tracking-widest text-navy-800 mb-3">
+                      {t('collections.materialityHeading')}
+                    </h4>
+                    <ul className="space-y-2.5">
+                      {MATERIALS.map((m) => (
+                        <li key={m} className="flex items-center gap-2.5">
+                          <input
+                            id={`shop-mat-${m}`}
+                            type="checkbox"
+                            checked={materialFilters.includes(m)}
+                            onChange={() => toggleValue(materialFilters, setMaterialFilters, m)}
+                            className="w-3.5 h-3.5 accent-navy-800"
+                          />
+                          <label htmlFor={`shop-mat-${m}`} className="text-sm text-navy-600">
+                            {t(`materials.${m}`)}
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setSortOpen((v) => !v)
+                  setFilterOpen(false)
+                }}
+                className="inline-flex items-center gap-1.5 border border-navy-100 px-4 py-2.5 text-xs font-medium uppercase tracking-widest text-navy-700 hover:border-navy-400 transition-colors"
+              >
+                {t('shop.sortBtn')} <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+              {sortOpen && (
+                <div className="absolute top-full right-0 rtl:right-auto rtl:left-0 mt-2 w-56 bg-white border border-navy-100 shadow-xl py-2 z-10">
+                  {Object.keys(SORT_FNS).map((key) => (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        setSort(key)
+                        setSortOpen(false)
+                      }}
+                      className="w-full flex items-center justify-between gap-2 px-4 py-2 text-sm text-navy-700 hover:bg-navy-50 transition-colors text-left rtl:text-right"
+                    >
+                      {sorts[key]}
+                      {sort === key && <Check className="w-3.5 h-3.5 text-navy-800" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -90,7 +217,7 @@ export default function Shop() {
             {activeChips.map((chip) => (
               <button
                 key={chip.key}
-                onClick={() => clearFilter(chip.key)}
+                onClick={chip.onClear || (() => clearFilter(chip.key))}
                 className="inline-flex items-center gap-1.5 bg-navy-50 text-navy-700 text-xs px-3 py-1.5"
               >
                 {chip.label} <X className="w-3 h-3" />
