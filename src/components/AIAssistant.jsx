@@ -1,37 +1,45 @@
-import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Sparkles, X, ArrowLeft } from 'lucide-react'
-import { ProductMedia } from './Media'
-import { useProducts } from '../context/ProductsContext'
+import { useEffect, useRef, useState } from 'react'
+import { Sparkles, X, Send } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
-import { localizeProduct } from '../utils/localize'
-import { useFormatPrice } from '../hooks/useFormatPrice'
+import { api } from '../lib/api'
 
-const DESTINATIONS = [
-  { key: 'beachResort', categories: ['Beachwear', 'Accessories'] },
-  { key: 'swimmingPool', categories: ['Swimwear', 'Swimming Equipment'] },
-  { key: 'bali', categories: ['Water Sports', 'Swimwear'] },
-  { key: 'maldives', categories: ['Beachwear', 'Accessories'] },
-  { key: 'familyVacation', categories: ['Beach Essentials', 'Footwear'] },
-]
+const SUGGESTION_KEYS = ['beachTrip', 'snorkeling', 'returns']
 
 export default function AIAssistant() {
   const { t, language } = useLanguage()
-  const formatPrice = useFormatPrice()
-  const { products } = useProducts()
   const [open, setOpen] = useState(false)
-  const [destination, setDestination] = useState(null)
+  const [messages, setMessages] = useState([])
+  const [input, setInput] = useState('')
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
+  const scrollRef = useRef(null)
 
-  const recommendations = useMemo(() => {
-    if (!destination) return []
-    return products
-      .filter((p) => destination.categories.includes(p.category))
-      .map((p) => localizeProduct(p, language))
-      .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-      .slice(0, 3)
-  }, [destination, products, language])
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
+  }, [messages, sending])
 
-  const categoriesQuery = destination ? destination.categories.join(',') : ''
+  const sendMessage = async (text) => {
+    const content = text.trim()
+    if (!content || sending) return
+    setError('')
+    const nextMessages = [...messages, { role: 'user', content }]
+    setMessages(nextMessages)
+    setInput('')
+    setSending(true)
+    try {
+      const data = await api.post('/api/chat', { messages: nextMessages, language })
+      setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }])
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSending(false)
+    }
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+    sendMessage(input)
+  }
 
   return (
     <>
@@ -44,67 +52,63 @@ export default function AIAssistant() {
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-6 rtl:right-auto rtl:left-6 z-40 w-[340px] max-w-[calc(100vw-3rem)] bg-sand border border-navy-100 shadow-xl">
+        <div className="fixed bottom-24 right-6 rtl:right-auto rtl:left-6 z-40 w-[340px] max-w-[calc(100vw-3rem)] bg-sand border border-navy-100 shadow-xl flex flex-col">
           <div className="flex items-center gap-2.5 px-5 py-4 border-b border-navy-100">
             <Sparkles className="w-4 h-4 text-navy-700" strokeWidth={1.5} />
             <h3 className="font-serif text-base text-navy-900">{t('assistant.title')}</h3>
           </div>
 
-          <div className="p-5 max-h-[420px] overflow-y-auto">
-            {!destination ? (
+          <div ref={scrollRef} className="p-5 h-[380px] overflow-y-auto space-y-3">
+            {messages.length === 0 ? (
               <>
-                <p className="text-sm text-navy-700 mb-4">{t('assistant.question')}</p>
-                <div className="grid grid-cols-1 gap-2">
-                  {DESTINATIONS.map((d) => (
+                <p className="text-sm text-navy-700 mb-3">{t('assistant.greeting')}</p>
+                <div className="flex flex-col gap-2">
+                  {SUGGESTION_KEYS.map((key) => (
                     <button
-                      key={d.key}
-                      onClick={() => setDestination(d)}
+                      key={key}
+                      onClick={() => sendMessage(t(`assistant.suggestions.${key}`))}
                       className="text-left rtl:text-right border border-navy-100 px-3.5 py-2.5 text-sm text-navy-700 hover:border-navy-400 hover:text-navy-900 transition-colors"
                     >
-                      {t(`assistant.destinations.${d.key}`)}
+                      {t(`assistant.suggestions.${key}`)}
                     </button>
                   ))}
                 </div>
               </>
             ) : (
-              <>
-                <button
-                  onClick={() => setDestination(null)}
-                  className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-widest text-navy-500 hover:text-navy-800 mb-4 transition-colors"
+              messages.map((m, i) => (
+                <div
+                  key={i}
+                  className={`text-sm px-3.5 py-2.5 max-w-[85%] whitespace-pre-wrap ${
+                    m.role === 'user'
+                      ? 'bg-navy-800 text-white ml-auto rtl:ml-0 rtl:mr-auto'
+                      : 'bg-white text-navy-800 border border-navy-100'
+                  }`}
                 >
-                  <ArrowLeft className="w-3 h-3 rtl:rotate-180" /> {t('assistant.startOver')}
-                </button>
-                <p className="text-sm text-navy-700 mb-4">
-                  {t('assistant.recommendationIntro', { destination: t(`assistant.destinations.${destination.key}`) })}
-                </p>
-                <div className="space-y-3 mb-4">
-                  {recommendations.map((p) => (
-                    <Link
-                      key={p.id}
-                      to={`/product/${p.id}`}
-                      onClick={() => setOpen(false)}
-                      className="flex items-center gap-3 hover:bg-navy-50 p-1.5 -m-1.5 transition-colors"
-                    >
-                      <div className="w-12 h-12 shrink-0">
-                        <ProductMedia tone={p.tone} image={p.image} alt={p.name} className="w-full h-full" iconClassName="w-4 h-4" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-navy-900 truncate">{p.name}</p>
-                        <p className="text-xs text-navy-500">{formatPrice(p.price)}</p>
-                      </div>
-                    </Link>
-                  ))}
+                  {m.content}
                 </div>
-                <Link
-                  to={`/shop?categories=${encodeURIComponent(categoriesQuery)}`}
-                  onClick={() => setOpen(false)}
-                  className="btn-primary w-full text-center"
-                >
-                  {t('assistant.shopEdit')}
-                </Link>
-              </>
+              ))
             )}
+            {sending && <p className="text-xs text-navy-400">{t('assistant.thinking')}</p>}
+            {error && <p className="text-xs text-red-600">{error}</p>}
           </div>
+
+          <form onSubmit={onSubmit} className="flex items-center gap-2 border-t border-navy-100 p-3">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={t('assistant.placeholder')}
+              disabled={sending}
+              className="flex-1 border border-navy-100 px-3 py-2 text-sm focus:outline-none focus:border-navy-400 disabled:opacity-60"
+            />
+            <button
+              type="submit"
+              disabled={sending || !input.trim()}
+              aria-label={t('assistant.send')}
+              className="w-9 h-9 shrink-0 flex items-center justify-center bg-navy-800 text-white disabled:opacity-40 hover:bg-navy-900 transition-colors"
+            >
+              <Send className="w-3.5 h-3.5 rtl:-scale-x-100" />
+            </button>
+          </form>
         </div>
       )}
     </>

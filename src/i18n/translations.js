@@ -670,17 +670,15 @@ const en = {
   assistant: {
     toggleLabel: 'Beach Vibes Assistant',
     title: 'Beach Vibes Assistant',
-    question: 'Where are you going?',
-    destinations: {
-      beachResort: 'Beach Resort',
-      swimmingPool: 'Swimming Pool',
-      bali: 'Bali',
-      maldives: 'Maldives',
-      familyVacation: 'Family Vacation',
+    greeting: 'Hi! Ask me anything about our swim & beach gear, sizing, shipping, or returns.',
+    placeholder: 'Type a message…',
+    send: 'Send',
+    thinking: 'Thinking…',
+    suggestions: {
+      beachTrip: 'What should I pack for a beach resort trip?',
+      snorkeling: 'Do you have snorkeling or diving gear?',
+      returns: "What's your shipping and returns policy?",
     },
-    startOver: 'Start Over',
-    recommendationIntro: "Great choice. Here's what we'd pack for {{destination}}:",
-    shopEdit: 'Shop This Edit',
   },
 }
 
@@ -1346,17 +1344,15 @@ const ar = {
   assistant: {
     toggleLabel: 'مساعد بيتش فايبس',
     title: 'مساعد بيتش فايبس',
-    question: 'إلى أين أنت ذاهب؟',
-    destinations: {
-      beachResort: 'منتجع شاطئي',
-      swimmingPool: 'مسبح',
-      bali: 'بالي',
-      maldives: 'المالديف',
-      familyVacation: 'إجازة عائلية',
+    greeting: 'مرحباً! اسألني عن أدوات السباحة والشاطئ، المقاسات، الشحن، أو الإرجاع.',
+    placeholder: 'اكتب رسالة…',
+    send: 'إرسال',
+    thinking: 'جارٍ التفكير…',
+    suggestions: {
+      beachTrip: 'ماذا يجب أن أحضّر لرحلة إلى منتجع شاطئي؟',
+      snorkeling: 'هل لديكم معدات غطس أو سباحة بالزعانف؟',
+      returns: 'ما سياسة الشحن والإرجاع لديكم؟',
     },
-    startOver: 'البدء من جديد',
-    recommendationIntro: 'اختيار رائع. إليك ما ننصح بحزمه من أجل {{destination}}:',
-    shopEdit: 'تسوق هذه التشكيلة',
   },
 }
 
