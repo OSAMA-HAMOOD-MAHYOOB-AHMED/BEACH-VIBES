@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
-import { anthropic } from '../lib/anthropic.js';
+import { genAI } from '../lib/gemini.js';
 import { supabase } from '../lib/supabase.js';
 
 const router = Router();
 
-// Public, unauthenticated, and backed by a paid API call per message —
+// Public, unauthenticated, and backed by an external API call per message —
 // throttle harder than the login/register limiter.
 const chatLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -17,6 +17,9 @@ const chatLimiter = rateLimit({
 
 const MAX_MESSAGES = 20;
 const MAX_MESSAGE_LENGTH = 2000;
+// Rolling alias for Google's current stable Flash model — the line with a
+// genuine free tier — so this doesn't need updating as models roll over.
+const MODEL = 'gemini-flash-latest';
 
 const SYSTEM_PROMPT_BASE = `You are the shopping assistant for Beach Vibes, an online store selling swimwear, beachwear, footwear, swimming equipment, water sports gear, beach essentials, and accessories.
 
@@ -28,7 +31,7 @@ Shipping & returns: complimentary standard shipping on all orders over $500, wit
 
 router.post('/', chatLimiter, async (req, res, next) => {
   try {
-    if (!anthropic) {
+    if (!genAI) {
       return res.status(503).json({ error: 'The AI assistant is not configured right now.' });
     }
 
@@ -65,34 +68,36 @@ router.post('/', chatLimiter, async (req, res, next) => {
         ? 'Respond in Arabic unless the visitor writes to you in a different language.'
         : 'Respond in English unless the visitor writes to you in a different language.';
 
-    const system = `${SYSTEM_PROMPT_BASE}\n\n${languageInstruction}\n\nCurrent catalog:\n${catalogText}`;
+    const systemInstruction = `${SYSTEM_PROMPT_BASE}\n\n${languageInstruction}\n\nCurrent catalog:\n${catalogText}`;
+
+    // Gemini's assistant-turn role is 'model', not 'assistant'.
+    const contents = messages.map((m) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
 
     let response;
     try {
-      response = await anthropic.beta.messages.create({
-        model: 'claude-opus-5',
-        max_tokens: 1024,
-        betas: ['server-side-fallback-2026-07-01'],
-        fallbacks: 'default',
-        output_config: { effort: 'low' },
-        system,
-        messages: messages.map((m) => ({ role: m.role, content: m.content })),
+      response = await genAI.models.generateContent({
+        model: MODEL,
+        contents,
+        config: { systemInstruction, maxOutputTokens: 1024 },
       });
     } catch (apiErr) {
-      // Log the real cause (rate limit, billing, overload, ...) server-side,
-      // but never relay raw Anthropic API error internals to chat users.
-      console.error('Anthropic API error:', apiErr);
+      // Log the real cause (rate limit, quota, ...) server-side, but never
+      // relay raw upstream API error internals to chat users.
+      console.error('Gemini API error:', apiErr);
       return res.status(502).json({ error: 'The AI assistant is temporarily unavailable. Please try again in a moment.' });
     }
 
-    if (response.stop_reason === 'refusal') {
+    const finishReason = response.candidates?.[0]?.finishReason;
+    if (finishReason && finishReason !== 'STOP' && finishReason !== 'MAX_TOKENS') {
       return res.json({
         reply: "I can't help with that one, but I'm happy to help you find something for your next beach or swim trip!",
       });
     }
 
-    const textBlock = response.content.find((block) => block.type === 'text');
-    res.json({ reply: textBlock ? textBlock.text : '' });
+    res.json({ reply: response.text || '' });
   } catch (err) {
     next(err);
   }
