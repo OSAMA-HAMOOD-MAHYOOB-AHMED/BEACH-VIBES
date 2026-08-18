@@ -67,15 +67,23 @@ router.post('/', chatLimiter, async (req, res, next) => {
 
     const system = `${SYSTEM_PROMPT_BASE}\n\n${languageInstruction}\n\nCurrent catalog:\n${catalogText}`;
 
-    const response = await anthropic.beta.messages.create({
-      model: 'claude-opus-5',
-      max_tokens: 1024,
-      betas: ['server-side-fallback-2026-07-01'],
-      fallbacks: 'default',
-      output_config: { effort: 'low' },
-      system,
-      messages: messages.map((m) => ({ role: m.role, content: m.content })),
-    });
+    let response;
+    try {
+      response = await anthropic.beta.messages.create({
+        model: 'claude-opus-5',
+        max_tokens: 1024,
+        betas: ['server-side-fallback-2026-07-01'],
+        fallbacks: 'default',
+        output_config: { effort: 'low' },
+        system,
+        messages: messages.map((m) => ({ role: m.role, content: m.content })),
+      });
+    } catch (apiErr) {
+      // Log the real cause (rate limit, billing, overload, ...) server-side,
+      // but never relay raw Anthropic API error internals to chat users.
+      console.error('Anthropic API error:', apiErr);
+      return res.status(502).json({ error: 'The AI assistant is temporarily unavailable. Please try again in a moment.' });
+    }
 
     if (response.stop_reason === 'refusal') {
       return res.json({
