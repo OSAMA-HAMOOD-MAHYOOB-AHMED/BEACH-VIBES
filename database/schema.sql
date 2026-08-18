@@ -69,12 +69,12 @@ create table if not exists newsletter_subscribers (
 
 alter table newsletter_subscribers enable row level security;
 
+-- Previously had a "Public insert" policy for the anon role, from
+-- back when the frontend posted to Supabase directly. That's dead
+-- now — the backend (service_role, which bypasses RLS) handles every
+-- insert — so it's dropped rather than re-created: no policies means
+-- only the backend can read or write this table.
 drop policy if exists "Public insert" on newsletter_subscribers;
-create policy "Public insert" on newsletter_subscribers
-  for insert with check (true);
-
--- No select/update/delete policy for anon: visitors can subscribe,
--- but cannot read back the list of subscribers.
 
 -- ============================================================
 -- contact_messages
@@ -90,9 +90,12 @@ create table if not exists contact_messages (
 
 alter table contact_messages enable row level security;
 
+-- Previously had a "Public insert" policy for the anon role, from
+-- back when the frontend posted to Supabase directly. That's dead
+-- now — the backend (service_role, which bypasses RLS) handles every
+-- insert — so it's dropped rather than re-created: no policies means
+-- only the backend can read or write this table.
 drop policy if exists "Public insert" on contact_messages;
-create policy "Public insert" on contact_messages
-  for insert with check (true);
 
 -- ============================================================
 -- one-time cleanup: retire the old artisanal/luxury catalog
