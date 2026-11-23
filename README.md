@@ -1,5 +1,16 @@
 # Beach Vibes
 
+## Overview
+Full-stack e-commerce store with JWT authentication, bcrypt password hashing, and role-based access control (customer/admin). React + Express + Supabase Postgres.
+
+**Live demo:** https://beach-vibes.vercel.app  
+**My role:** Designed and built the full stack (frontend, API, database schema).
+
+### Security features
+- JWT-based authentication with bcrypt password hashing
+- Role-based authorization enforced on both client and every API endpoint
+- Database accessed only server-side (service-role key never exposed to the client)
+
 A storefront split into three layers:
 
 ```
